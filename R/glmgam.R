@@ -2,7 +2,7 @@ glmgam.fit <- function(X,y,start=NULL,trace=FALSE,tol=1e-6,maxit=50) {
 #  Fit gamma generalized linear model with identity link
 #  by Levenberg damped Fisher scoring
 #  Gordon Smyth
-#  12 Mar 2003.  Last revised 31 Aug 2003.
+#  12 Mar 2003.  Last revised 26 Jan 2004.
 
 #  check input
 X <- as.matrix(X)
@@ -41,12 +41,11 @@ if(is.null(start)) {
 } else {
 	beta <- start
 	mu <- X %*% beta
-	if(any(mu <= 0)) stop("Starting values not admissable")
 }
 if(all(mu>0))
 	dev <- 2*sum( (y-mu)/mu - log(y/mu) )
 else
-	dev <- Inf
+	stop("Starting values give non-positive fitted values")
 
 # reml scoring
 iter <- 0
@@ -78,11 +77,10 @@ repeat {
 		dbeta <- backsolve(R,backsolve(R,dl,transpose=TRUE))
 		beta <- betaold + dbeta
 		mu <- X %*% beta
-		if(all(mu>0))
+		if(all(mu>0)) {
 			dev <- 2*sum( (y-mu)/mu - log(y/mu) )
-		else
-			dev <- Inf
-		if(is.finite(dev)) if(dev < devold || dev/max(mu) < 1e-15) break
+			if(dev < devold || dev/max(mu) < 1e-15) break
+		}
 
 		# exit if too much damping
 		if(lambda/maxinfo > 1e15) {

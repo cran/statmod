@@ -49,7 +49,7 @@ If \code{fixed.estimates=TRUE} then the components from \code{"lm.fit"} are also
 \author{Gordon Smyth}
 
 \seealso{
-\code{\link[nlme:lme]{lme}}, \code{\link[base:lm]{lm}}, \code{\link[base:lm]{lm.fit}}
+\code{\link{glmgam.fit}}, \code{\link[nlme:lme]{lme}}, \code{\link[base:lm]{lm}}, \code{\link[base:lm]{lm.fit}}
 }
 
 \examples{

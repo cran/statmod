@@ -23,7 +23,7 @@ function(X, y, weights=NULL, dist="logistic", init=NULL, scale=NULL) {
 	dist <- survreg.distributions[[dist]]
 	controlvals <- survreg.control()
 	offset <- rep(0,length(y))
-	survreg.fit(X, Y, weights=weights, dist=dist, init=init, scale=scale, controlvals=controlvals, offset=offset, nstrat=1, strata=0, parms=NULL)
+	survival:::survreg.fit(X, Y, weights=weights, dist=dist, init=init, scale=scale, controlvals=controlvals, offset=offset, nstrat=1, strata=0, parms=NULL)
 }
 
 mlreg.fit.zero <- 
@@ -32,7 +32,7 @@ mlreg.fit.zero <-
 #  "lognormal" or "loglogistic".
 #  See survreg and survreg.object in the survival library for further documentation.
 #	Gordon Smyth, smyth@wehi.edu.au
-#  21 Nov 2001
+#  21 Nov 2001.  Last modified 10 Feb 2004.
 
 function(y, weights=NULL, dist="logistic", init=NULL, scale=NULL) {
 	require("survival")
@@ -51,7 +51,7 @@ function(y, weights=NULL, dist="logistic", init=NULL, scale=NULL) {
 	dist <- survreg.distributions[[dist]]
 	controlvals <- survreg.control()
 	offset <- rep(0,length(y))
-	out <- survreg.fit(X, Y, weights=weights, dist=dist, init=init, scale=scale, controlvals=controlvals, offset=offset, nstrat=1, strata=0, parms=NULL)
+	out <- survival:::survreg.fit(X, Y, weights=weights, dist=dist, init=init, scale=scale, controlvals=controlvals, offset=offset, nstrat=1, strata=0, parms=NULL)
 
 #	Now restore the output as for the original number of observations
 	out$coefficients <- out$coefficients[2]
