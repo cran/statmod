@@ -1,6 +1,6 @@
 Package: statmod
-Version: 0.5
-Date: 2003-02-15
+Version: 0.6
+Date: 2003/06/30
 Title: Statistical Modelling
 Author: Gordon Smyth <smyth@wehi.edu.au>
 Maintainer: Gordon Smyth <smyth@wehi.edu.au>

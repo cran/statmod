@@ -1,7 +1,9 @@
 Digamma                 Digamma generalized linear model family
-gauss.quad              Gaussian Quadrature
 gauss.quad.prob         Gaussian Quadrature with Probability
                         Distributions
+gauss.quad              Gaussian Quadrature
+glmgam.fit              Gamma Generalized Linear Model with Identity
+                        Link
 growthcurve             Compare Groups of Growth Curves
 hommel.test             Test Multiple Comparisons
 invgauss                Inverse Gaussian Distribution
@@ -10,6 +12,8 @@ matvec                  Multiply a Matrix by a Vector
 meanT                   Mean t-Statistic Between Two Groups of Growth
                         Curves
 mlreg                   Fit a Linear Model by Maximum Likelihood
+power.fisher.test       Power of Fisher's Exact Test for Comparing
+                        Proportions
 qres                    Randomized Quantile Residuals
 ranblock                Randomized Block Mixed Linear Model
 remlscore               REML for heteroscedastic regression
