@@ -42,7 +42,7 @@ compareGrowthCurves <- function(group,y,levels=NULL,nsim=100,fun=meanT,times=NUL
 #  All pairwise permutation tests between groups of growth curves
 #  Columns of y are time points, rows are individuals
 #  Gordon Smyth
-#  14 Feb 2003
+#  14 Feb 2003.  Last modified 17 Nov 2003.
 
 	group <- as.character(group)
 	if(is.null(levels)) {
@@ -66,7 +66,7 @@ compareGrowthCurves <- function(group,y,levels=NULL,nsim=100,fun=meanT,times=NUL
 			pair <- pair+1
 			sel <- group %in% c(lev[i],lev[j])
 			out <- compareTwoGrowthCurves(group[sel],y[sel,,drop=FALSE],nsim=nsim,fun=fun)
-			if(verbose) cat(round(out$stat,2),"\n")
+			if(verbose) cat("\ ",round(out$stat,2),"\n")
 			g1[pair] <- lev[i]
 			g2[pair] <- lev[j]
 			stat[pair] <- out$stat
