@@ -1,4 +1,6 @@
 Digamma                 Digamma generalized linear model family
+fisher.test2            Fast Version of Fisher's Exact Test for Count
+                        Data
 gauss.quad.prob         Gaussian Quadrature with Probability
                         Distributions
 gauss.quad              Gaussian Quadrature
@@ -19,5 +21,6 @@ ranblock                Randomized Block Mixed Linear Model
 remlscore               REML for heteroscedastic regression
 remlscoregamma          Approximate REML for gamma regression with
                         structured dispersion
+sage.test               Compare Two SAGE Libraries
 tweedie                 Tweedie Generalized Linear Models
 welding                 Data: Tensile Strength of Welds

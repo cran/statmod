@@ -1,8 +1,8 @@
 glmgam.fit <- function(X,y,start=NULL,trace=FALSE,tol=1e-6,maxit=50) {
 #  Fit gamma generalized linear model with identity link
 #  by Levenberg damped Fisher scoring
-#  Gordon Smyth, smyth@wehi.edu.au
-#  12 Mar 2003.  Last revised 13 Mar 2003.
+#  Gordon Smyth
+#  12 Mar 2003.  Last revised 31 Aug 2003.
 
 #  check input
 X <- as.matrix(X)
@@ -10,26 +10,43 @@ y <- as.vector(y)
 n <- length(y)
 if(n != nrow(X)) stop("length(y) not equal to nrow(X)")
 if(n == 0) return(list(coefficients=numeric(0),fitted.values=numeric(0),deviance=numeric(0)))
-if(any(is.na(y)) || any(is.na(X))) stop("Missing values not allowed")
-if(any(y <= 0)) stop("y must be positive")
+if(!(all(is.finite(y)) || all(is.finite(X)))) stop("All values must be finite and non-missing")
+if(any(y < 0)) stop("y must be positive")
+maxy <- max(y)
+if(maxy==0) return(list(coefficients=rep(0,p),fitted.values=rep(0,n),deviance=NA))
+y <- pmax(y,maxy*1e-13)
 p <- ncol(X)
 if(p > n) stop("More columns than rows in X")
 
 #  starting values
 if(is.null(start)) {
-	beta <- lm.wfit(X,y,1/y^2)$coef
-	mu <- X %*% beta
-	if(any(mu <= 0)) {
-		beta <- lm.fit(X,rep(mean(y),n))$coef
-		mu <- X %*% beta
-		if(any(mu <= 0)) stop("Can't find admissable starting values")
+	fit <- lm.wfit(X,y,1/y^2)
+	beta <- fit$coefficients
+	mu <- fit$fitted.values
+	if(any(mu < 0)) {
+		fit <- lm.fit(X,rep(mean(y),n))
+		beta <- fit$coefficients
+		mu <- fit$fitted.values
+	}
+	if(any(mu < 0)) {
+		samesign <- apply(X>0,2,all) | apply(X<0,2,all)
+		if(any(samesign)) {
+			i <- (1:p)[samesign][1]
+			beta <- rep(0,p)
+			beta[i] <- lm.wfit(X[,i,drop=FALSE],y,1/y^2)$coef
+			mu <- X[,i] * beta[i]
+		} else
+			return(list(coefficients=rep(0,p),fitted.values=rep(0,n),deviance=Inf))
 	}
 } else {
 	beta <- start
 	mu <- X %*% beta
 	if(any(mu <= 0)) stop("Starting values not admissable")
 }
-dev <- 2*sum( (y-mu)/mu - log(y/mu) )
+if(all(mu>0))
+	dev <- 2*sum( (y-mu)/mu - log(y/mu) )
+else
+	dev <- Inf
 
 # reml scoring
 iter <- 0
@@ -38,7 +55,7 @@ repeat {
 	iter <- iter+1
 
 	# information matrix
-	v <- mu^2
+	v <- pmax(mu,1e-16)^2
 	XVX <- crossprod(X,vecmat(1/v,X))
 	maxinfo <- max(diag(XVX))
 	if(iter==1) {
