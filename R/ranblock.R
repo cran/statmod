@@ -45,28 +45,35 @@ randomizedBlockFit <- function(y,X,Z,w=NULL,fixed.estimates=TRUE) {
 #	EYE*GAMMA(1) and EYE*GAMMA(2) respectively.
 
 #	Gordon Smyth, Walter and Eliza Hall Institute
-#	Matlab version 19 Feb 94.  Converted to R, 28 Jan 2003.
+#	Matlab version 19 Feb 94.  Converted to R, 28 Jan 2003.  Last revised 13 Mar 2003.
 
 #  Prior weights
 if(!is.null(w)) {
-	sw <- 1/sqrt(w)
+	sw <- sqrt(w)
 	y <- sw * y
 	X <- sw * X
-	Z <- sw * Z
 }
 
-#  transform to independent observations
+#  Find null space Q of X
 X <- as.matrix(X)
 Z <- as.matrix(Z)
 mx <- nrow(X)
 nx <- ncol(X)
 s <- La.svd(X,nu=mx,nv=0)
-zeroeig <- abs(s$d/s$d[1]) < 1e-15
-if(any(zeroeig))
-	zero1 <- min((1:nx)[zeroeig])
-else
-	zero1 <- nx+1
-Q <- s$u[,zero1:mx]
+if(s$d[1] < 1e-15)
+	zero1 <- 1   # X is entirely zero
+else {
+	zeroeig <- abs(s$d/s$d[1]) < 1e-15
+	if(any(zeroeig))
+		zero1 <- min((1:nx)[zeroeig])
+	else
+		zero1 <- nx+1
+}
+#  Are there any df to estimate error?
+if(zero1 > mx) return(list(sigmasquared=rep(NA,2)))
+Q <- s$u[,zero1:mx,drop=FALSE]
+
+#  Apply Q to Z and transform to independent observations
 mq <- ncol(Q)
 s <- La.svd(crossprod(Q,Z),nu=mq,nv=0)
 uqy <- crossprod(s$u,(crossprod(Q,y)))
@@ -76,20 +83,20 @@ dx <- cbind(Residual=1,Block=d)
 dy <- uqy^2
 
 #  low dimension cases
-if(nrow(dx)==1) {
+if(nrow(dx)==1 || s$d[1] < 1e-15) {
 	sigma <- rep(NA,2)
 	sigma[1] <- mean(dy)
 	return(list(sigmasquared=sigma))
 }
 if(nrow(dx)==2) {
 	sigma <- solve(dx,dy)
-	v <- dx %*% sigma
-	
+	return(list(sigmasquared=sigma))
 }
 
 #  fit gamma glm identity link to dy with dx as covariates
-dfit <- glm.fit(dx,dy,family=Gamma(link="identity"),start=c(mean(dy),0))
-dse <- sqrt(2*diag(chol2inv(dfit$qr$qr)))
+dfit <- glmgam.fit(dx,dy,start=c(mean(dy),0))
+dinfo <- crossprod(dx,vecmat(1/dfit$fitted^2,dx))
+dse <- sqrt(2*diag(chol2inv(chol(dinfo))))
 out <- list(sigmasquared=dfit$coef,se.sigmasquared=dse)
 
 #  fixed effect estimates
