@@ -3,7 +3,7 @@
 
 \title{Compare Two SAGE Libraries}
 \description{
-Compute p-values for differential expression for each tag between two SAGE libraries. 
+Compute p-values for differential expression for each tag between two serial analysis of gene expression (SAGE) libraries. 
 }
 
 \usage{
@@ -22,6 +22,10 @@ Non-integer values are rounded to the nearest integer.}
 }
 
 \details{
+SAGE is a method for counting the frequency of sequence tags in samples of RNA.
+One can test for differential expression for a given tag between the SAGE results for two different RNA samples using Fisher's exact test.
+This is however computationally intensive when the SAGE libraries are large.
+
 This function uses a binomial approximation to the Fisher Exact test for each tag.
 The approximation is accurate when \code{n1} and \code{n2} are large and \code{x} and \code{y} are small in comparison.
 }
@@ -31,6 +35,10 @@ Numeric vector of p-values.
 }
 
 \author{Gordon Smyth}
+
+\references{
+\url{http://www.sagenet.org}
+}
 
 \seealso{
 \code{\link[ctest]{fisher.test}}

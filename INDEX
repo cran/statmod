@@ -1,12 +1,13 @@
+1.StatMod               Introduction to the StatMod Package
+compareGrowthCurves     Compare Groups of Growth Curves
 Digamma                 Digamma generalized linear model family
+gauss.quad              Gaussian Quadrature
 gauss.quad.prob         Gaussian Quadrature with Probability
                         Distributions
-gauss.quad              Gaussian Quadrature
 glmgam.fit              Gamma Generalized Linear Model with Identity
                         Link
-growthcurve             Compare Groups of Growth Curves
 hommel.test             Test Multiple Comparisons
-invgauss                Inverse Gaussian Distribution
+InverseGaussian         Inverse Gaussian Distribution
 logmdigamma             Log Minus Digamma Function
 matvec                  Multiply a Matrix by a Vector
 meanT                   Mean t-Statistic Between Two Groups of Growth
@@ -14,7 +15,7 @@ meanT                   Mean t-Statistic Between Two Groups of Growth
 power.fisher.test       Power of Fisher's Exact Test for Comparing
                         Proportions
 qres                    Randomized Quantile Residuals
-ranblock                Randomized Block Mixed Linear Model
+randomizedBlock         Randomized Block Mixed Linear Model
 remlscore               REML for heteroscedastic regression
 remlscoregamma          Approximate REML for gamma regression with
                         structured dispersion
