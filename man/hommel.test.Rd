@@ -1,22 +1,22 @@
 \name{hommel.test}
 \alias{hommel.test}
-\title{Test Multiple Comparisons}
+\title{Test Multiple Comparisons Using Hommel's Method}
 
-\description{Given a set of p-values and a test level, returns test results for each of the hypotheses.}
+\description{Given a set of p-values and a test level, returns vector of test results for each hypothesis.}
 
 \usage{hommel.test(p, alpha=0.05)
 }
 
 \arguments{
-  \item{p}{vector of p-values}
-  \item{alpha}{desired significance level}
+  \item{p}{numeric vector of p-values}
+  \item{alpha}{numeric value, desired significance level}
 }
 
-\value{A logical vector indicating whether each hypothesis is accepted.}
+\value{logical vector indicating whether each hypothesis is accepted}
 
 \details{
 This function implements the multiple testing procedure of Hommel (1988).
-Hommel's method is also implemented as an adjusted P-value method in the function \code{p.adjust} but the accept/reject approach in this function is faster.
+Hommel's method is also implemented as an adjusted p-value method in the function \code{p.adjust} but the accept/reject approach used here is faster.
 }
 
 \references{
@@ -28,7 +28,7 @@ Shaffer, J. P. (1995). Multiple hypothesis testing. \emph{Annual Review of Psych
 \author{Gordon Smyth}
 
 \seealso{
-\code{\link[statmod:p.adjust]{p.adjust}}
+\code{\link[stats:p.adjust]{p.adjust}}
 }
 
 \examples{
