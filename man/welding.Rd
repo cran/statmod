@@ -10,18 +10,21 @@ variables are at plus and minus levels.
 }
 \usage{data(welding)}
 \format{
-A data frame containing the variables.
+A data frame containing the following variables.
 All the explanatory variables are numeric with two levels, \code{-1} and \code{1}.
-  \item{Rods}{Kind of welding rods}
-  \item{Drying}{Period of drying}
-  \item{Material}{Welded material}
-  \item{Thickness}{Thickness}
-  \item{Angle}{Angle}
-  \item{Opening}{Opening}
-  \item{Current}{Current}
-  \item{Method}{Welding method}
-  \item{Preheating}{Preheating}
-  \item{Strength}{Tensile strength of the weld in kg/mm. The response variable.}
+\tabular{lll}{
+\tab \bold{Variable} \tab \bold{Description}\cr
+\tab Rods \tab Kind of welding rods\cr
+\tab Drying \tab Period of drying\cr
+\tab Material \tab Welded material\cr
+\tab Thickness \tab Thickness\cr
+\tab Angle \tab Angle\cr
+\tab Opening \tab Opening\cr
+\tab Current \tab Current\cr
+\tab Method \tab Welding method\cr
+\tab Preheating \tab Preheating\cr
+\tab Strength \tab Tensile strength of the weld in kg/mm. The response variable.\cr
+}
 }
 \source{
 \url{http://www.statsci.org/data/general/welding.html}

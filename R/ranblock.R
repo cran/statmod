@@ -1,12 +1,14 @@
-randomizedBlock <- function(formula, random, weights=NULL, fixed.estimates=TRUE, data=list(), subset=NULL, contrasts=NULL) {
+#  RANBLOCK.R
+
+randomizedBlock <- function(formula, random, weights=NULL, only.varcomp=FALSE, data=list(), subset=NULL, contrasts=NULL, tol=1e-6, maxit=50, trace=FALSE)
 #	REML for mixed linear models
 #	Gordon Smyth, Walter and Eliza Hall Institute
-#	28 Jan 2003
-
+#	28 Jan 2003.  Last revised 20 March 2004.
+{
 #	Extract model from formula
 	cl <- match.call()
 	mf <- match.call(expand.dots = FALSE)
-	mf$fixed.estimates <- NULL
+	mf$only.varcomp <- mf$tol <- mf$tol <- mf$maxit <- NULL
 	mf$drop.unused.levels <- TRUE
 	mf[[1]] <- as.name("model.frame")
 	mf <- eval(mf, parent.frame())
@@ -30,12 +32,10 @@ randomizedBlock <- function(formula, random, weights=NULL, fixed.estimates=TRUE,
 	lev <- unique.default(random)
 	z <- 0 + (matrix(random,length(random),length(lev)) == t(matrix(lev,length(lev),length(random))))
 
-	out <- randomizedBlockFit(y,x,z,w=w,fixed.estimates=fixed.estimates)
-	if(fixed.estimates==TRUE) class(out) <- "lm"
-	out
+	randomizedBlockFit(y,x,z,w=w,only.varcomp=only.varcomp,tol=tol,maxit=maxit,trace=trace)
 }
 
-randomizedBlockFit <- function(y,X,Z,w=NULL,fixed.estimates=TRUE) {
+randomizedBlockFit <- function(y,X,Z,w=NULL,only.varcomp=FALSE,tol=1e-6,maxit=50,trace=FALSE) {
 #	Restricted maximum likelihood estimation for mixed linear models.
 #	Fits the model  Y = X*BETA + Z*U + E  where BETA is fixed
 #	and U is random.
@@ -45,7 +45,8 @@ randomizedBlockFit <- function(y,X,Z,w=NULL,fixed.estimates=TRUE) {
 #	EYE*GAMMA(1) and EYE*GAMMA(2) respectively.
 
 #	Gordon Smyth, Walter and Eliza Hall Institute
-#	Matlab version 19 Feb 94.  Converted to R, 28 Jan 2003.  Last revised 13 Mar 2003.
+#	Matlab version 19 Feb 94.  Converted to R, 28 Jan 2003.
+#	Last revised 20 Mar 2004.
 
 #  Prior weights
 if(!is.null(w)) {
@@ -70,7 +71,7 @@ else {
 		zero1 <- nx+1
 }
 #  Are there any df to estimate error?
-if(zero1 > mx) return(list(sigmasquared=rep(NA,2)))
+if(zero1 > mx) return(list(varcomp=rep(NA,2)))
 Q <- s$u[,zero1:mx,drop=FALSE]
 
 #  Apply Q to Z and transform to independent observations
@@ -82,34 +83,38 @@ d[1:length(s$d)] <- s$d^2
 dx <- cbind(Residual=1,Block=d)
 dy <- uqy^2
 
-#  low dimension cases
-if(nrow(dx)==1 || s$d[1] < 1e-15) {
-	sigma <- rep(NA,2)
-	sigma[1] <- mean(dy)
-	return(list(sigmasquared=sigma))
-}
-if(nrow(dx)==2) {
-	sigma <- solve(dx,dy)
-	return(list(sigmasquared=sigma))
-}
+#  Try unweighted starting values
+dfit <- lm.fit(dx,dy)
+varcomp <- dfit$coefficients
+dfitted.values <- dfit$fitted.values
 
-#  fit gamma glm identity link to dy with dx as covariates
-dfit <- glmgam.fit(dx,dy,start=c(mean(dy),0))
-dinfo <- crossprod(dx,vecmat(1/dfit$fitted^2,dx))
-dse <- sqrt(2*diag(chol2inv(chol(dinfo))))
-out <- list(sigmasquared=dfit$coef,se.sigmasquared=dse)
+#  Main fit
+if(mq > 2 && sum(abs(d)>1e-15)>1 && var(d)>1e-15) {
+	if(all(dfitted.values >= 0))
+		start <- dfit$coefficients
+	else
+		start <- c(Residual=mean(dy),Block=0)
+#	fit gamma glm identity link to dy with dx as covariates
+	dfit <- glmgam.fit(dx,dy,start=start,tol=tol,maxit=maxit,trace=trace)
+	varcomp <- dfit$coefficients
+	dfitted.values <- dfit$fitted.values
+}
+out <- list(varcomp=dfit$coef)
+if(only.varcomp) return(out)
+
+#  Standard errors for variance components
+dinfo <- crossprod(dx,vecmat(1/dfitted.values^2,dx))
+out$se.varcomp=sqrt(2*diag(chol2inv(chol(dinfo))))
 
 #  fixed effect estimates
-if(fixed.estimates) {
-	v <- dfit$fitted.values
-	s <- La.svd(Z,nu=mx,nv=0)
-	d <- rep(0,mx)
-	d[1:length(s$d)] <- s$d^2
-	v <- drop( cbind(Residual=1,Block=d) %*% dfit$coefficients )
-	mfit <- lm.wfit(crossprod(s$u,X),crossprod(s$u,y),1/v)
-	out <- c(out,mfit)
-	out$se.coefficients <- sqrt(diag(chol2inv(mfit$qr$qr)))
-}
+s <- La.svd(Z,nu=mx,nv=0)
+d <- rep(0,mx)
+d[1:length(s$d)] <- s$d^2
+v <- drop( cbind(Residual=1,Block=d) %*% varcomp )
+mfit <- lm.wfit(crossprod(s$u,X),crossprod(s$u,y),1/v)
+out <- c(out,mfit)
+out$se.coefficients <- sqrt(diag(chol2inv(mfit$qr$qr)))
 
 out
 }
+

@@ -1,4 +1,5 @@
 \name{invgauss}
+\alias{InverseGaussian}
 \alias{dinvgauss}
 \alias{pinvgauss}
 \alias{qinvgauss}

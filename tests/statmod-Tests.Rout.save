@@ -1,0 +1,206 @@
+
+R : Copyright 2004, The R Foundation for Statistical Computing
+Version 1.9.0 alpha (2004-03-17), ISBN 3-900051-00-3
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for a HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(statmod)
+> 
+> set.seed(0); u <- runif(100)
+> 
+> ### glmgam.fit
+> 
+> glmgam.fit(1,1)
+$coefficients
+[1] 1
+
+$fitted.values
+[1] 1
+
+$deviance
+[1] 0
+
+$maxit
+[1] 50
+
+$iter
+[1] 1
+
+> glmgam.fit(c(1,1),c(0,4))
+$coefficients
+[1] 2
+
+$fitted.values
+[1] 2 2
+
+$deviance
+[1] Inf
+
+$maxit
+[1] 50
+
+$iter
+[1] 1
+
+> glmgam.fit(X=cbind(1,c(1,0.5,0.5,0,0)),y=rchisq(5,df=1))
+$coefficients
+[1]  0.8218459 -0.5223904
+
+$fitted.values
+[1] 0.2994555 0.5606507 0.5606507 0.8218459 0.8218459
+
+$deviance
+[1] 2.088237
+
+$maxit
+[1] 50
+
+$iter
+[1] 7
+
+> 
+> ### randomizedBlock
+> 
+> y <- rnorm(6)
+> x <- rnorm(6)
+> z <- c(1,1,2,2,3,3)
+> randomizedBlock(y~x,random=z)
+$varcomp
+ Residual     Block 
+0.4235065 0.7544430 
+
+$se.varcomp
+[1] 0.4233868 1.0162259
+
+$coefficients
+(Intercept)           x 
+-0.69543284  0.01798617 
+
+$residuals
+[1]  1.4752710 -1.2428104 -0.2324606 -0.6716293 -0.2233938  0.6047238
+
+$fitted.values
+[1] 0.990774302 0.996961068 0.979500865 0.006599191 0.019759214 0.016465507
+
+$effects
+(Intercept)           x                                                 
+-1.23237769 -0.04178512 -0.75582834 -0.75539515  0.48507448  1.61950745 
+
+$weights
+[1] 0.5174932 0.5174932 0.5174932 2.3612391 2.3612391 2.3612391
+
+$rank
+[1] 2
+
+$assign
+NULL
+
+$qr
+$qr
+       (Intercept)          x
+[1,]  1.762089e+00 -0.3871198
+[2,]  5.773503e-01 -2.3231807
+[3,]  5.773503e-01 -0.1755767
+[4,] -9.681714e-17  0.2426828
+[5,] -1.936343e-16  0.7266379
+[6,] -1.936343e-16  0.6055130
+
+$qraux
+[1] 1.577350 1.125017
+
+$pivot
+[1] 1 2
+
+$tol
+[1] 1e-07
+
+$rank
+[1] 2
+
+attr(,"class")
+[1] "qr"
+
+$df.residual
+[1] 4
+
+$se.coefficients
+[1] 0.5753330 0.4304444
+
+> 
+> ### randomizedBlockFit
+> 
+> y <- c(-1,1,-2,2,0.5)
+> X <- matrix(1,5,1)
+> Z <- model.matrix(~factor(c(1,1,2,2,3))-1)
+> randomizedBlockFit(y,X,Z)
+$varcomp
+ Residual     Block 
+ 3.139385 -1.569692 
+
+$se.varcomp
+[1] 2.565233 1.282617
+
+$coefficients
+          x1 
+4.651561e-08 
+
+$residuals
+[1]  6.578301e-08  6.578301e-08 -5.000000e-01  1.000000e+00  3.000000e+00
+
+$fitted.values
+[1] -6.578301e-08 -6.578301e-08 -4.651561e-08  0.000000e+00  0.000000e+00
+
+$effects
+           x1                                                         
+ 1.217242e-04  5.041983e-05 -3.990825e-01  5.643880e-01  1.693164e+00 
+
+$weights
+[1] 1.711972e+06 1.711972e+06 6.370674e-01 3.185338e-01 3.185338e-01
+
+$rank
+[1] 1
+
+$assign
+NULL
+
+$qr
+$qr
+              [,1]
+[1,]  2.616847e+03
+[2,]  7.071067e-01
+[3,]  3.050102e-04
+[4,] -2.394471e-20
+[5,]  2.394471e-20
+
+$qraux
+[1] 1.707107
+
+$pivot
+[1] 1
+
+$tol
+[1] 1e-07
+
+$rank
+[1] 1
+
+attr(,"class")
+[1] "qr"
+
+$df.residual
+[1] 4
+
+$se.coefficients
+[1] 0.0003821393
+
+> 
