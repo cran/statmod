@@ -5,7 +5,7 @@
 Estimates a gamma generalized linear model with identity link using Fisher scoring with Levenberg damping.
 }
 \usage{
-glmgam.fit(X,y,start=NULL,trace=FALSE,tol=1e-5,maxit=50)
+glmgam.fit(X,y,start=NULL,trace=FALSE,tol=1e-6,maxit=50)
 }
 \arguments{
   \item{X}{design matrix, assumed to be of full column rank.  Missing values not allowed.}
