@@ -1,7 +1,7 @@
 matvec <- function(M,v) {
 #	Multiply the columns of matrix by the elements of a vector,
 #	i.e., compute M %*% diag(v)
-#	Gordon Smyth, Walter and Eliza Hall Institute, smyth@wehi.edu.au
+#	Gordon Smyth
 #	5 July 1999
 #
 	v <- as.vector(v)
@@ -13,7 +13,7 @@ matvec <- function(M,v) {
 vecmat <- function(v,M) {
 #	Multiply the rows of matrix by the elements of a vector,
 #	i.e., compute diag(v) %*% M
-#	Gordon Smyth, Walter and Eliza Hall Institute, smyth@wehi.edu.au
+#	Gordon Smyth
 #	5 July 1999
 #
 	v <- as.vector(v)

@@ -3,7 +3,9 @@
 \title{Introduction to the StatMod Package}
 \description{
 This library packages together those functions, other than those for microarray data analysis, which I wish to make public.
+}
 
+\section{Generalized Linear Models}{
 \code{tweedie},
 \code{canonic.digamma},
 \code{unitdeviance.digamma},
@@ -12,15 +14,19 @@ This library packages together those functions, other than those for microarray 
 \code{d2cumulant.digamma},
 \code{meanval.digamma}
 and \code{logmdigamma}
-and functions to fit non-standard generalized linear models. 
+are functions to fit non-standard generalized linear models related to the gamma distribution. 
 
 \code{qres} implements randomized quantile residuals for generalized linear models.
+}
 
+\section{Growth Curves}{
 \code{compareGrowthCurves},
 \code{compareTwoGrowthCurves} and
 \code{meanT}
 are functions to test for differences between growth curves with repeated measurements on subjects.
+}
 
+\section{Probability Distributions}{
 \code{qinvgauss},
 \code{dinvgauss},
 \code{pinvgauss} and
@@ -29,22 +35,28 @@ perform probability calculations for the inverse Gaussian distribution.
 
 \code{gauss.quad} and
 \code{gauss.quad.prob} compute Gaussian Quadrature with probability distributions. 
+}
 
+\section{Tests}{
 \code{hommel.test} performs Hommel's multiple comparison tests.
-
-\code{matvec} and \code{vecmat} facilitate multiplying matrices by vectors. 
 
 \code{power.fisher.test} computes the power of Fisher's Exact Test for comparing proportions.
 
+\code{sage.test} is a fast approximation to Fisher's exact test for each tag for comparing two Serial Analysis of Gene Expression (SAGE) libraries.
+}
+
+\section{Variance Models}{
 \code{randomizedBlock},
 \code{randomizedBlockFit} and
 \code{glmgam.fit} fit mixed linear models.
 
 \code{remlscore} and \code{remlscoregamma} fit heteroscedastic and varying dispersion models by REML.
 \code{welding} is an example data set.
+}
 
-\code{sage.test} is a fast approximation to Fisher's exact test for each tag for comparing two Serial Analysis of Gene Expression (SAGE) libraries. 
-
+\section{Matrix Computations}{
+\code{matvec} and \code{vecmat} facilitate multiplying matrices by vectors.
+}
 }
 \author{Gordon Smyth}
 \keyword{documentation}

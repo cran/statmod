@@ -1,6 +1,6 @@
 \name{remlscore}
 \alias{remlscore}
-\title{REML for heteroscedastic regression}
+\title{REML for Heteroscedastic Regression}
 \description{
 Fits a heteroscedastic regression model using residual maximum likelihood (REML).
 }
@@ -26,11 +26,11 @@ List with the following components:
   \item{deviance}{Minus twice the REML log-likelihood}
   \item{h}{Leverages}
 }
-\item{details}
+\details{
 Write \eqn{\mu_i=E(y_i)} for the expectation of the $i$th response and $s_i=\var(y_i)$.
 We assume the heteroscedastic regression model
-\deqn{\mm_i=\bold{x}_i^T\bold{\beta}}
-\deqn{\log(\sigma^2_i=\bold{z}_i^T\bold{\gamma},}
+\deqn{\mu_i=\bold{x}_i^T\bold{\beta}}
+\deqn{\log(\sigma^2_i)=\bold{z}_i^T\bold{\gamma},}
 where $\bold{x}_i$ and $\bold{z}_i$ are vectors of covariates, and $\bold{\beta}$ and $\bold{\gamma}$ are vectors of regression coefficients affecting the mean and variance respectively.
 
 Parameters are estimated by maximizing the REML likelihood using REML scoring as described in Smyth (2002).
@@ -38,6 +38,7 @@ Parameters are estimated by maximizing the REML likelihood using REML scoring as
 \references{
 Smyth, G. K. (2002). An efficient algorithm for REML in heteroscedastic regression. \emph{Journal of Computational and Graphical Statistics} \bold{11}, 1-12.
 }
+\author{Gordon Smyth}
 \examples{
 data(welding)
 attach(welding)

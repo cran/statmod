@@ -28,6 +28,7 @@ This function is similar to \code{glm.fit(X,y,family=Gamma(link="identity"))} bu
 
 This function is used by \code{randomizedBlockFit}.
 }
+\author{Gordon Smyth}
 \examples{
 y <- rgamma(10,shape=5)
 X <- cbind(1,1:10)

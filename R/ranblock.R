@@ -118,3 +118,78 @@ out$se.coefficients <- sqrt(diag(chol2inv(mfit$qr$qr)))
 out
 }
 
+randomizedBlockFit <- function(y,X,Z,w=NULL,only.varcomp=FALSE,tol=1e-6,maxit=50,trace=FALSE) {
+#	Restricted maximum likelihood estimation for mixed linear models.
+#	Fits the model  Y = X*BETA + Z*U + E  where BETA is fixed
+#	and U is random.
+#
+#	GAMMA holds the variance components.  The errors E and
+#	random effects U are assumed to have covariance matrices
+#	EYE*GAMMA(1) and EYE*GAMMA(2) respectively.
+
+#	Gordon Smyth, Walter and Eliza Hall Institute
+#	Matlab version 19 Feb 94.  Converted to R, 28 Jan 2003.
+#	Last revised 24 Mar 2004.
+
+#  Prior weights
+if(!is.null(w)) {
+	sw <- sqrt(w)
+	y <- sw * y
+	X <- sw * X
+}
+
+#  Find null space Q of X
+X <- as.matrix(X)
+Z <- as.matrix(Z)
+mx <- nrow(X)
+nx <- ncol(X)
+nz <- ncol(Z)
+fit <- lm.fit(X,cbind(Z,y))
+r <- fit$rank
+QtZ <- fit$effects[(r+1):mx,1:nz]
+
+#  Apply Q to Z and transform to independent observations
+mq <- mx-r
+if(mq == 0) return(list(varcomp=c(NA,NA)))
+s <- La.svd(QtZ,nu=mq,nv=0)
+uqy <- crossprod(s$u,fit$effects[(r+1):mx,nz+1])
+d <- rep(0,mq)
+d[1:length(s$d)] <- s$d^2
+dx <- cbind(Residual=1,Block=d)
+dy <- uqy^2
+
+#  Try unweighted starting values
+dfit <- lm.fit(dx,dy)
+varcomp <- dfit$coefficients
+dfitted.values <- dfit$fitted.values
+
+#  Main fit
+if(mq > 2 && sum(abs(d)>1e-15)>1 && var(d)>1e-15) {
+	if(all(dfitted.values >= 0))
+		start <- dfit$coefficients
+	else
+		start <- c(Residual=mean(dy),Block=0)
+#	fit gamma glm identity link to dy with dx as covariates
+	dfit <- glmgam.fit(dx,dy,start=start,tol=tol,maxit=maxit,trace=trace)
+	varcomp <- dfit$coefficients
+	dfitted.values <- dfit$fitted.values
+}
+out <- list(varcomp=dfit$coef)
+if(only.varcomp) return(out)
+
+#  Standard errors for variance components
+dinfo <- crossprod(dx,vecmat(1/dfitted.values^2,dx))
+out$se.varcomp=sqrt(2*diag(chol2inv(chol(dinfo))))
+
+#  fixed effect estimates
+s <- La.svd(Z,nu=mx,nv=0)
+d <- rep(0,mx)
+d[1:length(s$d)] <- s$d^2
+v <- drop( cbind(Residual=1,Block=d) %*% varcomp )
+mfit <- lm.wfit(crossprod(s$u,X),crossprod(s$u,y),1/v)
+out <- c(out,mfit)
+out$se.coefficients <- sqrt(diag(chol2inv(mfit$qr$qr)))
+
+out
+}
+

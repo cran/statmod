@@ -44,7 +44,7 @@ Chhikara, R. S., and Folks, J. Leroy, (1989). \emph{The inverse Gaussian distrib
 \author{Gordon Smyth and Dr Paul Bagshaw, Centre National d'Etudes des Telecommunications (DIH/DIPS), France (\code{qinvgauss})}
 
 \seealso{
-\code{\link{qres}}, \code{\link[base]{inverse.gaussian}}, \code{\link[base]{.Random.seed}} about random number generation.
+\code{dinvGauss}, \code{pinvGauss}, \code{qinvGauss} and \code{rinvGauss} in the SuppDists package.
 }
 
 \examples{

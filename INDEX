@@ -16,7 +16,7 @@ power.fisher.test       Power of Fisher's Exact Test for Comparing
                         Proportions
 qres                    Randomized Quantile Residuals
 randomizedBlock         Randomized Block Mixed Linear Model
-remlscore               REML for heteroscedastic regression
+remlscore               REML for Heteroscedastic Regression
 remlscoregamma          Approximate REML for gamma regression with
                         structured dispersion
 sage.test               Compare Two SAGE Libraries
