@@ -11,7 +11,6 @@ logmdigamma             Log Minus Digamma Function
 matvec                  Multiply a Matrix by a Vector
 meanT                   Mean t-Statistic Between Two Groups of Growth
                         Curves
-mlreg                   Fit a Linear Model by Maximum Likelihood
 power.fisher.test       Power of Fisher's Exact Test for Comparing
                         Proportions
 qres                    Randomized Quantile Residuals

@@ -37,6 +37,10 @@ The model is fitted using an eigenvalue decomposition which transforms the probl
 
 This function is essentially equivalent to \code{lme(fixed=formula,random=~1|random)} but is more accurate and is much faster for small to moderate size data sets.
 
+Note that the block variance component \code{sigmasquared[2]} is not constrained to be non-negative.
+It may take negative values corresponding to negative intra-block correlations.
+However the correlation \code{sigmasquared[2]/sum(sigmasquared)} should lie between \code{-1} and \code{1}.
+
 Missing values in the data are not allowed.
 }
 
