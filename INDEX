@@ -1,0 +1,19 @@
+Digamma                 Digamma generalized linear model family
+gauss.quad              Gaussian Quadrature
+gauss.quad.prob         Gaussian Quadrature with Probability
+                        Distributions
+growthcurve             Compare Groups of Growth Curves
+hommel.test             Test Multiple Comparisons
+invgauss                Inverse Gaussian Distribution
+logmdigamma             Log Minus Digamma Function
+matvec                  Multiply a Matrix by a Vector
+meanT                   Mean t-Statistic Between Two Groups of Growth
+                        Curves
+mlreg                   Fit a Linear Model by Maximum Likelihood
+qres                    Randomized Quantile Residuals
+ranblock                Randomized Block Mixed Linear Model
+remlscore               REML for heteroscedastic regression
+remlscoregamma          Approximate REML for gamma regression with
+                        structured dispersion
+tweedie                 Tweedie Generalized Linear Models
+welding                 Data: Tensile Strength of Welds
