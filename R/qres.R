@@ -1,8 +1,27 @@
-qres.binom <- function(glm.obj)
+## QRES.R
+
+qresiduals <- qresid <- function(glm.obj, dispersion=NULL)
+#	Wrapper function for quantile residuals
+#	Peter K Dunn
+#	28 Sep 2004.  Last modified 5 Oct 2004.
 {
-# Randomized quantile residuals for binomial glm
-# GKS  20 Oct 96. Last modified 25 Jan 02.
-#
+glm.family <- glm.obj$family$family
+if(substr(glm.family,1,17)=="Negative Binomial") glm.family <- "nbinom"
+switch(glm.family,
+   binomial = qres.binom( glm.obj),
+   poisson = qres.pois(glm.obj),
+   Gamma = qres.gamma(glm.obj, dispersion),
+   inverse.gaussian = qres.invgauss(glm.obj, dispersion),
+   Tweedie = qres.tweedie(glm.obj, dispersion),
+   nbinom = qres.nbinom(glm.obj),
+   qres.default(glm.obj, dispersion)
+)}
+
+qres.binom <- function(glm.obj)
+#	Randomized quantile residuals for binomial glm
+#	Gordon Smyth
+#	20 Oct 96.  Last modified 25 Jan 02.
+{
 	p <- fitted(glm.obj)
 	y <- glm.obj$y
 	if(!is.null(glm.obj$prior.weights))
@@ -17,10 +36,10 @@ qres.binom <- function(glm.obj)
 }
 
 qres.pois <- function(glm.obj)
-{
 #	Quantile residuals for Poisson glm
-#	GKS  28 Dec 96
-#
+#	Gordon Smyth
+#	28 Dec 96
+{
 	y <- glm.obj$y
 	mu <- fitted(glm.obj)
 	a <- ppois(y - 1, mu)
@@ -30,10 +49,10 @@ qres.pois <- function(glm.obj)
 }
 
 qres.gamma <- function(glm.obj, dispersion = NULL)
+#	Quantile residuals for gamma glm
+#	Gordon Smyth
+#	28 Dec 96.  Last modified 10 Jan 97
 {
-# Quantile residuals for gamma glm
-# GKS  28 Dec 96, 10 Jan 97
-#
 	mu <- fitted(glm.obj)
 	y <- glm.obj$y
 	df <- glm.obj$df.residual
@@ -47,10 +66,10 @@ qres.gamma <- function(glm.obj, dispersion = NULL)
 }
 
 qres.invgauss <- function(glm.obj, dispersion = NULL)
+#	Quantile residuals for inverse Gaussian glm
+#	Gordon Smyth
+#	15 Jan 98
 {
-# Quantile residuals for inverse Gaussian glm
-# GKS  15 Jan 98
-#
 	mu <- fitted(glm.obj)
 	y <- glm.obj$y
 	df <- glm.obj$df.residual
@@ -66,10 +85,11 @@ qres.invgauss <- function(glm.obj, dispersion = NULL)
 qres.nbinom <- function(glm.obj)
 {
 #	Quantile residuals for Negative Binomial glm
-#	GKS  22 Jun 97
+#	Gordon Smyth
+#	22 Jun 97.  Last modified 5 Oct 2004.
 #
 	y <- glm.obj$y
-	size <- glm.obj$call$family$a
+	size <- glm.obj$call$family$theta
 	mu <- fitted(glm.obj)
 	p <- size/(mu + size)
 	a <- ifelse(y > 0, pbeta(p, size, pmax(y, 1)), 0)
@@ -79,24 +99,40 @@ qres.nbinom <- function(glm.obj)
 }
 
 qres.tweedie <- function(glm.obj, dispersion = NULL)
+#	Quantile residuals for Tweedie glms
+#	Gordon Smyth
+#	29 April 98.  Last modified 5 Oct 2004.
 {
-# Quantile residuals for Tweedie glms
-# GKS  29 April 98.  Revised 20 April 99, 20 July 2001
-#
+	require("tweedie")
 	mu <- fitted(glm.obj)
 	y <- glm.obj$y
 	df <- glm.obj$df.residual
 	w <- glm.obj$prior.weights
 	if(is.null(w))
 		w <- 1
-	if(is.null(glm.obj$call$var.power))
-		p <- 1.5
-	else
-		p <- eval(glm.obj$call$var.power, local = sys.parent())
+	p <- get("p",envir=environment(glm.obj$family$variance))
 	if(is.null(dispersion))
 		dispersion <- sum((w * (y - mu)^2)/mu^p)/df
-	u <- ptweedie(y, fitted(glm.obj), dispersion/w, p)
+	u <- ptweedie(q=y, power=p, mu=fitted(glm.obj), phi=dispersion/w)
 	if(p>1&&p<2)
 		u[y == 0] <- runif(sum(y == 0), min = 0, max = u[y == 0])
 	qnorm(u)
 }
+
+qres.default <- function(glm.obj, dispersion=NULL)
+#	Quantile residuals for Gaussian and default glms
+#	Gordon Smyth
+#	5 Oct 2004.
+{
+	r <- residuals(glm.obj, type="deviance")
+	if(is.null(dispersion)) {
+		df.r <- glm.obj$df.residual
+		if(df.r > 0) {
+			if(any(glm.obj$weights==0)) warning("observations with zero weight ", "not used for calculating dispersion")
+	        dispersion <- sum(glm.obj$weights*glm.obj$residuals^2)/df.r
+	    } else
+	    	dispersion <- 1
+    }
+    r/sqrt(dispersion)
+}
+

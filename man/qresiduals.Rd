@@ -1,25 +1,28 @@
-\name{qres}
-\alias{qres}
+\name{qresiduals}
+\alias{qresiduals}
+\alias{qresid}
 \alias{qres.binom}
 \alias{qres.pois}
 \alias{qres.nbinom}
 \alias{qres.gamma}
 \alias{qres.invgauss}
 \alias{qres.tweedie}
+\alias{qres.default}
 \title{Randomized Quantile Residuals}
 
 \description{
-Computes randomized quantile residuals for binomial,
-Poisson, negative binomial, gamma and inverse Gaussian
-generalized linear models.}
+Compute randomized quantile residuals for generalized linear models.}
 
 \usage{
+qresiduals(glm.obj,dispersion=NULL)
+qresid(glm.obj,dispersion=NULL)
 qres.binom(glm.obj)
 qres.pois(glm.obj)
 qres.nbinom(glm.obj)
 qres.gamma(glm.obj,dispersion=NULL)
 qres.invgauss(glm.obj,dispersion=NULL)
 qres.tweedie(glm.obj,dispersion=NULL)
+qres.default(glm.obj,dispersion=NULL)
 }
 
 \arguments{
@@ -57,15 +60,26 @@ Dunn, K. P., and Smyth, G. K. (1996). Randomized quantile residuals. \emph{Journ
 
 \author{Gordon Smyth}
 
-\seealso{\url{http://www.statsci.org/s/qres.html}, \code{\link[base:residuals.glm]{residuals.glm}}}
+\seealso{
+\code{\link[stats:residuals.glm]{residuals.glm}}}
+}
 
 \examples{
+#  Poisson example: quantile residuals show no granularity
 y <- rpois(20,lambda=4)
 x <- 1:20
-fit <- glm(y~x,family="poisson")
-qr <- qres.pois(fit)
+fit <- glm(y~x, family=poisson)
+qr <- qresiduals(fit)
 qqnorm(qr)
-qqline(qr)
+abline(0,1)
+
+#  Gamma example:
+#  Quantile residuals are nearly normal while usual resids are not
+y <- rchisq(20, df=1)
+fit <- glm(y~1, family=Gamma)
+qr <- qresiduals(fit, dispersion=2)
+qqnorm(qr)
+abline(0,1)
 }
 
 \keyword{regression}

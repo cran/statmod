@@ -21,3 +21,11 @@ y <- c(-1,1,-2,2,0.5)
 X <- matrix(1,5,1)
 Z <- model.matrix(~factor(c(1,1,2,2,3))-1)
 randomizedBlockFit(y,X,Z)
+
+### qresiduals
+
+y <- rnorm(6)
+fit <- glm(y~1)
+residuals(fit)
+qresiduals(fit)
+qresiduals(fit,dispersion=1)
