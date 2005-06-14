@@ -3,6 +3,10 @@
 \title{Introduction to the StatMod Package}
 \description{
 This library packages together those functions, other than those for microarray data analysis, which I wish to make public.
+A change-log for this package is available from
+\url{http://www.statsci.org/r/changelog.txt}.
+
+Contributions to this library have also been made by Paul Bagshaw, Centre National d'Etudes des Telecommunications (DIH/DIPS), France (\code{qinvgauss}), and Trevor Park, Department of Statistics, University of Florida (\code{rinvgauss}).
 }
 
 \section{Generalized Linear Models}{
