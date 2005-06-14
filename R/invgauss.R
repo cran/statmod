@@ -30,13 +30,12 @@ pinvgauss <- function(q, mu, lambda = 1)
 }
 
 rinvgauss <- function(n, mu, lambda = 1)
+#	Random variates from inverse Gaussian distribution
+#	Reference:  Chhikara and Folks, The Inverse Gaussian
+#	Distribution, Marcel Dekker, 1989, page 53.
+#	Gordon Smyth 15 Jan 98.
+#	Revised by Trevor Park 14 June 2005.
 {
-#  Random variates from inverse Gaussian distribution
-#  Reference:
-#      Chhikara and Folks, The Inverse Gaussian Distribution,
-#      Marcel Dekker, 1989, page 53.
-#  GKS  15 Jan 98
-#
 	if(any(mu<=0)) stop("mu must be positive")
 	if(any(lambda<=0)) stop("lambda must be positive")
 	if(length(n)>1) n <- length(n)
@@ -44,8 +43,8 @@ rinvgauss <- function(n, mu, lambda = 1)
 	if(length(lambda)>1 && length(lambda)!=n) lambda <- rep(lambda,length=n)
 	y2 <- rchisq(n,1)
 	u <- runif(n)
-	r1 <- mu/(2*lambda) * (2*lambda + mu*y2 - sqrt(4*lambda*mu*y2 + mu^2*y2^2))
-	r2 <- mu^2/r1
+	r2 <- mu/(2*lambda)*(2*lambda+mu*y2+sqrt(4*lambda*mu*y2+mu^2*y2^2))
+	r1 <- mu^2/r2
 	ifelse(u < mu/(mu+r1), r1, r2)
 }
 

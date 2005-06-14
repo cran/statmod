@@ -41,7 +41,8 @@ The inverse Gaussian distribution takes values on the positive real line. The va
 Chhikara, R. S., and Folks, J. Leroy, (1989). \emph{The inverse Gaussian distribution: Theory, methodology, and  applications}. Marcel Dekker, New York.
 }
 
-\author{Gordon Smyth and Dr Paul Bagshaw, Centre National d'Etudes des Telecommunications (DIH/DIPS), France (\code{qinvgauss})}
+\author{Gordon Smyth; Paul Bagshaw, Centre National d'Etudes des Telecommunications (DIH/DIPS), France (\code{qinvgauss}); Trevor Park,
+Department of Statistics, University of Florida}
 
 \seealso{
 \code{dinvGauss}, \code{pinvGauss}, \code{qinvGauss} and \code{rinvGauss} in the SuppDists package.
@@ -49,7 +50,7 @@ Chhikara, R. S., and Folks, J. Leroy, (1989). \emph{The inverse Gaussian distrib
 
 \examples{
 y <- rinvgauss(20,1,2) # generate vector of 20 random numbers
-p <- pinvgauss(y,1,2) # p should be uniform</tt>
+p <- pinvgauss(y,1,2) # p should be uniform
 }
 
 \keyword{distribution}
