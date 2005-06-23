@@ -30,6 +30,11 @@ are functions to fit non-standard generalized linear models related to the gamma
 are functions to test for differences between growth curves with repeated measurements on subjects.
 }
 
+\section{Limiting Dilution Analysis}{
+\code{\link{limdil}}
+implements limiting dilution analysis using complemenary log-log binomial generalized linear model regression, with some improvements on previous programs.
+}
+
 \section{Probability Distributions}{
 \code{qinvgauss},
 \code{dinvgauss},
