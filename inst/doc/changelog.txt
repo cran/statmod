@@ -1,0 +1,47 @@
+22 June 2005: statmod 1.2.0
+
+- /inst/doc/index.html created
+- change log (this file) moved to /inst/doc directory of package
+- new function limdil()
+
+14 June 2005: statmod 1.1.1
+
+- change to rinvgauss() to avoid numerical problems with subtractive cancellation when lambda<<mu
+
+5 Oct 2004: statmod 1.1.0
+
+- new wrapper functions qresiduals() and qresid() for quantile residuals
+- bug fixes to qres.nbinom() qres.tweedie(), S-Plus code finally changed to R
+
+27 Sep 2004: statmod 1.0.8
+
+- bug fix in tweedie() - stop linkinv checking for neg or small arguments
+
+19 Sep 2004: statmod 1.0.7
+
+- fix problems with remlscor.Rd and remlscorgamma.Rd
+- edits to 1.StatMod.Rd and glmgamfit.Rd
+
+20 Mar 2004: statmod 1.0.6
+
+- new overall help entry 1.StatMod
+- edited welding.Rd
+- output component $sigmasquared from randomizedBlock changed to $varcomp
+- arg fixed.estimated changed to only.varcomp in randomizedBlock()
+- edit glmgamfit.Rd
+- continued work on glmgam.fit() to prevent singularity when some mu are very small
+- glmgam.fit doesn't warn when maxit exceeded but instead records number of iteration
+- arguments tol, maxit, trace added to randomizedBlock() and randomizedBlockFit()
+- edit sagetest.Rd
+- edit randomizedBlock.Rd
+
+11 Feb 2004: statmod 1.0.5
+- mlreg.fit() and mlreg.fit.zero() removed
+
+10 Feb 2004: statmod 1.0.4
+- minor bug fixes to glmgam.fit
+- mlreg.fit and mlreg.fit.zero updated to work in R 1.9.0
+
+ 6 Jan 2004: statmod 1.0.3
+- function fisher.test2() removed
+- bug fix in sage.test() which produced error with zero counts and equal sized libraries
