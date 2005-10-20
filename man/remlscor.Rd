@@ -17,14 +17,16 @@ remlscore(y, X, Z, trace=FALSE, tol=1e-5, maxit=40)
 }
 \value{
 List with the following components:
-  \item{beta}{Vector of regression coefficients for predicting the mean}
-  \item{se.beta}{<Standard errors for beta}
-  \item{gamma}{Vector of regression coefficients for predicting the variance}
-  \item{se.gam}{Standard errors for gamma}
-  \item{mu}{Estimated means}
-  \item{phi}{Estimated variances}
-  \item{deviance}{Minus twice the REML log-likelihood}
-  \item{h}{Leverages}
+  \item{beta}{vector of regression coefficients for predicting the mean}
+  \item{se.beta}{vector of standard errors for beta}
+  \item{gamma}{vector of regression coefficients for predicting the variance}
+  \item{se.gam}{vector of standard errors for gamma}
+  \item{mu}{estimated means}
+  \item{phi}{estimated variances}
+  \item{deviance}{minus twice the REML log-likelihood}
+  \item{h}{numeric vector of leverages}
+  \item{cov.beta}{estimated covariance matrix for beta}
+  \item{cov.gam}{estimated covarate matrix for gamma}
 }
 \details{
 Write \eqn{\mu_i=E(y_i)} for the expectation of the $i$th response and $s_i=\var(y_i)$.

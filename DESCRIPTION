@@ -1,6 +1,6 @@
 Package: statmod
-Version: 1.2.0
-Date: 2005/06/23
+Version: 1.2.2
+Date: 2005/10/20
 Title: Statistical Modeling
 Author: Gordon Smyth <smyth@wehi.edu.au>
 Maintainer: Gordon Smyth <smyth@wehi.edu.au>
@@ -9,4 +9,4 @@ Suggests: MASS, tweedie
 Description:  Miscellaneous biostatistical modeling functions.  
 License: LGPL version 2 or newer
 URL: http://www.statsci.org/r
-Packaged: Fri Jun 24 16:07:34 2005; smyth
+Packaged: Tue Oct 25 15:16:42 2005; smyth

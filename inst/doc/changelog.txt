@@ -1,3 +1,13 @@
+20 October 2005: statmod 1.2.2
+
+- mixedModel2Fit() now outputs REML residuals
+- randomizedBlock() & randomizedBlockFit() renamed to mixedModel2() & mixedModel2Fit()
+
+4 July 2005: statmod 1.2.1
+
+- remlscore() now outputs covariance matrices for estimated coefficients
+- redundant copy of randomizedBlockFit() removed
+
 22 June 2005: statmod 1.2.0
 
 - /inst/doc/index.html created
@@ -21,6 +31,7 @@
 
 - fix problems with remlscor.Rd and remlscorgamma.Rd
 - edits to 1.StatMod.Rd and glmgamfit.Rd
+- lm.fit (effects component) now used to transform to residual space in randomizedBlockFit()
 
 20 Mar 2004: statmod 1.0.6
 

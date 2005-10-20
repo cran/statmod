@@ -1,12 +1,11 @@
-remlscore <- function(y,X,Z,trace=FALSE,tol=1e-5,maxit=40) {
-#
+remlscore <- function(y,X,Z,trace=FALSE,tol=1e-5,maxit=40)
 #  Mean-variance fit by REML scoring
 #  Fit normal(mu,phi) model to y with
 #  mu=X%*%beta and log(phi)=Z%*%gam
 #
 #  Gordon Smyth, Walter and Eliza Hall Institute, smyth@wehi.edu.au
-#  11 Sept 2000.  Last modified 10 Dec 2002.
-
+#  11 Sept 2000.  Last modified 4 July 2005.
+{
 n <- length(y)
 p <- dim(X)[2]
 q <- dim(Z)[2]
@@ -110,8 +109,11 @@ repeat {
 }
 
 # Nominal standard errors
-se.gam <- sqrt(diag(chol2inv(chol(ZVZ))))
-se.beta <- sqrt(diag(chol2inv(qr.R(fitm$qr))))
+cov.gam <- chol2inv(chol(ZVZ))
+se.gam <- sqrt(diag(cov.gam))
+cov.beta <- chol2inv(qr.R(fitm$qr))
+se.beta <- sqrt(diag(cov.beta))
 
-list(beta=fitm$coef,se.beta=se.beta,gamma=gam,se.gam=se.gam,mu=fitm$fitted,phi=phi,deviance=dev,h=h)
+list(beta=fitm$coef,se.beta=se.beta,gamma=gam,se.gam=se.gam,mu=fitm$fitted,phi=phi,deviance=dev,h=h,
+	cov.beta=cov.beta,cov.gam=cov.gam)
 }
