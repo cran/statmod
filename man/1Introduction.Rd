@@ -55,8 +55,8 @@ perform probability calculations for the inverse Gaussian distribution.
 }
 
 \section{Variance Models}{
-\code{randomizedBlock},
-\code{randomizedBlockFit} and
+\code{mixedModel2},
+\code{mixedModel2Fit} and
 \code{glmgam.fit} fit mixed linear models.
 
 \code{remlscore} and \code{remlscoregamma} fit heteroscedastic and varying dispersion models by REML.

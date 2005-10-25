@@ -1,6 +1,6 @@
-\name{ranblock}
-\alias{randomizedBlock}
-\alias{randomizedBlockFit}
+\name{mixedmodel}
+\alias{mixedModel2}
+\alias{mixedModel2Fit}
 
 \title{Randomized Block Mixed Linear Model}
 \description{
@@ -8,8 +8,8 @@ Fits a mixed linear model by REML.  The linear model must contain only one rando
 }
 
 \usage{
-randomizedBlock(formula, random, weights=NULL, only.varcomp=FALSE, data=list(), subset=NULL, contrasts=NULL, tol=1e-6, maxit=50, trace=FALSE)
-randomizedBlockFit(y, X, Z, w=NULL, only.varcomp=FALSE, tol=1e-6, maxit=50, trace=FALSE)
+mixedModel2(formula, random, weights=NULL, only.varcomp=FALSE, data=list(), subset=NULL, contrasts=NULL, tol=1e-6, maxit=50, trace=FALSE)
+mixedModel2Fit(y, X, Z, w=NULL, only.varcomp=FALSE, tol=1e-6, maxit=50, trace=FALSE)
 }
 
 \arguments{
@@ -56,7 +56,8 @@ So it is a good choice when fitting large numbers of small data sets, but not a 
 A list with the components:
 \item{varcomp}{vector of length two containing the residual and block components of variance.}
 \item{se.varcomp}{standard errors for the components of variance.}
-If \code{fixed.estimates=TRUE} then the components from \code{lm.fit} are also returned.
+\item{reml.residuals}{standardized residuals in the null space of the design matrix.}
+If \code{fixed.estimates=TRUE} then the components from the diagonalized weighted least squares fit are also returned.
 }
 
 \author{Gordon Smyth}
@@ -74,7 +75,7 @@ Venables, W., and Ripley, B. (2002). \emph{Modern Applied Statistics with S-Plus
 #  Chapter 10, "Linear Models"
 library(MASS)
 data(petrol)
-out <- randomizedBlock(Y~SG+VP+V10+EP, random=No, data=petrol)
+out <- mixedModel2(Y~SG+VP+V10+EP, random=No, data=petrol)
 cbind(varcomp=out$varcomp,se=out$se.varcomp)
 }
 

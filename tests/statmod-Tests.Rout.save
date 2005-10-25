@@ -1,6 +1,7 @@
 
-R : Copyright 2004, The R Foundation for Statistical Computing
-Version 2.0.0 Under development (unstable) (2004-09-13), ISBN 3-900051-07-0
+R : Copyright 2005, The R Foundation for Statistical Computing
+Version 2.2.0  (2005-10-06 r35749)
+ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -69,15 +70,22 @@ $iter
 [1] 7
 
 > 
-> ### randomizedBlock
+> ### mixedModel2
 > 
 > y <- rnorm(6)
 > x <- rnorm(6)
 > z <- c(1,1,2,2,3,3)
-> randomizedBlock(y~x,random=z)
+> mixedModel2(y~x,random=z)
 $varcomp
  Residual     Block 
 0.4235065 0.7544430 
+
+$reml.residuals
+           [,1]
+[1,] -1.3670210
+[2,] -0.2982333
+[3,]  1.0273240
+[4,]  0.9934364
 
 $se.varcomp
 [1] 0.4233868 1.0162259
@@ -137,15 +145,22 @@ $se.coefficients
 [1] 0.5753330 0.4304444
 
 > 
-> ### randomizedBlockFit
+> ### mixedModel2Fit
 > 
 > y <- c(-1,1,-2,2,0.5)
 > X <- matrix(1,5,1)
 > Z <- model.matrix(~factor(c(1,1,2,2,3))-1)
-> randomizedBlockFit(y,X,Z)
+> mixedModel2Fit(y,X,Z)
 $varcomp
  Residual     Block 
  3.139385 -1.569692 
+
+$reml.residuals
+              [,1]
+[1,] -2.213275e-13
+[2,]  3.990825e-01
+[3,] -4.427007e-01
+[4,] -1.728975e+00
 
 $se.varcomp
 [1] 2.565233 1.282617
