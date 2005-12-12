@@ -4,7 +4,7 @@ remlscore <- function(y,X,Z,trace=FALSE,tol=1e-5,maxit=40)
 #  mu=X%*%beta and log(phi)=Z%*%gam
 #
 #  Gordon Smyth, Walter and Eliza Hall Institute, smyth@wehi.edu.au
-#  11 Sept 2000.  Last modified 4 July 2005.
+#  11 Sept 2000.  Last modified 12 Dec 2005.
 {
 n <- length(y)
 p <- dim(X)[2]
@@ -45,7 +45,7 @@ repeat {
 		Q2[ ,(j0+1):(j0+p-k)] <- Q[ ,1:(p-k)] * Q[ ,(k+1):p]
 		j0 <- j0+p-k
 	}
-	Q2[ ,(p+1):(p*(p+1)/2)] <- sqrt(2) * Q2[ ,(p+1):(p*(p+1)/2)]
+	if(p>1) Q2[ ,(p+1):(p*(p+1)/2)] <- sqrt(2) * Q2[ ,(p+1):(p*(p+1)/2)]
 	h <- drop( Q2[ ,1:p] %*% array(1,c(p,1)) )
 	Q2Z <- t(Q2) %*% Z
 	ZVZ <- ( t(Z) %*% vecmat(1-2*h,Z) + t(Q2Z) %*% Q2Z	)/2
