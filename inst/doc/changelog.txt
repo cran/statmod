@@ -1,3 +1,7 @@
+12 December 205: statmod 1.2.3
+
+- remlscore() was failing when rank of X was only 1, now fixed.
+
 20 October 2005: statmod 1.2.2
 
 - mixedModel2Fit() now outputs REML residuals
