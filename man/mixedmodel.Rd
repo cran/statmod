@@ -2,9 +2,9 @@
 \alias{mixedModel2}
 \alias{mixedModel2Fit}
 
-\title{Randomized Block Mixed Linear Model}
+\title{Fit Mixed Linear Model with 2 Error Components}
 \description{
-Fits a mixed linear model by REML.  The linear model must contain only one random factor apart from the unit errors.
+Fits a mixed linear model by REML.  The linear model contains one random factor apart from the unit errors.
 }
 
 \usage{

@@ -19,7 +19,7 @@
 }
 
 \details{
-The integral from \code{a} to \code{b} of \code{w(x)*f(x)} is approximated by \code{sum(w*f(x))} where \code{x} is the vector of nodes and \code{w} is the vector of weights.  The approximation is exact if \code{f(x)} is a polynomial of order no more than \code{2n+1}.
+The integral from \code{a} to \code{b} of \code{w(x)*f(x)} is approximated by \code{sum(w*f(x))} where \code{x} is the vector of nodes and \code{w} is the vector of weights.  The approximation is exact if \code{f(x)} is a polynomial of order no more than \code{2n-1}.
 The possible choices for \code{w(x)}, \code{a} and \code{b} are as follows:
 
 Legendre quadrature: \code{w(x)=1} on \code{(-1,1)}.

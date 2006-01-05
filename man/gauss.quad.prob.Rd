@@ -13,8 +13,8 @@
   \item{u}{upper limit of uniform distribution}
   \item{mu}{mean of normal distribution}
   \item{sigma}{standard deviation of normal distribution}
-  \item{alpha}{positive shape parameter for beta or gamma distribution}
-  \item{beta}{positive scale parameter for gamma distribution}
+  \item{alpha}{positive shape parameter for gamma distribution or first shape parameter for beta distribution}
+  \item{beta}{positive scale parameter for gamma distribution or second shape parameter for beta distribution}
 }
 
 \value{A list containing the components
@@ -25,7 +25,7 @@
 \details{
 This is a rewriting and simplification of \code{gauss.quad} in terms of probability distributions.
 
-The expected value of \code{f(X)} is approximated by \code{sum(w*f(x))} where \code{x} is the vector of nodes and \code{w} is the vector of weights.  The approximation is exact if \code{f(x)} is a polynomial of order no more than \code{2n+1}.
+The expected value of \code{f(X)} is approximated by \code{sum(w*f(x))} where \code{x} is the vector of nodes and \code{w} is the vector of weights.  The approximation is exact if \code{f(x)} is a polynomial of order no more than \code{2n-1}.
 The possible choices for the distribution of \code{X} are as follows:
 
 Uniform on \code{(l,u)}.
@@ -43,6 +43,9 @@ quadrature rules. \emph{Mathematics of Computation} \bold{23}, 221-230.
 
 Golub, G. H. (1973). Some modified matrix eigenvalue problems.
 \emph{Siam Review} \bold{15}, 318-334.
+
+Smyth, G. K. (1998). Polynomial approximation. In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pp. 3425-3429.
+\url{http://www.statsci.org/smyth/pubs/poly.ps}
 
 Stroud and Secrest (1966). \emph{Gaussian Quadrature Formulas}. Prentice-
 Hall, Englewood Cliffs, N.J.
