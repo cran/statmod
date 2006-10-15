@@ -38,7 +38,7 @@ where $\bold{x}_i$ and $\bold{z}_i$ are vectors of covariates, and $\bold{\beta}
 Parameters are estimated by maximizing the REML likelihood using REML scoring as described in Smyth (2002).
 }
 \references{
-Smyth, G. K. (2002). An efficient algorithm for REML in heteroscedastic regression. \emph{Journal of Computational and Graphical Statistics} \bold{11}, 1-12.
+Smyth, G. K. (2002). An efficient algorithm for REML in heteroscedastic regression. \emph{Journal of Computational and Graphical Statistics} \bold{11}, 836-847.
 }
 \author{Gordon Smyth}
 \examples{

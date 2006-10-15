@@ -2,6 +2,13 @@ library(statmod)
 
 set.seed(0); u <- runif(100)
 
+### fitNBP
+
+y <- matrix(rnbinom(2*4,mu=4,size=1.5),2,4)
+lib.size <- rep(50000,4)
+group <- c(1,1,2,2)
+fitNBP(y,group=group,lib.size=lib.size)
+
 ### glmgam.fit
 
 glmgam.fit(1,1)

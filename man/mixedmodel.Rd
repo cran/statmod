@@ -1,4 +1,4 @@
-\name{mixedmodel}
+\name{mixedModel2}
 \alias{mixedModel2}
 \alias{mixedModel2Fit}
 

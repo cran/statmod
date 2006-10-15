@@ -1,6 +1,7 @@
 \name{growthcurve}
 \alias{compareGrowthCurves}
 \alias{compareTwoGrowthCurves}
+\alias{plotGrowthCurves}
 
 \title{Compare Groups of Growth Curves}
 \description{
@@ -10,6 +11,7 @@ Do all pairwise comparisons between groups of growth curves using a permutation 
 \usage{
 compareGrowthCurves(group,y,levels=NULL,nsim=100,fun=meanT,times=NULL,verbose=TRUE,adjust="holm")
 compareTwoGrowthCurves(group,y,nsim=100,fun=meanT)
+plotGrowthCurves(group,y,levels=sort(unique(group)),times=NULL,col=NULL,...)
 }
 
 \arguments{
@@ -23,6 +25,8 @@ Default to a mean t-statistic.}
 By default all the columns are used.}
 \item{verbose}{should progress results be printed?}
 \item{adjust}{method used to adjust for multiple testing, see \code{p.adjust}.}
+\item{col}{vector of colors corresponding to distinct groups}
+\item{...}{other arguments passed to \code{plot()}}
 }
 
 \details{
