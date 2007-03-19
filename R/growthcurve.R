@@ -77,3 +77,29 @@ compareGrowthCurves <- function(group,y,levels=NULL,nsim=100,fun=meanT,times=NUL
 	tab$adj.P.Value <- p.adjust(pvalue,method=adjust)
 	tab
 }
+
+plotGrowthCurves <- function(group,y,levels=sort(unique(group)),times=NULL,col=NULL,...) {
+#  Plot growth curves with colors for groups
+#  Columns of y are time points, rows are individuals
+#  Gordon Smyth
+#  30 May 2006.  Last modified 8 July 2006.
+
+	group <- as.character(group)
+	if(!is.null(levels)) levels <- as.character(levels)
+	nlev <- length(levels)
+	if(nlev < 2) stop("Less than 2 groups to compare")
+	if(is.null(dim(y))) stop("y must be matrix-like")
+	y <- as.matrix(y)
+	if(!is.null(times)) y <- y[,times,drop=FALSE]
+
+	if(is.null(col)) col <- 1:nlev
+	group.col <- col[match(group,levels)]
+	plot(col(y),y,type="n",xlab="Time",ylab="Response",...)
+	x <- 1:ncol(y)
+	for (i in 1:nrow(y)) {
+		lines(x,y[i,],col=group.col[i])
+	}
+	yr <- range(y,na.rm=TRUE)
+	legend(1,yr[2]-diff(yr)/40,legend=levels,col=col,lty=1)
+	invisible()
+}

@@ -1,3 +1,9 @@
+15 October 2006: statmod 1.3.0
+
+- package now has a NAMESPACE which simply exports all objects
+- new function fitNBP()
+- new function plotGrowthCurves()
+
 4 January 2006: statmod 1.2.4
 
 - fixes to gauss.quad.prob when n=1 or n=2
@@ -61,6 +67,6 @@
 - minor bug fixes to glmgam.fit
 - mlreg.fit and mlreg.fit.zero updated to work in R 1.9.0
 
- 6 Jan 2004: statmod 1.0.3
+6 Jan 2004: statmod 1.0.3
 - function fisher.test2() removed
 - bug fix in sage.test() which produced error with zero counts and equal sized libraries
