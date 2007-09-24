@@ -38,6 +38,11 @@ List with components
 Bonnefoix T, Bonnefoix P, Verdiel P, Sotto JJ. (1996).
 Fitting limiting dilution experiments with generalized linear models results in a test of the single-hit Poisson assumption.
 \emph{J Immunol Methods} 194, 113-119.
+
+Shackleton, M., Vaillant, F., Simpson, K. J., Stingl, J., Smyth, G. K., Asselin-Labat, M.-L., Wu, L., Lindeman, G. J., and Visvader, J. E. (2006).
+Generation of a functional mammary gland from a single stem cell.
+\emph{Nature} 439, 84-88.
+\url{http://www.nature.com/nature/journal/v439/n7072/abs/nature04372.html}
 }
 
 \examples{
