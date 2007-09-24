@@ -26,7 +26,7 @@ List with the following components:
 \details{
 This function is similar to \code{glm.fit(X,y,family=Gamma(link="identity"))} but has more secure convergence.
 
-This function is used by \code{randomizedBlockFit}.
+This function is used by \code{\link{mixedModel2Fit}}.
 }
 \author{Gordon Smyth}
 \examples{

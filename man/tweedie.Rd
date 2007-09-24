@@ -39,17 +39,17 @@ The variance power \eqn{p} characterizes the distribution of the responses \eqn{
 > 2 \tab Stable, with support on the positive reals
 }
 
-The name Tweedie has been associated with this family by Jørgensen in honour of M. C. K. Tweedie. 
+The name Tweedie has been associated with this family by Joergensen (1987) in honour of M. C. K. Tweedie. 
 }
  
 \references{
 Tweedie, M. C. K. (1984). An index which distinguishes between some important exponential families. In \emph{Statistics: Applications and New Directions}. Proceedings of the Indian Statistical Institute Golden Jubilee International Conference. (Eds. J. K. Ghosh and J. Roy), pp. 579-604. Calcutta: Indian Statistical Institute.
 
-Jørgensen, B. (1987). Exponential dispersion models. \emph{J. R. Statist. Soc.} B \bold{49}, 127-162. 
+Joergensen, B. (1987). Exponential dispersion models. \emph{J. R. Statist. Soc.} B \bold{49}, 127-162. 
 
 Smyth, G. K. (1996). Regression modelling of quantity data with exact zeroes. Proceedings of the Second Australia-Japan Workshop on Stochastic Models in Engineering, Technology and Management. Technology Management Centre, University of Queensland, pp. 572-580. 
 
-Jørgensen, B. (1997). \emph{Theory of Dispersion Models}, Chapman and Hall, London. 
+Joergensen, B. (1997). \emph{Theory of Dispersion Models}, Chapman and Hall, London. 
 
 Smyth, G. K., and Verbyla, A. P., (1999). Adjusted likelihood methods for modelling dispersion in generalized linear models. \emph{Environmetrics} \bold{10}, 695-709. 
 }

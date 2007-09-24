@@ -66,6 +66,6 @@ perform probability calculations for the inverse Gaussian distribution.
 \section{Matrix Computations}{
 \code{matvec} and \code{vecmat} facilitate multiplying matrices by vectors.
 }
-}
+
 \author{Gordon Smyth}
 \keyword{documentation}
