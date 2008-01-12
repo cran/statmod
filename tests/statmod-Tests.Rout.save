@@ -1,6 +1,6 @@
 
-R : Copyright 2006, The R Foundation for Statistical Computing
-Version 2.3.1 (2006-06-01)
+R version 2.6.1 (2007-11-26)
+Copyright (C) 2007 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -252,4 +252,227 @@ $se.coefficients
 > qresiduals(fit,dispersion=1)
           1           2           3           4           5           6 
 -1.32106735  0.42932049  0.38185530 -0.07833367  0.80828613 -0.22006089 
+> 
+> ### limdil
+> 
+> #####################################
+> # Test 1, when there is only 1 group
+> #####################################
+> Dose <- c(50,100,200,400,800)
+> Responses <- c(2,6,9,15,21)
+> Tested <- c(24,24,24,24,24)
+> Group <- c(1,1,1,1,1)
+> 
+> limdil(Responses,Dose,Tested,Group,test.unit.slope=TRUE)
+$CI
+   Lower Estimate    Upper 
+537.7392 403.0632 302.1166 
+
+$test.unit.slope
+    Chisq   P.value        df 
+0.0666993 0.7962047 1.0000000 
+
+> 
+> ###################################
+> # Test 2, when there is 1 group 
+> # 1 with no responses
+> ###################################
+> Dose <- c(30000,20000,4000,500)
+> Responses <- c(0,0,0,0)
+> Tested <- c(6,6,6,6)
+> Group <- c(1,1,1,1)
+> 
+> limdil(Responses,Dose,Tested,Group,test.unit.slope=TRUE)
+$CI
+   Lower Estimate    Upper 
+     Inf      Inf 109155.3 
+
+$test.unit.slope
+  Chisq P.value      df 
+     NA      NA       1 
+
+> 
+> ###################################
+> # Test 3, when there is 1 group 
+> # 1 with all responses
+> ###################################
+> Dose <- c(30000,20000,4000,500)
+> Responses <- c(6,6,6,6)
+> Tested <- c(6,6,6,6)
+> Group <- c(1,1,1,1)
+> 
+> limdil(Responses,Dose,Tested,Group,test.unit.slope=TRUE)
+$CI
+   Lower Estimate    Upper 
+535.4181   0.0000   0.0000 
+
+$test.unit.slope
+  Chisq P.value      df 
+     NA      NA       1 
+
+Warning messages:
+1: In glm.fit(x = X, y = Y, weights = weights, start = start, etastart = etastart,  :
+  fitted probabilities numerically 0 or 1 occurred
+2: In glm.fit(x = X[, "(Intercept)", drop = FALSE], y = Y, weights = weights,  :
+  fitted probabilities numerically 0 or 1 occurred
+> 
+> ##################################
+> # Test 4, when there are 2 groups
+> # average response
+> ##################################
+> Dose <- c(30000,20000,4000,500,30000,20000,4000,500)
+> Responses <- c(2,3,2,3,2,2,4,3)
+> Tested <- c(6,6,6,6,6,6,6,6)
+> Group <- c(1,1,1,1,2,2,2,2)
+> 
+> limdil(Responses,Dose,Tested,Group,test.unit.slope=TRUE)
+$CI
+           Lower Estimate    Upper
+Group 1 50861.83 25241.38 12526.62
+Group 2      Inf      Inf      Inf
+
+$test.difference
+    Chisq   P.value        df 
+-733.5692    1.0000    1.0000 
+
+$test.unit.slope
+        Chisq       P.value            df 
+ 7.798966e+02 1.267588e-171  1.000000e+00 
+
+Warning messages:
+1: In glm.fit(x = X, y = Y, weights = weights, start = start, etastart = etastart,  :
+  fitted probabilities numerically 0 or 1 occurred
+2: In glm.fit(x = X, y = Y, weights = weights, start = start, etastart = etastart,  :
+  fitted probabilities numerically 0 or 1 occurred
+> 
+> ##################################
+> # Test 5, when there are 2 groups
+> # 1 with nearly all responses
+> # 1 with nearly no responses
+> ##################################
+> Dose <- c(30000,20000,4000,500,30000,20000,4000,500)
+> Responses <- c(1,0,0,0,6,6,6,5)
+> Tested <- c(6,6,6,6,6,6,6,6)
+> Group <- c(1,1,1,1,2,2,2,2)
+> 
+> limdil(Responses,Dose,Tested,Group,test.unit.slope=TRUE)
+$CI
+               Lower    Estimate      Upper
+Group 1 2194236.5859 311759.4552 44295.1132
+Group 2     757.3843    279.0516   102.8141
+
+$test.difference
+   Chisq  P.value       df 
+1718.006    0.000    1.000 
+
+$test.unit.slope
+    Chisq   P.value        df 
+1.2761132 0.2586230 1.0000000 
+
+Warning messages:
+1: In glm.fit(x = X, y = Y, weights = weights, start = start, etastart = etastart,  :
+  fitted probabilities numerically 0 or 1 occurred
+2: In glm.fit(x = X, y = Y, weights = weights, start = start, etastart = etastart,  :
+  fitted probabilities numerically 0 or 1 occurred
+3: In glm.fit(x = X[, "(Intercept)", drop = FALSE], y = Y, weights = weights,  :
+  fitted probabilities numerically 0 or 1 occurred
+4: In glm.fit(x = X, y = Y, weights = weights, start = start, etastart = etastart,  :
+  algorithm did not converge
+5: In glm.fit(x = X, y = Y, weights = weights, start = start, etastart = etastart,  :
+  fitted probabilities numerically 0 or 1 occurred
+> 
+> ###################################
+> # Test 6, when there is 2 groups, 
+> # 1 with all responses
+> # 1 with none responses
+> ###################################
+> Dose <- c(30000,20000,4000,500,30000,20000,4000,500)
+> Responses <- c(0,0,0,0,6,6,6,6)
+> Tested <- c(6,6,6,6,6,6,6,6)
+> Group <- c(1,1,1,1,2,2,2,2)
+> 
+> limdil(Responses,Dose,Tested,Group,test.unit.slope=TRUE)
+$CI
+           Lower Estimate    Upper
+Group 1      Inf      Inf 218310.6
+Group 2 331.1380        0      0.0
+
+$test.difference
+   Chisq  P.value       df 
+1730.095    0.000    1.000 
+
+$test.unit.slope
+       Chisq      P.value           df 
+1.111911e-11 9.999973e-01 1.000000e+00 
+
+Warning messages:
+1: In glm.fit(x = X, y = Y, weights = weights, start = start, etastart = etastart,  :
+  fitted probabilities numerically 0 or 1 occurred
+2: In glm.fit(x = X, y = Y, weights = weights, start = start, etastart = etastart,  :
+  fitted probabilities numerically 0 or 1 occurred
+3: In glm.fit(x = X[, "(Intercept)", drop = FALSE], y = Y, weights = weights,  :
+  fitted probabilities numerically 0 or 1 occurred
+> 
+> ##################################
+> # Test 7, when there are 4 groups
+> # 4 average response
+> ##################################
+> Dose <- c(30000,20000,4000,500,30000,20000,4000,500,30000,20000,4000,500,30000,20000,4000,500)
+> Responses <- c(2,3,2,1,6,5,6,1,2,3,4,2,6,6,6,1)
+> Tested <- c(6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6)
+> Group <- c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4)
+> 
+> limdil(Responses,Dose,Tested,Group,test.unit.slope=TRUE)
+$CI
+           Lower  Estimate      Upper
+Group 1 67165.43 31863.531 15116.1772
+Group 2 10251.79  4508.961  1983.1397
+Group 3 44525.85 22491.410 11361.1184
+Group 4  3371.15  1369.054   555.9851
+
+$test.difference
+       Chisq      P.value           df 
+4.113922e+01 6.109361e-09 3.000000e+00 
+
+$test.unit.slope
+       Chisq      P.value           df 
+1.852803e+01 1.674236e-05 1.000000e+00 
+
+> 
+> ##################################
+> # Test 8, when there are 4 groups 
+> # 1 group with no response
+> # 1 group with all response
+> # 2 group average response
+> ##################################
+> Dose <- c(30000,20000,4000,500,30000,20000,4000,500,30000,20000,4000,500,30000,20000,4000,500)
+> Responses <- c(0,0,0,0,6,5,6,1,2,3,4,2,6,6,6,6)
+> Tested <- c(6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6)
+> Group <- c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4)
+> 
+> limdil(Responses,Dose,Tested,Group,test.unit.slope=TRUE)
+$CI
+             Lower  Estimate      Upper
+Group 1        Inf       Inf 436621.127
+Group 2 10251.7210  4508.941   1983.135
+Group 3 44524.6844 22490.225  11360.221
+Group 4   233.3584     0.000      0.000
+
+$test.difference
+   Chisq  P.value       df 
+3027.683    0.000    3.000 
+
+$test.unit.slope
+       Chisq      P.value           df 
+1.815141e+01 2.040178e-05 1.000000e+00 
+
+Warning messages:
+1: In glm.fit(x = X, y = Y, weights = weights, start = start, etastart = etastart,  :
+  fitted probabilities numerically 0 or 1 occurred
+2: In glm.fit(x = X, y = Y, weights = weights, start = start, etastart = etastart,  :
+  fitted probabilities numerically 0 or 1 occurred
+3: In glm.fit(x = X[, "(Intercept)", drop = FALSE], y = Y, weights = weights,  :
+  fitted probabilities numerically 0 or 1 occurred
+4: In glm.fit(x = X, y = Y, weights = weights, start = start, etastart = etastart,  :
+  fitted probabilities numerically 0 or 1 occurred
 > 
