@@ -1,6 +1,8 @@
 1.StatMod               Introduction to the StatMod Package
 compareGrowthCurves     Compare Groups of Growth Curves
 Digamma                 Digamma generalized linear model family
+fitNBP                  Negative Binomial Model for SAGE Libraries with
+                        Pearson Estimation of Dispersion
 gauss.quad              Gaussian Quadrature
 gauss.quad.prob         Gaussian Quadrature with Probability
                         Distributions
@@ -13,7 +15,7 @@ logmdigamma             Log Minus Digamma Function
 matvec                  Multiply a Matrix by a Vector
 meanT                   Mean t-Statistic Between Two Groups of Growth
                         Curves
-mixedModel2             Randomized Block Mixed Linear Model
+mixedModel2             Fit Mixed Linear Model with 2 Error Components
 power.fisher.test       Power of Fisher's Exact Test for Comparing
                         Proportions
 qresiduals              Randomized Quantile Residuals
