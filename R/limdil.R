@@ -3,9 +3,8 @@
 limdil <- function (response, dose, tested = rep(1, length(response)), group=rep(1,length(response)),observed = FALSE, confidence = 0.95, test.unit.slope = FALSE) 
 #	Limiting dilution analysis
 #	Gordon Smyth, Yifang Hu
-#	21 June 2005. Last revised 05 February 2008
+#	21 June 2005. Last revised 07 April 2008
 {
-#	Check input arguments
 	group <- as.factor(group)
 
 	alpha <- 1 - confidence
@@ -77,7 +76,7 @@ limdil <- function (response, dose, tested = rep(1, length(response)), group=rep
 
 		if(all(y.element<1e-15))
 		{
-		 	N <- sum(dose * tested)
+		 	N <- sum(dose[index] * tested[index])
 			if (observed) U <- 1 - alpha^(1/N)
 			else U <- -log(alpha)/N
 			
@@ -95,23 +94,24 @@ limdil <- function (response, dose, tested = rep(1, length(response)), group=rep
 		
 		if(all(1- y.element<1e-15))
 		{
-			dosem <- min(dose)
-			tested.sum <- sum(tested[dose == dosem])
-			dose <- dosem
-			beta <- log(-log(1 - alpha^(1/tested.sum))) - log(dose)
+			dosem <- min(dose[index])
+			tested.group<-tested[index]
+			tested.sum <- sum(tested.group[dose[index] == dosem])
+			beta <- log(-log(1 - alpha^(1/tested.sum))) - log(dosem)
+			
 			if (observed) U <- 1 - exp(-exp(beta))
 			else U <- exp(beta)
 			
 			if(num.group==1)
 			{
-				out$CI<- c(Lower = 1/U, Estimate = 0, Upper = 0)
+				out$CI<- c(Lower = 1/U, Estimate = 1, Upper = 1)
 				if (test.unit.slope)
 				{
 						out$test.unit.slope<- c(Chisq = NA, P.value = NA, df=1)
 				}
 
 			}
-			else out$CI[i,]<- c(Lower = 1/U, Estimate = 0, Upper = 0)
+			else out$CI[i,]<- c(Lower = 1/U, Estimate = 1, Upper = 1)
 		}
 	}
 	return(out)
