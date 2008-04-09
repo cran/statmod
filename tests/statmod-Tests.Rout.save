@@ -1,6 +1,6 @@
 
-R version 2.6.1 (2007-11-26)
-Copyright (C) 2007 The R Foundation for Statistical Computing
+R version 2.6.2 (2008-02-08)
+Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -104,8 +104,8 @@ $reml.residuals
            [,1]
 [1,]  2.0136360
 [2,]  0.2857285
-[3,] -0.3039966
-[4,] -1.5028673
+[3,] -0.2287859
+[4,] -1.5161401
 
 $se.varcomp
 [1] 1.4499512 0.7253608
@@ -139,7 +139,7 @@ $qr
 [1,]  2.988857e+01 11.5715097
 [2,]  5.773503e-01 -1.9314668
 [3,]  5.773503e-01  0.8623454
-[4,] -2.862596e-18 -0.2207018
+[4,] -5.725192e-18 -0.2207018
 [5,] -5.725192e-18 -0.2091628
 [6,] -5.725192e-18 -0.2502274
 
@@ -177,13 +177,13 @@ $varcomp
 
 $reml.residuals
               [,1]
-[1,] -2.213275e-13
+[1,] -7.081629e-13
 [2,]  3.990825e-01
-[3,] -4.427007e-01
-[4,] -1.728975e+00
+[3,] -7.480047e-02
+[4,]  1.783183e+00
 
 $se.varcomp
-[1] 2.565233 1.282617
+[1] 2.562050 1.281025
 
 $coefficients
           x1 
@@ -214,8 +214,8 @@ $qr
 [1,]  2.616847e+03
 [2,]  7.071067e-01
 [3,]  3.050102e-04
-[4,] -2.394471e-20
-[5,]  2.394471e-20
+[4,] -4.788943e-20
+[5,]  4.788943e-20
 
 $qraux
 [1] 1.707107
@@ -304,7 +304,7 @@ $test.unit.slope
 > limdil(Responses,Dose,Tested,Group,test.unit.slope=TRUE)
 $CI
    Lower Estimate    Upper 
-535.4181   0.0000   0.0000 
+535.4181   1.0000   1.0000 
 
 $test.unit.slope
   Chisq P.value      df 
@@ -394,8 +394,8 @@ Warning messages:
 > limdil(Responses,Dose,Tested,Group,test.unit.slope=TRUE)
 $CI
            Lower Estimate    Upper
-Group 1      Inf      Inf 218310.6
-Group 2 331.1380        0      0.0
+Group 1      Inf      Inf 109155.3
+Group 2 535.4181        1      1.0
 
 $test.difference
    Chisq  P.value       df 
@@ -453,10 +453,10 @@ $test.unit.slope
 > limdil(Responses,Dose,Tested,Group,test.unit.slope=TRUE)
 $CI
              Lower  Estimate      Upper
-Group 1        Inf       Inf 436621.127
+Group 1        Inf       Inf 109155.282
 Group 2 10251.7210  4508.941   1983.135
 Group 3 44524.6844 22490.225  11360.221
-Group 4   233.3584     0.000      0.000
+Group 4   535.4181     1.000      1.000
 
 $test.difference
    Chisq  P.value       df 
