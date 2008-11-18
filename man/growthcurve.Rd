@@ -46,6 +46,12 @@ Accurate p-values can be obtained by setting \code{nsim} to some large value, \c
 
 \author{Gordon Smyth}
 
+\references{
+Baldwin, T., Sakthianandeswaren, A., Curtis, J., Kumar, B., Smyth, G. K., Foote, S., and Handman, E. (2007).
+Wound healing response is a major contributor to the severity of cutaneous leishmaniasis in the ear model of infection.
+\emph{Parasite Immunology} 29, 501-513. \url{http://www.blackwell-synergy.com/doi/abs/10.1111/j.1365-3024.2007.00969.x}
+}
+
 \seealso{
 \code{\link{compareGrowthCurves}}, \code{\link{compareTwoGrowthCurves}}
 }
