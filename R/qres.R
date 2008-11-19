@@ -86,10 +86,14 @@ qres.nbinom <- function(glm.obj)
 {
 #	Quantile residuals for Negative Binomial glm
 #	Gordon Smyth
-#	22 Jun 97.  Last modified 5 Oct 2004.
+#	22 Jun 97.  Last modified 18 Nov 2008.
 #
 	y <- glm.obj$y
-	size <- glm.obj$call$family$theta
+	if(is.null(glm.obj$theta)) {
+		size <- glm.obj$call$family[[2]]
+	} else {
+		size <- glm.obj$theta
+	}
 	mu <- fitted(glm.obj)
 	p <- size/(mu + size)
 	a <- ifelse(y > 0, pbeta(p, size, pmax(y, 1)), 0)

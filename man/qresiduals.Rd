@@ -80,6 +80,14 @@ fit <- glm(y~1, family=Gamma)
 qr <- qresiduals(fit, dispersion=2)
 qqnorm(qr)
 abline(0,1)
+
+#  Negative binomial example:
+if(require("MASS")) {
+fit <- glm(Days~Age,family=negative.binomial(2),data=quine)
+summary(qresiduals(fit))
+fit <- glm.nb(Days~Age,link=log,data = quine)
+summary(qresiduals(fit))
+}
 }
 
 \keyword{regression}

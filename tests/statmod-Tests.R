@@ -37,6 +37,13 @@ residuals(fit)
 qresiduals(fit)
 qresiduals(fit,dispersion=1)
 
+if(require("MASS")) {
+fit <- glm(Days~Age,family=negative.binomial(2),data=quine)
+print(summary(qresiduals(fit)))
+fit <- glm.nb(Days~Age,link=log,data = quine)
+print(summary(qresiduals(fit)))
+}
+
 ### limdil
 
 #####################################
