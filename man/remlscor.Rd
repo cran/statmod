@@ -29,11 +29,11 @@ List with the following components:
   \item{cov.gam}{estimated covarate matrix for gamma}
 }
 \details{
-Write \eqn{\mu_i=E(y_i)} for the expectation of the $i$th response and $s_i=\var(y_i)$.
+Write \eqn{\mu_i=E(y_i)} for the expectation of the \eqn{i}th response and \eqn{s_i=\var(y_i)}.
 We assume the heteroscedastic regression model
 \deqn{\mu_i=\bold{x}_i^T\bold{\beta}}
 \deqn{\log(\sigma^2_i)=\bold{z}_i^T\bold{\gamma},}
-where $\bold{x}_i$ and $\bold{z}_i$ are vectors of covariates, and $\bold{\beta}$ and $\bold{\gamma}$ are vectors of regression coefficients affecting the mean and variance respectively.
+where \eqn{\bold{x}_i} and \eqn{\bold{z}_i} are vectors of covariates, and \eqn{\bold{\beta}} and \eqn{\bold{\gamma}} are vectors of regression coefficients affecting the mean and variance respectively.
 
 Parameters are estimated by maximizing the REML likelihood using REML scoring as described in Smyth (2002).
 }

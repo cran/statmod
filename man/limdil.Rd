@@ -1,12 +1,15 @@
-\name{limdil}
+\name{elda}
+\alias{elda}
 \alias{limdil}
+\alias{limdil.class}
 
-\title{Limiting Dilution Analysis}
+\title{Extreme Limiting Dilution Analysis}
 \description{
 Fit single-hit model to a dilution series using complementary log-log binomial regression.
 }
 
 \usage{
+elda(response, dose, tested=rep(1,length(response)), group=rep(1,length(response)), observed=FALSE, confidence=0.95, test.unit.slope=FALSE)
 limdil(response, dose, tested=rep(1,length(response)), group=rep(1,length(response)), observed=FALSE, confidence=0.95, test.unit.slope=FALSE)
 }
 
@@ -33,10 +36,17 @@ In this case it also possible to test for non-equality in frequency between the 
 }
 
 \value{
-List with components
+\code{elda} is the newer name for the \code{limdil} function.
+
+\code{limdil} produces an object of class \code{limdil} with the following components. There are \code{\link{print.limdil}} and \code{\link{plot.limdil}} methods for limdil objects.
 \item{CI}{numeric vector giving estimated frequency and lower and upper limits of Wald confidence interval of each group}
 \item{test.difference}{numeric vector giving chisquare likelihood ratio test statistic and p-value for testing the difference between groups}
 \item{test.unit.slope}{numeric vector giving chisquare likelihood ratio test statistic and p-value for testing the slope of the offset equal to one}
+\item{response}{numeric of integer counts of positive cases, out of \code{tested} trials}
+\item{tested}{numeric vector giving number of trials at each dose}
+\item{dose}{numeric vector of expected number of cells in assay}
+\item{group}{vector or factor giving group to which the response belongs}
+\item{num.group}{number of groups}
 }
 
 \author{Yifang Hu and Gordon Smyth}
@@ -54,6 +64,11 @@ Shackleton, M., Vaillant, F., Simpson, K. J., Stingl, J., Smyth, G. K., Asselin-
 Generation of a functional mammary gland from a single stem cell.
 \emph{Nature} 439, 84-88.
 \url{http://www.nature.com/nature/journal/v439/n7072/abs/nature04372.html}
+
+Hu, Y, and Smyth, GK (2008).
+limdil Software for Limiting Dilution Analysis.
+Technical Report, The Walter and Eliza Hall Institute of Medical Research.
+\url{http://bioinf.wehi.edu.au/software/elda/elda_main.pdf}
 }
 
 \examples{
@@ -61,8 +76,9 @@ Generation of a functional mammary gland from a single stem cell.
 Dose <- c(50,100,200,400,800)
 Responses <- c(2,6,9,15,21)
 Tested <- c(24,24,24,24,24)
-Group <- c(1,1,1,1,1)
-limdil(Responses,Dose,Tested,Group,test.unit.slope=TRUE)
+out <- limdil(Responses,Dose,Tested,test.unit.slope=TRUE)
+out
+plot(out)
 
 # When there are four groups
 Dose <- c(30000,20000,4000,500,30000,20000,4000,500,30000,20000,4000,500,30000,20000,4000,500)

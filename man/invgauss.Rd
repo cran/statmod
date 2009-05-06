@@ -34,7 +34,7 @@ the result to be missing.
 }
 
 \details{
-The inverse Gaussian distribution takes values on the positive real line. The variance of the distribution is $\mu^3/\lambda$. Applications of the inverse Gaussian include sequential analysis, diffusion processes and radiotechniques. The inverse Gaussian is one of the response distributions used in generalized linear models.
+The inverse Gaussian distribution takes values on the positive real line. The variance of the distribution is \eqn{\mu^3/\lambda}. Applications of the inverse Gaussian include sequential analysis, diffusion processes and radiotechniques. The inverse Gaussian is one of the response distributions used in generalized linear models.
 }
  
 \references{
