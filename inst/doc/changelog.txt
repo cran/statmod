@@ -1,3 +1,23 @@
+6 May 2009: statmod 1.4.0
+
+- new function glm.scoretest() to compute likelihood score tests
+  for terms in generalized linear models.
+- Improvements to elda() and print.limdil() to avoid glm fits in
+  extreme data situations with 0% or 100% positive response,
+  improving speed and avoiding warnings.
+- Improvements to print.limdil method.
+- New function .limdil.allpos(). It calculates lower bound of
+  the limdil confidence interval when all tests respond by using
+  a globally convergent Newton interation.
+- Modify limdil() on lower bound of the confidence interval when all 
+  tests respond. 
+- New methods print.limdil and plot.limdil for limdil objects.
+- The output from limdil() is now a limdil class object.
+- Added \eqn{} markup to equations in pinvgauss.Rd
+  remlscor.Rd and remlscorgamma.Rd.
+- Elso et al (2004) reference added to compareGrowthCurves
+  help page.
+
 18 November 2008: statmod 1.3.8
 
 - qres.nbinom now works in more situations.  It now accepts
@@ -9,7 +29,6 @@
 20 July 2008: statmod 1.3.7
 
 - reference added to help page for compareGrowthCurves()
-
 - the saved output from the automatic tests updated for R 2.7.1
 
 07 April 2008: statmod 1.3.6
