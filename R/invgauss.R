@@ -1,13 +1,15 @@
-dinvgauss <- function(x, mu, lambda = 1)
-{
+dinvgauss <- function(x, mu, lambda = 1, log=FALSE)
 #  Density of inverse Gaussian distribution
-#  GKS  15 Jan 98
-#
+#  Gordon Smyth
+#	15 Jan 1998.  Last revised 19 June 2009.
+{
 	if(any(mu<=0)) stop("mu must be positive")
 	if(any(lambda<=0)) stop("lambda must be positive")
-	d <- ifelse(x>0,sqrt(lambda/(2*pi*x^3))*exp(-lambda*(x-mu)^2/(2*mu^2*x)),0)
-	if(!is.null(Names <- names(x)))
-		names(d) <- rep(Names, length = length(d))
+	d <- rep(-Inf,length(x))
+	i <- x>0
+	d[i] <- (log(lambda)-log(2*pi)-3*log(x[i]))/2-lambda*(x[i]-mu)^2/(2*mu^2*x[i])
+	if(!log) d <- exp(d)
+	if(!is.null(Names <- names(x))) names(d) <- rep(Names, length = length(d))
 	d
 }
 

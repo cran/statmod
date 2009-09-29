@@ -1,3 +1,13 @@
+29 Sep 2009: statmod 1.4.1
+
+- fixes to documentation links to other packages
+- bug fix to glmgam.fit() when there are exact zeros
+  in the data or fitted values.
+- add more goodness of fit tests to elda().
+- improvements to print.limdil method.
+- argument log added to dinvgauss(), giving the option of
+  returning the density on the log-scale.
+
 6 May 2009: statmod 1.4.0
 
 - new function glm.scoretest() to compute likelihood score tests

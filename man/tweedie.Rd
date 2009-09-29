@@ -56,7 +56,7 @@ Smyth, G. K., and Verbyla, A. P., (1999). Adjusted likelihood methods for modell
 
 \author{Gordon Smyth}
 
-\seealso{\code{\link[base]{glm}}, \code{\link[base]{family}}, \code{\link[tweedie]{dtweedie}}}
+\seealso{\code{\link{glm}}, \code{\link{family}}, \code{\link[tweedie]{dtweedie}}}
 
 \examples{
 y <- rgamma(20,shape=5)

@@ -1,10 +1,10 @@
 ## 	fitNBP.R
 
-fitNBP <- function(y,group=NULL,lib.size=colSums(y),verbose=FALSE)
+fitNBP <- function(y,group=NULL,lib.size=colSums(y),tol=1e-5,maxit=40,verbose=FALSE)
 #	Fit multi-group negative-binomial model to SAGE data
 #	with Pearson estimation of common overdispersion
 #	Gordon Smyth
-#	8 July 2006. Last modified 7 August 2006.
+#	8 July 2006. Last modified 13 July 2009.
 {
 #	Argument checking
 	y <- as.matrix(y)
@@ -36,11 +36,22 @@ fitNBP <- function(y,group=NULL,lib.size=colSums(y),verbose=FALSE)
 	mu <- exp(eta)
 
 #	Alternating iterations
+	iter <- 0
 	repeat{
 #		Update phi
+		iter <- iter+1
+		if(iter > maxit) {
+			warning("maxit exceeded")
+			break
+		}
 		e2 <- (y-mu)^2
 		dV <- mu*mu
+
+#		Need to ensure phi is converging from below
+		inneriter <- 0
 		repeat {
+			inneriter <- inneriter+1
+			if(inneriter > 10) stop("problem with inner iteration")
 			V <- mu*(1+phi*mu)
 			X2 <- sum(e2/V)/res.df-ngenes
 			if(X2 >= 0) {
@@ -48,7 +59,10 @@ fitNBP <- function(y,group=NULL,lib.size=colSums(y),verbose=FALSE)
 				break
 			} else {
 				if(phi==0) break
-				phi <- (phi+low)/2
+				if(inneriter > 4)
+					phi <- 0.9*phi 
+				else
+					phi <- (low+phi)/2
 				if(verbose) cat("mean disp",phi,"\n")
 			}
 		}
@@ -58,7 +72,7 @@ fitNBP <- function(y,group=NULL,lib.size=colSums(y),verbose=FALSE)
 		phi <- phi+step.phi
 		conv.crit <- step.phi/(phi+1)
 		if(verbose) cat("Conv criterion",conv.crit,"\n")
-		if(conv.crit < 1e-6) break
+		if(conv.crit < tol) break
 		
 #		Update mu
 		w <- mu/(1+phi*mu)

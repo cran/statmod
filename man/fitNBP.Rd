@@ -7,13 +7,15 @@ Fit a multi-group negative-binomial model to SAGE data, with Pearson estimation 
 }
 
 \usage{
-fitNBP(y,group=NULL,lib.size=colSums(y),verbose=FALSE)
+fitNBP(y, group=NULL, lib.size=colSums(y), tol=1e-5, maxit=40, verbose=FALSE)
 }
 
 \arguments{
 \item{y}{numeric matrix giving counts. Rows correspond to tags (genes) and columns to SAGE libraries.}
 \item{group}{factor indicating which library belongs to each group. If \code{NULL} then one group is assumed.}
 \item{lib.size}{vector giving total number of tags in each library.}
+\item{tol}{small positive numeric tolerance to judge convergence}
+\item{maxit}{maximum number of iterations permitted}
 \item{verbose}{logical, if \code{TRUE} then iteration progress information is output.}
 }
 

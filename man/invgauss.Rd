@@ -11,7 +11,7 @@ Density, cumulative probability, quantiles and random generation for the inverse
 }
 
 \usage{
-dinvgauss(x, mu, lambda=1)
+dinvgauss(x, mu, lambda=1, log=FALSE)
 pinvgauss(q, mu, lambda=1)
 qinvgauss(p, mu, lambda=1)
 rinvgauss(n, mu, lambda=1)
@@ -24,6 +24,7 @@ rinvgauss(n, mu, lambda=1)
   \item{n}{sample size. If \code{length(n)} is larger than 1, then \code{length(n)} random values are returned.}
   \item{mu}{vector of (positive) means. This is replicated to be the same length as \code{p} or \code{q} or the number of deviates generated.}
   \item{lambda}{vector of (positive) precision parameters. This is replicated to be the same length as \code{p} or \code{q} or the number of deviates generated.}
+  \item{log}{logical; if \code{TRUE}, the log-density is returned.}
 }
 
 \value{

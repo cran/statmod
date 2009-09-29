@@ -1,6 +1,6 @@
 Package: statmod
-Version: 1.4.0
-Date: 2009/05/06
+Version: 1.4.1
+Date: 2009/09/29
 Title: Statistical Modeling
 Author: Gordon Smyth with contributions from Yifang Hu and Peter Dunn
 Maintainer: Gordon Smyth <smyth@wehi.edu.au>
@@ -13,6 +13,6 @@ Description: Various statistical modeling functions including growth
         quadrature.
 License: LGPL (>= 2)
 URL: http://www.statsci.org/r
-Packaged: Wed May 6 15:11:53 2009; hu
+Packaged: 2009-09-29 03:34:43 UTC; hu
 Repository: CRAN
-Date/Publication: 2009-05-06 12:01:10
+Date/Publication: 2009-09-29 18:49:44
