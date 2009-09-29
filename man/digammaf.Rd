@@ -61,6 +61,6 @@ out.dig <- glm(d~x,family=Digamma(link="log"))
 summary(out.dig,dispersion=2)
 }
 \seealso{
-\code{\link[base:family]{quasi}}, \code{\link[base]{make.link}}
+\code{\link{quasi}}, \code{\link{make.link}}
 }
 \keyword{models}

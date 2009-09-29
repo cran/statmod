@@ -48,7 +48,7 @@ Accurate p-values can be obtained by setting \code{nsim} to some large value, \c
 
 \references{
 Elso, C. M., Roberts, L. J., Smyth, G. K., Thomson, R. J., Baldwin, T. M., 
-Foote, S. J., and Handman, E. (2003). Leishmaniasis host response loci 
+Foote, S. J., and Handman, E. (2004). Leishmaniasis host response loci 
 (lmr13) modify disease severity through a Th1/Th2-independent pathway.  
 \emph{Genes and Immunity} 5, 93-100.
 \url{http://www.nature.com/gene/journal/v5/n2/full/6364042a.html}

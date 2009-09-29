@@ -56,7 +56,7 @@ Hall, Englewood Cliffs, N.J.
 \author{Gordon Smyth}
 
 \seealso{
-\code{\link[statmod:gauss.quad.prob]{gauss.quad.prob}}, \code{\link[base:integrate]{integrate}}
+\code{\link[statmod:gauss.quad.prob]{gauss.quad.prob}}, \code{\link{integrate}}
 }
 
 \examples{

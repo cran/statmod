@@ -4,7 +4,7 @@ glmgam.fit <- function(X,y,start=NULL,tol=1e-6,maxit=50,trace=FALSE) {
 #  Fit gamma generalized linear model with identity link
 #  by Levenberg damped Fisher scoring
 #  Gordon Smyth
-#  12 Mar 2003.  Last revised 20 March 2004.
+#  12 Mar 2003.  Last revised 29 September 2009.
 
 #  check input
 X <- as.matrix(X)
@@ -59,7 +59,7 @@ deviance.gamma <- function(y,mu) {
 			dev <- 0
 		} else {
 			y1 <- y[!o]
-			mu1 <- y[!o]
+			mu1 <- mu[!o]
 			dev <- 2*sum( (y1-mu1)/mu1 - log(y1/mu1) )
 		}
 	} else {

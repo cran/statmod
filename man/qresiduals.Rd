@@ -61,7 +61,7 @@ Dunn, K. P., and Smyth, G. K. (1996). Randomized quantile residuals. \emph{Journ
 \author{Gordon Smyth}
 
 \seealso{
-\code{\link[stats:residuals.glm]{residuals.glm}}
+\code{\link{residuals.glm}}
 }
 
 \examples{

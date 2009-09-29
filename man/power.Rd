@@ -29,7 +29,7 @@ Estimated power of the test
 \author{Gordon Smyth}
 
 \seealso{
-\code{\link[ctest]{fisher.test}}, \code{\link[ctest]{power.t.test}}
+\code{\link{fisher.test}}, \code{\link{power.t.test}}
 }
 
 \examples{

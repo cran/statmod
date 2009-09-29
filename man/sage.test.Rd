@@ -41,7 +41,7 @@ Numeric vector of p-values.
 }
 
 \seealso{
-\code{\link[ctest]{fisher.test}}
+\code{\link{fisher.test}}
 }
 
 \examples{

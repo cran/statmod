@@ -3,7 +3,7 @@
 elda <- limdil <- function (response, dose, tested = rep(1, length(response)), group=rep(1,length(response)),observed = FALSE, confidence = 0.95, test.unit.slope = FALSE) 
 #	Limiting dilution analysis
 #	Gordon Smyth, Yifang Hu
-#	21 June 2005. Last revised 27 March 2009.
+#	21 June 2005. Last revised 25 June 2009.
 {
 	group <- as.factor(group)
 
@@ -64,10 +64,26 @@ elda <- limdil <- function (response, dose, tested = rep(1, length(response)), g
 		out$CI <- 1/Frequency
 		if (test.unit.slope && length(response) > 1)
 		{
-		fit1 <- glm(y ~ log(dose), family = f, weights = tested)
-		dev <- fit0$deviance - fit1$deviance
-		p.value <- pchisq(dev, df = 1, lower.tail = FALSE)
-		out$test.unit.slope <- c(Chisq = dev, P.value = p.value, df=1)
+			fit1 <- glm(y ~ log(dose), family = f, weights = tested)
+			dev <- fit0$deviance - fit1$deviance
+			p.value <- pchisq(dev, df = 1, lower.tail = FALSE)
+			
+			fit1.slope <- glm(y~offset(log(dose))+log(dose),family=binomial(link="cloglog"),weights=tested)
+			s.slope<-summary(fit1.slope)
+			est.slope<-1+s.slope$coef["log(dose)","Estimate"]
+			se.slope<-s.slope$coef["log(dose)", "Std. Error"]
+			se.z<-s.slope$coef["log(dose)", "z value"]
+			se.p<-s.slope$coef["log(dose)", "Pr(>|z|)"]
+			out$test.slope.wald <- c("Estimate"=est.slope, "Std. Error"=se.slope, "z value"=se.z,"Pr(>|z|)"=se.p)
+			out$test.slope.lr<- c("Estimate"=NA, "Std. Error"=NA, "z value"=sqrt(dev)*sign((est.slope)-1),"Pr(>|z|)"=p.value)
+			
+			fit2.slope <- glm(y~offset(log(dose)),family=binomial(link="cloglog"),weights=tested)
+			x2 <- cbind(LDose=log(dose),Dose=dose)
+			scores<-glm.scoretest(fit2.slope,x2)
+			scores.p<-pchisq(scores^2,df=1,lower.tail=FALSE)			
+			out$test.slope.scorel<-c("Estimate"= NA, "Std. Error"=NA, "z value"=scores[1],"Pr(>|z|)"=scores.p[1])
+			out$test.slope.score<-c("Estimate"= NA, "Std. Error"=NA, "z value"=scores[2],"Pr(>|z|)"=scores.p[2])
+		
 		}
 	}
 
@@ -129,7 +145,25 @@ elda <- limdil <- function (response, dose, tested = rep(1, length(response)), g
 			fit3 <- glm(y ~ log(dose)+group, family = f, weights = tested)
 			dev <- fit2$deviance - fit3$deviance
 			slope.p <- pchisq(dev, df = 1, lower.tail = FALSE)
-			out$test.unit.slope <- c(Chisq = dev, P.value = slope.p, df = 1)
+			
+			fit1.slope <- glm(y~offset(log(dose))+group+log(dose),family=binomial(link="cloglog"),weights=tested)
+						
+			s.slope<-summary(fit1.slope)
+			est.slope<-1+s.slope$coef["log(dose)","Estimate"]
+			se.slope<-s.slope$coef["log(dose)", "Std. Error"]
+			se.z<-s.slope$coef["log(dose)", "z value"]
+			se.p<-s.slope$coef["log(dose)", "Pr(>|z|)"]
+			
+			out$test.slope.wald <- c("Estimate"=est.slope, "Std. Error"=se.slope, "z value"=se.z,"Pr(>|z|)"=se.p)
+			out$test.slope.lr<- c("Estimate"=NA, "Std. Error"=NA, "z value"=sqrt(dev)*sign((est.slope)-1),"Pr(>|z|)"=slope.p)
+		
+			fit2.slope <- glm(y~offset(log(dose))+group,family=binomial(link="cloglog"),weights=tested)
+			x2 <- cbind(LDose=log(dose),Dose=dose)
+			scores<-glm.scoretest(fit2.slope,x2)
+			scores.p<-pchisq(scores^2,df=1,lower.tail=FALSE)
+			
+			out$test.slope.scorel<-c("Estimate"= NA, "Std. Error"=NA, "z value"=scores[1],"Pr(>|z|)"=scores.p[1])
+			out$test.slope.score<-c("Estimate"= NA, "Std. Error"=NA, "z value"=scores[2],"Pr(>|z|)"=scores.p[2])
 		}
 	}
 	
@@ -163,30 +197,37 @@ print.limdil <- function(x, ...)
 {
 #	Print limiting dilution analysis
 #	Yifang Hu and Gordon Smyth
-#	20 February 2009. Last revised 27 March 2009.
+#	20 February 2009. Last revised 25 June 2009.
 
 	cat("Confidence intervals for frequency:\n\n")
 	print(x$CI)
-	cat("\n\n")
+	cat("\n")
 	difference<-NULL
-	single<-NULL
-
-	if(is.null(x$test.difference)!=TRUE) difference<-x$test.difference
-	if(is.null(x$test.unit.slope)!=TRUE) single<-x$test.unit.slope
-
-	if((is.null(x$test.difference)!=TRUE) || (is.null(x$test.unit.slope)!=TRUE))
+	wald<-NULL
+	lr<-NULL
+	scorel<-NULL
+	score<-NULL
+	
+	if(is.null(x$test.difference)!=TRUE) 
 	{
-		a <- data.frame(rbind(difference,single))
-		a <- a[,c(1,3,2)]
-		colnames(a) <- c("Chisq","Df","Pr(>Chisq)")
-
-		if(is.null(difference)!=TRUE)
-		{	
-			rownames(a)[1] <- "Differences between groups"
-			if(is.null(single)!=TRUE) rownames(a)[2] <-"Single vs multi-hit"
-		}
-		else{ rownames(a)<-"Single vs multi-hit"}
-
+		difference<-x$test.difference
+		cat("Differences between groups:\n")
+		cat("Chisq",format.pval(difference[1],4), "on", difference[3], "DF, p-value:", format.pval(difference[2],4), "\n\n")
+	}
+	
+	if(is.null(x$test.slope.wald)!=TRUE) 
+	{
+		
+		wald<-x$test.slope.wald
+		lr<-x$test.slope.lr
+		scorel<-x$test.slope.scorel
+		score <-x$test.slope.score
+		
+		a <- data.frame(rbind(wald,lr,scorel,score))
+		colnames(a)<-c("Estimate","Std. Error","z value","Pr(>|z|)")
+		rownames(a)<-c("Wald test","LR test", "Score test", "Score test: Dose")
+		
+		cat("Goodness of fit (test log-Dose slope equals 1): \n")
 		suppressWarnings(printCoefmat(a,tst.ind=1,has.Pvalue=TRUE,P.value=TRUE))
 	}
 }

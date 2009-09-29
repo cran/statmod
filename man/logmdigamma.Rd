@@ -19,7 +19,7 @@ Abramowitz, M., and Stegun, I. A. (1970). \emph{Handbook of
 mathematical functions.} Dover, New York.
 }
 \seealso{
-\code{\link[base:digamma]{digamma}}
+\code{\link{digamma}}
 }
 \examples{
 log(10^15) - digamma(10^15) # returns 0
