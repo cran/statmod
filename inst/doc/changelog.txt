@@ -1,3 +1,9 @@
+5 January 2010: statmod 1.4.2
+
+- add new argument 'dispersion' to glm.scoretest()
+- ensure chisq values from limdil() remain positive, even when small.
+- correct the format of chisq value in print.limdil().
+
 29 Sep 2009: statmod 1.4.1
 
 - fixes to documentation links to other packages

@@ -24,6 +24,12 @@ limdil(response, dose, tested=rep(1,length(response)), group=rep(1,length(respon
 }
 
 \details{
+This function is an implementation of maximum likelihood analysis of limiting dilution data with added features to accommodate small sample sizes (Hu and Smyth, 2009).
+In particular, the function accommodates gracefully situations where 0% or 100% of the assays give positive results.
+The methodology has typically been applied to the analysis of stem cell assays (Shackleton et al, 2006).
+
+\code{elda} and \code{limdil} are alternative names for the same function.
+
 A binomial generalized linear model is fitted for each group with cloglog link and offset \code{log(dose)}.
 If \code{observed=FALSE}, a classic Poisson single-hit model is assumed, and the Poisson frequency of the stem cells is the \code{exp} of the intercept.
 If \code{observed=TRUE}, the values of \code{dose} are treated as actual cell numbers rather than expected values.
@@ -36,12 +42,14 @@ In this case it also possible to test for non-equality in frequency between the 
 }
 
 \value{
-\code{elda} is the newer name for the \code{limdil} function.
+\code{limdil} produces an object of class \code{limdil} with the following components. There are \code{\link[=print.limdil]{print}} and \code{\link[=plot.limdil]{plot}} methods for limdil objects.
 
-\code{limdil} produces an object of class \code{limdil} with the following components. There are \code{\link{print.limdil}} and \code{\link{plot.limdil}} methods for limdil objects.
 \item{CI}{numeric vector giving estimated frequency and lower and upper limits of Wald confidence interval of each group}
 \item{test.difference}{numeric vector giving chisquare likelihood ratio test statistic and p-value for testing the difference between groups}
-\item{test.unit.slope}{numeric vector giving chisquare likelihood ratio test statistic and p-value for testing the slope of the offset equal to one}
+\item{test.slope.wald}{numeric vector giving wald test statistics and p-value for testing the slope of the offset equal to one}
+\item{test.slope.lr}{numeric vector giving chisquare likelihood ratio test statistics and p-value for testing the slope of the offset equal to one}
+\item{test.slope.scorel}{numeric vector giving score test statistics and p-value for testing multi-hit alternatives}
+\item{test.slope.score}{numeric vector giving score test statistics and p-value for testing heterogeneity}
 \item{response}{numeric of integer counts of positive cases, out of \code{tested} trials}
 \item{tested}{numeric vector giving number of trials at each dose}
 \item{dose}{numeric vector of expected number of cells in assay}
@@ -52,23 +60,15 @@ In this case it also possible to test for non-equality in frequency between the 
 \author{Yifang Hu and Gordon Smyth}
 
 \references{
-Bonnefoix T, Bonnefoix P, Verdiel P, Sotto JJ. (1996).
-Fitting limiting dilution experiments with generalized linear models results in a test of the single-hit Poisson assumption.
-\emph{J Immunol Methods} 194, 113-119.
-
-Clopper, C. and Pearson, S. (1934).
-The use of confidence or fiducial limits illustrated in the case of the binomial.
-\emph{Biometrika} 26, 404-413.
-
 Shackleton, M., Vaillant, F., Simpson, K. J., Stingl, J., Smyth, G. K., Asselin-Labat, M.-L., Wu, L., Lindeman, G. J., and Visvader, J. E. (2006).
 Generation of a functional mammary gland from a single stem cell.
 \emph{Nature} 439, 84-88.
 \url{http://www.nature.com/nature/journal/v439/n7072/abs/nature04372.html}
 
-Hu, Y, and Smyth, GK (2008).
-limdil Software for Limiting Dilution Analysis.
-Technical Report, The Walter and Eliza Hall Institute of Medical Research.
-\url{http://bioinf.wehi.edu.au/software/elda/elda_main.pdf}
+Hu, Y, and Smyth, GK (2009).
+ELDA: Extreme limiting dilution analysis for comparing depleted and enriched populations in stem cell and other assays.
+\emph{Journal of Immunological Methods} 347, 70-78.
+\url{http://dx.doi.org/10.1016/j.jim.2009.06.008}
 }
 
 \examples{
