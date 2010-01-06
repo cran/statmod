@@ -7,12 +7,13 @@ Computes score test statistics (z-statistics) for adding covariates to a general
 }
 
 \usage{
-glm.scoretest(fit, x2)
+glm.scoretest(fit, x2, dispersion=NULL)
 }
 
 \arguments{
 \item{fit}{generalized linear model fit object, of class \code{\link{glm}}.}
 \item{x2}{vector or matrix with each column a covariate to be added.}
+\item{dispersion}{the dispersion for the generalized linear model family.}
 }
 
 \details{
@@ -21,6 +22,10 @@ Is the locally most powerful test for testing vs a one-sided alternative.
 Asympotically equivalent to likelihood ratio tests, but convenient for one-sided tests.
 
 This function computes a score test statistics for adding each covariate individually.
+
+The dispersion parameter is treated as for \code{\link{summary.glm}}.
+If \code{NULL}, the Pearson estimator is used, except for the binomial and Poisson
+families, for which the dispersion is one.
 }
 
 \value{numeric vector containing the z-statistics, one for each covariate.}

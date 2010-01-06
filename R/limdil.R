@@ -3,7 +3,7 @@
 elda <- limdil <- function (response, dose, tested = rep(1, length(response)), group=rep(1,length(response)),observed = FALSE, confidence = 0.95, test.unit.slope = FALSE) 
 #	Limiting dilution analysis
 #	Gordon Smyth, Yifang Hu
-#	21 June 2005. Last revised 25 June 2009.
+#	21 June 2005. Last revised 12 October 2009.
 {
 	group <- as.factor(group)
 
@@ -137,6 +137,7 @@ elda <- limdil <- function (response, dose, tested = rep(1, length(response)), g
 
 		fit2 <- glm(y~offset(log(dose))+group,family=f,weights=tested)
 		dev.g<-fit2$null.deviance-fit2$deviance
+		if(dev.g<0) dev.g<-0
 		group.p<-pchisq(dev.g,df=num.group-1,lower=FALSE)
 		out$test.difference<-c(Chisq = dev.g, P.value = group.p, df=num.group-1)
 
@@ -197,7 +198,7 @@ print.limdil <- function(x, ...)
 {
 #	Print limiting dilution analysis
 #	Yifang Hu and Gordon Smyth
-#	20 February 2009. Last revised 25 June 2009.
+#	20 February 2009. Last revised 12 October 2009.
 
 	cat("Confidence intervals for frequency:\n\n")
 	print(x$CI)
@@ -212,7 +213,7 @@ print.limdil <- function(x, ...)
 	{
 		difference<-x$test.difference
 		cat("Differences between groups:\n")
-		cat("Chisq",format.pval(difference[1],4), "on", difference[3], "DF, p-value:", format.pval(difference[2],4), "\n\n")
+		cat("Chisq",difference[1], "on", difference[3], "DF, p-value:", format.pval(difference[2],4), "\n\n")
 	}
 	
 	if(is.null(x$test.slope.wald)!=TRUE) 
