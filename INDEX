@@ -1,21 +1,23 @@
 1.StatMod               Introduction to the StatMod Package
 compareGrowthCurves     Compare Groups of Growth Curves
 Digamma                 Digamma generalized linear model family
+elda                    Extreme Limiting Dilution Analysis
 fitNBP                  Negative Binomial Model for SAGE Libraries with
                         Pearson Estimation of Dispersion
 gauss.quad              Gaussian Quadrature
 gauss.quad.prob         Gaussian Quadrature with Probability
                         Distributions
+glm.scoretest           Score Test for Adding a Covariate to a GLM
 glmgam.fit              Gamma Generalized Linear Model with Identity
                         Link
 hommel.test             Test Multiple Comparisons Using Hommel's Method
 InverseGaussian         Inverse Gaussian Distribution
-limdil                  Limiting Dilution Analysis
 logmdigamma             Log Minus Digamma Function
 matvec                  Multiply a Matrix by a Vector
 meanT                   Mean t-Statistic Between Two Groups of Growth
                         Curves
 mixedModel2             Fit Mixed Linear Model with 2 Error Components
+plot.limdil             Plot or print an object of class limdil
 power.fisher.test       Power of Fisher's Exact Test for Comparing
                         Proportions
 qresiduals              Randomized Quantile Residuals
