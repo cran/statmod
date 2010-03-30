@@ -3,7 +3,7 @@
 glm.scoretest <- function(fit, x2, dispersion=NULL)
 #	Score test for new covariate in glm
 #	Gordon Smyth
-#	27 March 2009. Last modified 6 Jan 2009.
+#	27 March 2009. Last modified 20 Mar 2010.
 {
 	w <- fit$weights
 	r <- fit$residuals
@@ -19,7 +19,7 @@ glm.scoretest <- function(fit, x2, dispersion=NULL)
 		else if(fit$df.residual > 0) {
 			dispersion <- sum(w*r^2)/fit$df.residual
 		} else {
-			stop("No residual df avaiable to estimate dispersion")
+			stop("No residual df available to estimate dispersion")
 		}
 	}
 	ws <- sqrt(w)

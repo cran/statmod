@@ -27,6 +27,7 @@ List with the following components:
   \item{h}{numeric vector of leverages}
   \item{cov.beta}{estimated covariance matrix for beta}
   \item{cov.gam}{estimated covarate matrix for gamma}
+  \item{iter}{number of iterations used}
 }
 \details{
 Write \eqn{\mu_i=E(y_i)} for the expectation of the \eqn{i}th response and \eqn{s_i=\var(y_i)}.

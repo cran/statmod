@@ -1,12 +1,17 @@
+30 March 2010: statmod 1.4.4
+
+- remlscore() now returns a component iter giving the number of
+  iterations used.
+
 18 February 2010: statmod 1.4.3
 
-- add new function permp() which correctly calculates permutation 
-  probabilities.
-- add documentation of the new function permp().
+- new function permp() which calculates exact p-values for
+  permutation tests when permutations are sampled with replacement.
 
 5 January 2010: statmod 1.4.2
 
-- add new argument 'dispersion' to glm.scoretest()
+- new argument 'dispersion' for glm.scoretest(), allowing the
+  user to set a known value for the dispersion parameter.
 - ensure chisq values from limdil() remain positive, even when small.
 - correct the format of chisq value in print.limdil().
 

@@ -3,8 +3,8 @@ remlscore <- function(y,X,Z,trace=FALSE,tol=1e-5,maxit=40)
 #  Fit normal(mu,phi) model to y with
 #  mu=X%*%beta and log(phi)=Z%*%gam
 #
-#  Gordon Smyth, Walter and Eliza Hall Institute, smyth@wehi.edu.au
-#  11 Sept 2000.  Last modified 12 Dec 2005.
+#  Gordon Smyth
+#  Created 11 Sept 2000.  Last modified 30 March 2010.
 {
 n <- length(y)
 p <- dim(X)[2]
@@ -115,5 +115,5 @@ cov.beta <- chol2inv(qr.R(fitm$qr))
 se.beta <- sqrt(diag(cov.beta))
 
 list(beta=fitm$coef,se.beta=se.beta,gamma=gam,se.gam=se.gam,mu=fitm$fitted,phi=phi,deviance=dev,h=h,
-	cov.beta=cov.beta,cov.gam=cov.gam)
+	cov.beta=cov.beta,cov.gam=cov.gam,iter=iter)
 }
