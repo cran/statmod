@@ -1,3 +1,12 @@
+16 April 2010: statmod 1.4.5
+
+- new function mscale() which is the robust estimation of a scale 
+  parameter using Hampel's redescending psi function.
+- new function psi.hampel() which is the Hampel's redescending psi 
+  function.
+- new function rho.hampel() which is the integral of Hampel's 
+  redescending psi function.
+
 30 March 2010: statmod 1.4.4
 
 - remlscore() now returns a component iter giving the number of
