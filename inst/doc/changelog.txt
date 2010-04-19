@@ -1,3 +1,8 @@
+19 April 2010: statmod 1.4.6
+
+- psi.hampel() and rho.hampel() renamed to .psi.hampel and
+  .rho.hampel and removed from export function list.
+
 16 April 2010: statmod 1.4.5
 
 - new function mscale() which is the robust estimation of a scale 
