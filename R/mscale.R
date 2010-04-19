@@ -23,8 +23,8 @@ mscale <- function(u, na.rm=FALSE)
 	repeat {
 		iter <- iter+1
 		z <- u/0.212/s
-		d1 <- mean(rho.hampel(z))-3.75
-		d2 <- mean(z*psi.hampel(z))
+		d1 <- mean(.rho.hampel(z))-3.75
+		d2 <- mean(z*.psi.hampel(z))
 		s <- s*(1+d1/d2)
 		if(iter > 50) {
 			warning("Max iterations exceeded")
@@ -35,7 +35,7 @@ mscale <- function(u, na.rm=FALSE)
 	s	
 }
 
-rho.hampel <- function(u, a = 1.5, b = 3.5, c = 8)
+.rho.hampel <- function(u, a = 1.5, b = 3.5, c = 8)
 {
 #	Integral of Hampel's redescending psi function (Hampel, Ronchetti,
 #	Rousseeuw and Stahel, 1986, Robust Statistics, Wiley, page 150).
@@ -56,7 +56,7 @@ rho.hampel <- function(u, a = 1.5, b = 3.5, c = 8)
 	rho
 }
 
-psi.hampel <- function(u, a = 1.5, b = 3.5, c = 8)
+.psi.hampel <- function(u, a = 1.5, b = 3.5, c = 8)
 {
 #	Hampel's redescending psi function (Hampel, Ronchetti,
 #	Rousseeuw and Stahel, 1986, Robust Statistics, Wiley, page 150).

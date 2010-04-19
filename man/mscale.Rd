@@ -33,9 +33,9 @@ Stromberg, A. J. (1993). Computation of high breakdown nonlinear regression para
 Smyth, G. K., and Hawkins, D. M. (2000). Robust frequency estimation using elemental sets. \emph{Journal of Computational and Graphical Statistics} 9, 196-214. 
 }
 
-\seealso{
-\code{\link{rho.hampel}}, \code{\link{psi.hampel}}
-}
+%\seealso{
+%\code{\link{rho.hampel}}, \code{\link{psi.hampel}}
+%}
 
 \examples{
 u <- rnorm(100)
