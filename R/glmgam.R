@@ -4,7 +4,7 @@ glmgam.fit <- function(X,y,start=NULL,tol=1e-6,maxit=50,trace=FALSE) {
 #  Fit gamma generalized linear model with identity link
 #  by Levenberg damped Fisher scoring
 #  Gordon Smyth
-#  12 Mar 2003.  Last revised 29 September 2009.
+#  12 Mar 2003.  Last revised 3 November 2010.
 
 #  check input
 X <- as.matrix(X)
@@ -128,13 +128,10 @@ repeat {
 	if( crossprod(dl,dbeta) < tol || dev/max(mu) < 1e-15) break
 
 	# test for iteration limit
-	if(iter > maxit) {
-		iter <- maxit+1
-		break
-	}
+	if(iter > maxit) break
 }
 
 beta <- drop(beta)
 names(beta) <- colnames(X)
-list(coefficients=beta,fitted.values=as.vector(mu),deviance=dev,maxit=maxit,iter=iter)
+list(coefficients=beta,fitted.values=as.vector(mu),deviance=dev,iter=iter)
 }
