@@ -1,9 +1,9 @@
 #  SAGE.R
 
 sage.test <- function(x, y, n1=sum(x), n2=sum(y))
-#	Binomial probabilities for comparing SAGE libraries
+#	Exact binomial probabilities for comparing SAGE libraries
 #	Gordon Smyth
-#	15 Nov 2003.  Last modified 21 Jan 2004.
+#	15 Nov 2003.  Last modified 1 March 2011.
 {
 	if(any(is.na(x)) || any(is.na(y))) stop("missing values not allowed")
 	x <- round(x)
@@ -21,7 +21,7 @@ sage.test <- function(x, y, n1=sum(x), n2=sum(y))
 		if(any(i)) {
 			x <- pmin(x[i],y[i])
 			size <- size[i]
-			p.value[i] <- pbinom(x,size=size,prob=0.5)+pbinom(size-x+0.5,size=size,prob=0.5,lower.tail=FALSE)
+			p.value[i] <- pmin(2*pbinom(x,size=size,prob=0.5),1)
 		}
 		return(p.value)
 	}

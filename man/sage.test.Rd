@@ -1,9 +1,9 @@
 \name{sage.test}
 \alias{sage.test}
 
-\title{Compare Two SAGE Libraries}
+\title{Exact Binomial Tests For Comparing Two SAGE Libraries}
 \description{
-Compute p-values for differential expression for each tag between two serial analysis of gene expression (SAGE) libraries. 
+Compute binomial test p-values for differential expression for each tag between two serial analysis of gene expression (SAGE) libraries. 
 }
 
 \usage{
@@ -23,11 +23,10 @@ Non-integer values are rounded to the nearest integer.}
 
 \details{
 SAGE is a method for counting the frequency of sequence tags in samples of RNA.
-One can test for differential expression for a given tag between the SAGE results for two different RNA samples using Fisher's exact test.
-This is however computationally intensive when the SAGE libraries are large.
+One can test for tagwise differential expression between the SAGE libraries for two different RNA samples using an exact binomial test, conditioning on the total count for each tag.
+When the total counts is very large, a Pearson chisquare approximation is used.
 
-This function uses a binomial approximation to the Fisher Exact test for each tag.
-The approximation is accurate when \code{n1} and \code{n2} are large and \code{x} and \code{y} are small in comparison.
+The binomial test is similar to Fisher's exact test, but probably even more appropriate in this context.
 }
 
 \value{
@@ -41,15 +40,14 @@ Numeric vector of p-values.
 }
 
 \seealso{
-\code{\link{fisher.test}}
+\code{\link{binom.test}}
 }
 
 \examples{
 sage.test(c(0,5,10),c(0,30,50),n1=10000,n2=15000)
-#  Exact equivalents
-fisher.test(matrix(c(0,0,10000-0,15000-0),2,2))$p.value
-fisher.test(matrix(c(5,30,10000-5,15000-30),2,2))$p.value
-fisher.test(matrix(c(10,50,10000-10,15000-50),2,2))$p.value
+#  Univariate equivalents:
+binom.test(5,5+30,p=10000/(10000+15000))$p.value
+binom.test(10,10+50,p=10000/(10000+15000))$p.value
 }
 
 \keyword{htest}

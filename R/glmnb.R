@@ -6,7 +6,7 @@ glmnb.fit <- function(X,y,dispersion,offset=0,start=NULL,tol=1e-6,maxit=50,trace
 #  Fit negative binomial generalized linear model with log link
 #  by Levenberg damped Fisher scoring
 #  Yunshun Chen and Gordon Smyth
-#  2 November 2010.  Last modified 3 November 2010.
+#  2 November 2010.  Last modified 8 November 2010.
 {
 #  check input
 	X <- as.matrix(X)
@@ -45,6 +45,7 @@ glmnb.fit <- function(X,y,dispersion,offset=0,start=NULL,tol=1e-6,maxit=50,trace
 				dev <- 2*sum(y1*log(y1/mu1) + (y1+1/phi)*log((mu1+1/phi)/(y1+1/phi)) )
 			}
 		} else {
+			y1 <- pmax(y,1/6)
 			dev <- 2*sum(y*log(y1/mu) + (y+1/phi)*log((mu+1/phi)/(y+1/phi)) )
 		}
 	}
