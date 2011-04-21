@@ -1,7 +1,3 @@
-####################################
-########### glmnb.fit ##############
-####################################
-
 glmnb.fit <- function(X,y,dispersion,offset=0,start=NULL,tol=1e-6,maxit=50,trace=FALSE)
 #  Fit negative binomial generalized linear model with log link
 #  by Levenberg damped Fisher scoring
@@ -30,7 +26,7 @@ glmnb.fit <- function(X,y,dispersion,offset=0,start=NULL,tol=1e-6,maxit=50,trace
 		mu <- exp(fit$fitted.values+offset)
 	} else {
 		beta <- start
-		mu <- exp(X %*% beta + offset)
+		mu <- drop(exp(X %*% beta + offset))
 	}
 
 	deviance.nb <- function(y,mu,phi) {
@@ -41,8 +37,9 @@ glmnb.fit <- function(X,y,dispersion,offset=0,start=NULL,tol=1e-6,maxit=50,trace
 				dev <- 0
 			} else {
 				y1 <- y[!o]
+				y2 <- pmax(y1,1/6)
 				mu1 <- mu[!o]
-				dev <- 2*sum(y1*log(y1/mu1) + (y1+1/phi)*log((mu1+1/phi)/(y1+1/phi)) )
+				dev <- 2*sum(y1*log(y2/mu1) + (y1+1/phi)*log((mu1+1/phi)/(y1+1/phi)) )
 			}
 		} else {
 			y1 <- pmax(y,1/6)
@@ -81,7 +78,7 @@ glmnb.fit <- function(X,y,dispersion,offset=0,start=NULL,tol=1e-6,maxit=50,trace
 			R <- chol(XVX + lambda*I)
 			dbeta <- backsolve(R,backsolve(R,dl,transpose=TRUE))
 			beta <- betaold + dbeta
-			mu <- exp(X %*% beta + offset)
+			mu <- drop(exp(X %*% beta + offset))
 			dev <- deviance.nb(y,mu,phi)
 			if(dev <= devold || dev/max(mu) < 1e-13) break
 

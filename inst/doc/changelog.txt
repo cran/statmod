@@ -1,6 +1,10 @@
+21 April 2011: statmod 1.4.10
+
+- bug fix to glmnb.fit().
+
 9 March 2011: statmod 1.4.9
 
-- bug fix to glmn.fit()
+- bug fix to glmnb.fit().
 
 - bug correction to sage.test() when library sizes are equal.
   The p-values returned change slightly.
