@@ -1,6 +1,6 @@
 
-R version 2.12.0 (2010-10-15)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.13.0 (2011-04-13)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: i386-pc-mingw32/i386 (32-bit)
 
@@ -27,9 +27,9 @@ Type 'q()' to quit R.
 > group <- c(1,1,2,2)
 > fitNBP(y,group=group,lib.size=lib.size)
 $coefficients
-             1         2
-[1,] -10.41431 -10.81978
-[2,]  -9.31570 -10.41431
+              1         2
+[1,] -10.414313 -10.81978
+[2,]  -9.315701 -10.41431
 
 $fitted.values
      [,1] [,2] [,3] [,4]
@@ -37,7 +37,7 @@ $fitted.values
 [2,]  4.5  4.5  1.5  1.5
 
 $dispersion
-[1] 0.988607
+[1] 0.9886071
 
 > 
 > ### glmgam.fit
@@ -76,7 +76,7 @@ $fitted.values
 [1] 0.8452436 0.5162985 0.5162985 0.1873533 0.1873533
 
 $deviance
-[1] 10.71960
+[1] 10.7196
 
 $iter
 [1] 12
@@ -104,7 +104,7 @@ $se.varcomp
 
 $coefficients
 (Intercept)           x 
- -0.0989657  -0.4178828 
+-0.09896571 -0.41788280 
 
 $residuals
 [1] -0.04955823  0.13348622 -0.08392799  0.31752684  1.05031395 -1.69434835
