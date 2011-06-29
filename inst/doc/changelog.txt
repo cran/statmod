@@ -1,3 +1,5 @@
+- updates to help page for sage.test
+
 21 April 2011: statmod 1.4.10
 
 - bug fix to glmnb.fit().
