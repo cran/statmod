@@ -1,3 +1,14 @@
+18 October 2011: statmod 1.4.12
+
+- glmnb.fit() now accepts vector dispersion argument.
+
+- change to residual returned by tweedie glms when var.power=2
+  and y==0.  In this case the theoretical residual is -Inf.
+  The value returned by the tweedie family is finite, but smaller
+  than previous.
+
+29 June 2011: statmod 1.4.11
+
 - updates to help page for sage.test
 
 21 April 2011: statmod 1.4.10

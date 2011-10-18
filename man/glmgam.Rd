@@ -13,7 +13,7 @@ glmnb.fit(X, y, dispersion, offset=0, start=NULL, tol=1e-6, maxit=50, trace=FALS
 \arguments{
   \item{X}{design matrix, assumed to be of full column rank.  Missing values not allowed.}
   \item{y}{numeric vector of responses. Negative or missing values not allowed.}
-  \item{dispersion}{over-dispersion parameter for negative binomial.}
+  \item{dispersion}{numeric vector of over-dispersion parameters for negative binomial. If of length 1, then same over-dispersion is assumed for all observations.}
   \item{offset}{offset vector for linear model}
   \item{start}{numeric vector of starting values for the regression coefficients}
   \item{tol}{small positive numeric value giving convergence tolerance}
