@@ -15,6 +15,10 @@ glmgam.fit(1,1)
 glmgam.fit(c(1,1),c(0,4))
 glmgam.fit(X=cbind(1,c(1,0.5,0.5,0,0)),y=rchisq(5,df=1))
 
+### glmnb.fit
+glmnb.fit(X=cbind(1,c(1,0.5,0.5,0,0)),y=rnbinom(5,mu=10,size=10),dispersion=0.1)
+glmnb.fit(X=cbind(1,c(1,1,0,0,0)),y=c(0,0,6,2,9),dispersion=0.1)
+
 ### mixedModel2
 
 y <- rnorm(6)
@@ -43,3 +47,4 @@ print(summary(qresiduals(fit)))
 fit <- glm.nb(Days~Age,link=log,data = quine)
 print(summary(qresiduals(fit)))
 }
+

@@ -3,7 +3,7 @@
 tweedie <- function(var.power=0, link.power=1-var.power) {
 #	Tweedie generalized linear model family
 #	Gordon Smyth
-#	22 Oct 2002.  Last modified 20 Sep 2004
+#	22 Oct 2002.  Last modified 2 Sep 2011.
 
 	lambda <- link.power
 	if(lambda==0) {
@@ -26,12 +26,13 @@ tweedie <- function(var.power=0, link.power=1-var.power) {
 	else
 		validmu <- function(mu) all(mu > 0)
 	dev.resids <- function(y, mu, wt) {
-		y1 <- y + (y == 0)
+		y1 <- y + 0.1*(y == 0)
 		if (p == 1)
 			theta <- log(y1/mu)
 		else
 			theta <- ( y1^(1-p) - mu^(1-p) ) / (1-p)
 		if (p == 2)
+#			Returns a finite somewhat arbitrary residual for y==0, although theoretical value is -Inf
 			kappa <- log(y1/mu)
 		else
 			kappa <- ( y^(2-p) - mu^(2-p) ) / (2-p)
