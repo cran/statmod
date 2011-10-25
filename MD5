@@ -1,4 +1,4 @@
-bf141549d4f9fa4ad82754b38cf16316 *DESCRIPTION
+ec50eb4049c5b386a19b110c2f756368 *DESCRIPTION
 727e944693aeffb31f74621be1ca516c *INDEX
 787a3926ee8dc9d4a58474fda920e746 *NAMESPACE
 cabcedc80916e132755147508dc1808b *R/digamma.R
@@ -6,7 +6,7 @@ b67d4c729d215c0952dc4594882da6fa *R/digammaf.R
 f48cdb780b1cc86bfeef8c4722912c2f *R/fitNBP.R
 accdcd32e142d8176b2cd255dcbd0709 *R/gaussquad.R
 d47beaba90dc5578c0e9e23dc703f6d9 *R/glmgam.R
-09bbc9258cfe20ffb66b5609460ba595 *R/glmnb.R
+195b52466170b84511819b89a3e5bb4d *R/glmnb.R
 87e2551f59f03a67cf4b0a9bf6479972 *R/glmscoretest.R
 98e67ef55b5ac6c79e18608e6e6e2b91 *R/growthcurve.R
 1747893341300d18e4af7032e4f91fc0 *R/hommel.R
@@ -23,7 +23,7 @@ cb4885f03160dcbca66990cd8db7ae0a *R/remlscor.R
 79c937ff975a5502b87b1d952cd7c233 *R/sagetest.R
 afad3149539912e729cb6d0aea8e53df *R/tweedief.R
 e600a474fedf570b1913b278022d46bf *data/welding.rdata
-896ac7c3c84b7fc94dddd9b795189199 *inst/doc/changelog.txt
+9e1b4e999c62f8ac408204563306039c *inst/doc/changelog.txt
 495d2f0e0e2a548d7ee7696eb159be71 *inst/doc/index.html
 1149af73c8c82d7bc1552c15b5b91d57 *man/1Introduction.Rd
 35b44e177a3b9de907e485fd2d837e92 *man/deprecated.Rd
@@ -51,5 +51,5 @@ e19609326de2bb9fdd5ba6647c652db6 *man/plot.limdil.Rd
 b17f915b9ff6f292bf86435d221c7500 *man/sage.test.Rd
 3d0552637454f6b32b1ad801ce684dfe *man/tweedie.Rd
 d8a58e7e91ba0dbf41668a06d0bc34dc *man/welding.Rd
-d7b31235c7a2964ce072808c10284c7e *tests/statmod-Tests.R
-b0a0c2c55bfadda2a440a70d0c832490 *tests/statmod-Tests.Rout.save
+37813f20a3121aee39f8bfabffb844e4 *tests/statmod-Tests.R
+47edaf3a586c5f139db7b8ffc0ff1e4d *tests/statmod-Tests.Rout.save
