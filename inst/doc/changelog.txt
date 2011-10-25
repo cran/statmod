@@ -1,3 +1,7 @@
+25 October 2011: statmod 1.4.13
+
+- bug fix to glmnb.fit() when dispersion is a vector argument.
+
 18 October 2011: statmod 1.4.12
 
 - glmnb.fit() now accepts vector dispersion argument.
