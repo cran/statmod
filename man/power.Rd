@@ -6,16 +6,17 @@ Calculate by simulation the power of Fisher's exact test for comparing two propo
 }
 
 \usage{
-power.fisher.test(p1, p2, n1, n2, alpha=0.05, nsim=100)
+power.fisher.test(p1, p2, n1, n2, alpha=0.05, nsim=100, alternative="two.sided")
 }
 
 \arguments{
-\item{p1}{first proportion to be compared}
-\item{p2}{second proportion to be compared}
-\item{n1}{first sample size}
-\item{n2}{second sample size}
-\item{alpha}{significance level}
-\item{nsim}{number of simulated data sets}
+\item{p1}{first proportion to be compared.}
+\item{p2}{second proportion to be compared.}
+\item{n1}{first sample size.}
+\item{n2}{second sample size.}
+\item{alpha}{significance level.}
+\item{nsim}{number of data sets to simulate.}
+\item{alternative}{indicates the alternative hypothesis and must be one of "two.sided", "greater" or "less".}
 }
 
 \details{
@@ -23,7 +24,7 @@ Computes the power of Fisher's exact test for testing the null hypothesis that \
 }
 
 \value{
-Estimated power of the test
+Estimated power of the test.
 }
 
 \author{Gordon Smyth}

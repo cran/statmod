@@ -1,3 +1,8 @@
+19 November 2011: statmod 1.4.14
+
+- power.fisher.test() now accepts a new argument alternative
+  which indicates the rejection region.
+
 25 October 2011: statmod 1.4.13
 
 - bug fix to glmnb.fit() when dispersion is a vector argument.
