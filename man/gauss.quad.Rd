@@ -53,7 +53,7 @@ Stroud and Secrest (1966). \emph{Gaussian Quadrature Formulas}. Prentice-
 Hall, Englewood Cliffs, N.J.
 }
 
-\author{Gordon Smyth}
+\author{Gordon Smyth, based on the Netlib Fortran routine gaussq.f, and including an improvement from Stephane Laurent}
 
 \seealso{
 \code{\link[statmod:gauss.quad.prob]{gauss.quad.prob}}, \code{\link{integrate}}

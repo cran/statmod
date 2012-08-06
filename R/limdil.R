@@ -136,9 +136,9 @@ elda <- limdil <- function (response, dose, tested = rep(1, length(response)), g
 		rownames(out$CI)<-paste("Group",levels(group))
 
 		fit2 <- glm(y~offset(log(dose))+group,family=f,weights=tested)
-		dev.g<-fit2$null.deviance-fit2$deviance
+		dev.g <- fit2$null.deviance-fit2$deviance
 		if(dev.g<0) dev.g<-0
-		group.p<-pchisq(dev.g,df=num.group-1,lower=FALSE)
+		group.p <- pchisq(dev.g,df=num.group-1,lower.tail=FALSE)
 		out$test.difference<-c(Chisq = dev.g, P.value = group.p, df=num.group-1)
 
 		if (test.unit.slope && length(response) > 1)
@@ -229,7 +229,7 @@ print.limdil <- function(x, ...)
 		rownames(a)<-c("Wald test","LR test", "Score test", "Score test: Dose")
 		
 		cat("Goodness of fit (test log-Dose slope equals 1): \n")
-		suppressWarnings(printCoefmat(a,tst.ind=1,has.Pvalue=TRUE,P.value=TRUE))
+		suppressWarnings(printCoefmat(a,tst.ind=1,has.Pvalue=TRUE,P.values=TRUE))
 	}
 }
 

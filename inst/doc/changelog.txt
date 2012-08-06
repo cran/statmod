@@ -1,3 +1,10 @@
+6 August 2012: statmod 1.4.15
+
+- improvements to glmnb.fit() to make it more numerically robust.
+
+- use of lgamma() in gauss.quad() to avoid floating overflows
+  with kind="jacobi".
+
 19 November 2011: statmod 1.4.14
 
 - power.fisher.test() now accepts a new argument alternative

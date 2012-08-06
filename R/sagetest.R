@@ -3,7 +3,7 @@
 sage.test <- function(x, y, n1=sum(x), n2=sum(y))
 #	Exact binomial probabilities for comparing SAGE libraries
 #	Gordon Smyth
-#	15 Nov 2003.  Last modified 1 March 2011.
+#	15 Nov 2003.  Last modified 20 July 2012.
 {
 	if(any(is.na(x)) || any(is.na(y))) stop("missing values not allowed")
 	x <- round(x)
@@ -33,7 +33,7 @@ sage.test <- function(x, y, n1=sum(x), n2=sum(y))
 	size0 <- size[size>0 & !big]
 	if(length(size0)) for (isize in unique(size0)) {
 		i <- (size==isize)
-		p <- dbinom(0:isize,p=prob,size=isize)
+		p <- dbinom(0:isize,prob=prob,size=isize)
 		o <- order(p)
 		cumsump <- cumsum(p[o])[order(o)]
 		p.value[i] <- cumsump[x[i]+1]
