@@ -99,7 +99,7 @@ if(mq > 2 && sum(abs(d)>1e-15)>1 && var(d)>1e-15) {
 	else
 		start <- c(Residual=mean(dy),Block=0)
 #	fit gamma glm identity link to dy with dx as covariates
-	dfit <- glmgam.fit(dx,dy,start=start,tol=tol,maxit=maxit,trace=trace)
+	dfit <- glmgam.fit(dx,dy,coef.start=start,tol=tol,maxit=maxit,trace=trace)
 	varcomp <- dfit$coefficients
 	dfitted.values <- dfit$fitted.values
 }

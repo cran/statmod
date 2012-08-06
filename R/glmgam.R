@@ -1,6 +1,6 @@
 #  GLMGAM.R
 
-glmgam.fit <- function(X,y,start=NULL,tol=1e-6,maxit=50,trace=FALSE) {
+glmgam.fit <- function(X,y,coef.start=NULL,tol=1e-6,maxit=50,trace=FALSE) {
 #  Fit gamma generalized linear model with identity link
 #  by Levenberg damped Fisher scoring
 #  Gordon Smyth
@@ -21,7 +21,7 @@ if(maxy==0) return(list(coefficients=rep(0,p),fitted.values=rep(0,n),deviance=NA
 y1 <- pmax(y,maxy*1e-3)
 
 #  starting values
-if(is.null(start)) {
+if(is.null(coef.start)) {
 	fit <- lm.fit(X,y)
 	beta <- fit$coefficients
 	mu <- fit$fitted.values
@@ -46,7 +46,7 @@ if(is.null(start)) {
 			return(list(coefficients=rep(0,p),fitted.values=rep(0,n),deviance=Inf))
 	}
 } else {
-	beta <- start
+	beta <- coef.start
 	mu <- X %*% beta
 }
 if(any(mu<0)) stop("Starting values give negative fitted values")

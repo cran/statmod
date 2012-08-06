@@ -1,54 +1,86 @@
-glmnb.fit <- function(X,y,dispersion,offset=0,start=NULL,tol=1e-6,maxit=50,trace=FALSE)
+glmnb.fit <- function(X,y,dispersion,offset=0,coef.start=NULL,start.method="mean",tol=1e-6,maxit=50,trace=FALSE)
 #  Fit negative binomial generalized linear model with log link
 #  by Levenberg damped Fisher scoring
 #  Yunshun Chen and Gordon Smyth
-#  2 November 2010.  Last modified 25 October 2011.
+#  2 November 2010.  Last modified 20 November 2012.
 {
-#  check input
+#  Check input values for y
+	y <- as.vector(y)
+	if(any(y < 0)) stop("y must be non-negative")
+	if(!all(is.finite(y))) stop("All y values must be finite and non-missing")
+	ymax <- max(y)
+	n <- length(y)
+
+#	Handle zero length y as special case
+	if(n == 0) stop("y has length zero")
+
+#	Check input values for X
 	X <- as.matrix(X)
-	n <- nrow(X)
+	if(n != nrow(X)) stop("length(y) not equal to nrow(X)")
+	if(!all(is.finite(X))) stop("All X values must be finite and non-missing")
 	p <- ncol(X)
 	if(p > n) stop("More columns than rows in X")
-	y <- as.vector(y)
-	if(n != length(y)) stop("length(y) not equal to nrow(X)")
-	if(n == 0) return(list(coefficients=numeric(0),fitted.values=numeric(0),deviance=numeric(0)))
-	if(!(all(is.finite(y)) || all(is.finite(X)))) stop("All values must be finite and non-missing")
-	if(any(y < 0)) stop("y must be non-negative")
-	maxy <- max(y)
-	if(maxy==0) return(list(coefficients=rep(0,p),fitted.values=rep(0,n),deviance=NA))
-	y1 <- pmax(y,1/6)
+
+#	Handle y all zero as special case
+	if(ymax==0) return(list(coefficients=rep(0,p),fitted.values=rep(0,n),deviance=0,iter=0,convergence="converged"))
+
+#	Check input values for dispersion
+	if(any(dispersion<0)) stop("dispersion values must be non-zero")
 	phi <- rep(dispersion,length.out=n)
 
-#  starting values
-	if(is.null(start)) {
-		fit <- lm.fit(X,log(y1)-offset)
-		beta <- fit$coefficients
-		mu <- exp(fit$fitted.values+offset)
+#	Check input values for offset
+	offset <- rep(offset,length=n)
+
+#  Starting values
+	delta <- min(ymax,1/6)
+	y1 <- pmax(y,delta)
+	if(is.null(coef.start)) {
+		start.method <- match.arg(start.method,c("log(y)","mean"))
+		if(start.method=="log(y)") {
+			fit <- lm.fit(X,log(y1)-offset)
+			beta <- fit$coefficients
+			mu <- exp(fit$fitted.values+offset)
+		} else {
+			N <- exp(offset)
+			rate <- y/N
+			w <- N/(1+phi*N)
+			beta.mean <- log(sum(w*rate)/sum(w))
+			beta <- qr.coef(qr(X),rep(beta.mean,length=n))
+			mu <- drop(exp(X %*% beta + offset))
+		}
 	} else {
-		beta <- start
+		beta <- coef.start
 		mu <- drop(exp(X %*% beta + offset))
 	}
 
-	deviance.nb <- function(y,mu,phi) {
-		if(any(mu<0)) return(Inf)
-		o <- (y < 1e-14) & (mu < 1e-14)
-		if(any(o)) {
-			if(all(o)) {
-				dev <- 0
-			} else {
-				y1 <- y[!o]
-				y2 <- pmax(y1,1/6)
-				mu1 <- mu[!o]
-				phi1 <- phi[!o]
-				dev <- 2*sum(y1*log(y2/mu1) + (y1+1/phi1)*log((mu1+1/phi1)/(y1+1/phi1)) )
-			}
-		} else {
-			y1 <- pmax(y,1/6)
-			dev <- 2*sum(y*log(y1/mu) + (y+1/phi)*log((mu+1/phi)/(y+1/phi)) )
+	unit.dev.poisson <- function(y,mu) {
+		2 * ( y*log(y/mu)- (y-mu) )
+	}
+	unit.dev.gamma <- function(y,mu) {
+		2 * ( (y-mu)/mu - log(y/mu))
+	}
+	unit.dev.negbin <- function(y,mu,size) {
+		2 * ( y*log(y/mu) - (y+size)*log((y+size)/(mu+size)) )
+	}
+	total.deviance <- function(y,mu,phi) {
+		if(any(is.infinite(mu))) return(Inf)
+		poisson.like <- (phi*mu < 1e-6)
+		gamma.like <- (phi*mu > 1e6)
+		negbin <- !(poisson.like | gamma.like)
+		y <- y+1e-8
+		mu <- mu+1e-8
+		unit.dev <- y
+		if(any(poisson.like)) unit.dev[poisson.like] <- unit.dev.poisson(y[poisson.like],mu[poisson.like])
+		if(any(gamma.like)) {
+			m <- mu[gamma.like]
+			alpha <- m/(1+phi[gamma.like]*m)
+			unit.dev[gamma.like] <- unit.dev.gamma(y[gamma.like],m)*alpha
 		}
+		if(any(negbin)) unit.dev[negbin] <- unit.dev.negbin(y[negbin],mu[negbin],1/phi[negbin])
+		sum(unit.dev)
 	}
 
-	dev <- deviance.nb(y,mu,phi)
+	dev <- total.deviance(y,mu,phi)
 
 #	Scoring iteration with Levenberg damping
 	iter <- 0
@@ -56,12 +88,18 @@ glmnb.fit <- function(X,y,dispersion,offset=0,start=NULL,tol=1e-6,maxit=50,trace
 	repeat {
 		iter <- iter+1
 
+#		test for iteration limit
+		if(iter > maxit) break
+
 #		information matrix
 		v.div.mu <- 1+phi*mu
 		XVX <- crossprod(X,(mu/v.div.mu)*X)
 		maxinfo <- max(diag(XVX))
 		if(iter==1) {
-			lambda <- abs(mean(diag(XVX)))/p
+			lambda <- maxinfo * 1e-6
+			lambda <- max(lambda,1e-13)
+			lambdaceiling <- maxinfo * 1e13
+			lambdabig <- FALSE
 			I <- diag(p)
 		}
 
@@ -69,50 +107,61 @@ glmnb.fit <- function(X,y,dispersion,offset=0,start=NULL,tol=1e-6,maxit=50,trace
 		dl <- crossprod(X,(y-mu)/v.div.mu)
 
 #		Levenberg damping
-		betaold <- beta
-		devold <- dev
+		dbeta <- beta
 		lev <- 0
 		repeat {
 			lev <- lev+1
 
 #			trial step
-			R <- chol(XVX + lambda*I)
-			dbeta <- backsolve(R,backsolve(R,dl,transpose=TRUE))
-			beta <- betaold + dbeta
-			mu <- drop(exp(X %*% beta + offset))
-			dev <- deviance.nb(y,mu,phi)
-			if(dev <= devold || dev/max(mu) < 1e-13) break
-
-#			exit if too much damping
-			if(lambda/maxinfo > 1e13) {
-				beta <- betaold
-				warning("Too much damping - convergence tolerance not achievable")
+			R <- chol(XVX + lambda*I, pivot=TRUE)
+			while(attr(R,"rank")<p) {
+				lambda <- lambda*10
+				R <- chol(XVX + lambda*I, pivot=TRUE)
+			}
+			j <- attr(R,"pivot")
+			dbeta[j] <- backsolve(R,backsolve(R,dl[j],transpose=TRUE))
+			betanew <- beta + dbeta
+			munew <- drop(exp(X %*% betanew + offset))
+			devnew <- total.deviance(y,munew,phi)
+			if(devnew <= dev || devnew/ymax < 1e-13) {
+				beta <- betanew
+				mu <- munew
+				dev <- devnew
 				break
 			}
 
 #			step not successful so increase damping
 			lambda <- 2*lambda
 			if(trace) cat("Damping increased to",lambda,"\n")
+
+#			exit if too much damping
+			lambdabig <- (lambda > lambdaceiling)
+			if(lambdabig) {
+				warning("Too much damping - convergence tolerance not achievable")
+				break
+			}
 		}
 
 #		iteration output
 		if(trace) cat("Iter =",iter,", Dev =",dev," Beta",beta,"\n")
 
 #		keep exiting if too much damping
-		if(lambda/maxinfo > 1e13) break
+		if(lambdabig) break
+
+#		test for convergence
+		scoresquare <- crossprod(dl,dbeta)
+		if(trace) cat("Convergence criterion",scoresquare,dl,dbeta,"\n")
+		if( scoresquare < tol || dev/ymax < 1e-12) break
 
 #		decrease damping if successful at first try
 		if(lev==1) lambda <- lambda/10
-
-#		test for convergence
-		if( crossprod(dl,dbeta) < tol || dev/max(mu) < 1e-13) break
-
-#		test for iteration limit
-		if(iter > maxit) break
 	}
 
 	beta <- drop(beta)
 	names(beta) <- colnames(X)
-	list(coefficients=beta,fitted.values=as.vector(mu),deviance=dev,iter=iter)
+	convergence <- "converged"
+	if(lambdabig) convergence <- "lambdabig"
+	if(iter>maxit) convergence <- "maxit"
+	list(coefficients=beta,fitted.values=as.vector(mu),deviance=dev,iter=iter,convergence=convergence)
 }
 

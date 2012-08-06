@@ -4,7 +4,7 @@ gauss.quad <- function(n,kind="legendre",alpha=0,beta=0) {
 #	Calculate nodes and weights for Guassian quadrature.
 #	Adapted from Netlib routine gaussq.f
 #	Gordon Smyth, Walter and Eliza Hall Institute
-#	4 Sept 2002. Last modified 4 Jan 2006.
+#	4 Sept 2002. Last modified 6 Aug 2012.
 
 	n <- as.integer(n)
 	if(n<0) stop("need non-negative number of nodes")
@@ -31,7 +31,7 @@ gauss.quad <- function(n,kind="legendre",alpha=0,beta=0) {
 		b <- sqrt(i1/2)
 	}, jacobi={
 		ab <- alpha+beta
-		muzero <- 2^(ab+1)*gamma(alpha+1)*gamma(beta+1)/gamma(ab+2)
+		muzero <- exp((ab+1)*log(2) + lgamma(alpha+1) + lgamma(beta+1) - lgamma(ab+2))
 		a <- i
 		a[1] <- (beta-alpha)/(ab+2)
 		i2 <- 2:n
