@@ -1,11 +1,12 @@
 #  NUMERICAL INTEGRATION
 
-gauss.quad <- function(n,kind="legendre",alpha=0,beta=0) {
-#	Calculate nodes and weights for Guassian quadrature.
+gauss.quad <- function(n,kind="legendre",alpha=0,beta=0)
+#	Calculate nodes and weights for Gaussian quadrature.
 #	Adapted from Netlib routine gaussq.f
 #	Gordon Smyth, Walter and Eliza Hall Institute
-#	4 Sept 2002. Last modified 6 Aug 2012.
-
+#	Suggestion from Stephane Laurent 6 Aug 2012
+#	4 Sept 2002. Last modified 7 Aug 2012.
+{
 	n <- as.integer(n)
 	if(n<0) stop("need non-negative number of nodes")
 	if(n==0) return(list(nodes=numeric(0), weights=numeric(0)))
@@ -13,25 +14,26 @@ gauss.quad <- function(n,kind="legendre",alpha=0,beta=0) {
 	i <- 1:n
 	i1 <- i[-n] # 1:(n-1)
 	switch(kind, legendre={
-		muzero <- 2
+		lnmuzero <- log(2)
 		a <- rep(0,n)
 		b <- i1/sqrt(4*i1^2-1)
 	}, chebyshev1={
-		muzero <- pi
+		lnmuzero <- log(pi)
 		a <- rep(0,n)
 		b <- rep(0.5,n-1)
 		b[1] <- sqrt(0.5)
 	}, chebyshev2={
-		muzero <- pi/2
+		lnmuzero <- log(pi/2)
 		a <- rep(0,n)
 		b <- rep(0.5,n-1)
 	}, hermite={
-		muzero <- sqrt(pi)
+		lnmuzero <- log(pi)/2
 		a <- rep(0,n)
 		b <- sqrt(i1/2)
 	}, jacobi={
 		ab <- alpha+beta
-		muzero <- exp((ab+1)*log(2) + lgamma(alpha+1) + lgamma(beta+1) - lgamma(ab+2))
+#		muzero <- 2^(ab+1) * gamma(alpha+1) * gamma(beta+1) / gamma(ab+2)
+		lnmuzero <- (ab+1)*log(2) + lgamma(alpha+1) + lgamma(beta+1) - lgamma(ab+2)
 		a <- i
 		a[1] <- (beta-alpha)/(ab+2)
 		i2 <- 2:n
@@ -45,27 +47,26 @@ gauss.quad <- function(n,kind="legendre",alpha=0,beta=0) {
 	}, laguerre={
 		a <- 2*i-1+alpha
 		b <- sqrt(i1*(i1+alpha))
-		muzero <- gamma(alpha+1)
+		lnmuzero <- lgamma(alpha+1)
 	})
-	A <- rep(0,n*n)
-	A[(n+1)*(i-1)+1] <- a
-	A[(n+1)*(i1-1)+2] <- b
-	A[(n+1)*i1] <- b
-	dim(A) <- c(n,n)
-	vd <- eigen(A,symmetric=TRUE)
-	w <- rev(as.vector( vd$vectors[1,] ))
-	w <- muzero * w^2
-	x <- rev( vd$values )
+	b <- c(b,0)
+	z <- rep.int(0,n)
+	z[1] <- 1
+	ierr <- 0L
+   out <- .Fortran("gausq2",n,as.double(a),as.double(b),as.double(z),ierr,PACKAGE="statmod")
+	x <- out[[2]]
+	w <- out[[4]]
+	w <- exp(lnmuzero + 2*log(abs(w)))
 	list(nodes=x,weights=w)
 }
 
-gauss.quad.prob <- function(n,dist="uniform",l=0,u=1,mu=0,sigma=1,alpha=1,beta=1) {
+gauss.quad.prob <- function(n,dist="uniform",l=0,u=1,mu=0,sigma=1,alpha=1,beta=1)
 #	Calculate nodes and weights for Guassian quadrature using probability densities.
 #	Adapted from Netlib routine gaussq.f
 #	Gordon Smyth, Walter and Eliza Hall Institute
 #	Corrections for n=1 and n=2 by Spencer Graves, 28 Dec 2005
-#	4 Sept 2002. Last modified 4 Jan 2005.
-
+#	4 Sept 2002. Last modified 7 Aug 2012.
+{
 	n <- as.integer(n)
 	if(n<0) stop("need non-negative number of nodes")
 	if(n==0) return(list(nodes=numeric(0), weights=numeric(0)))
@@ -112,14 +113,13 @@ gauss.quad.prob <- function(n,dist="uniform",l=0,u=1,mu=0,sigma=1,alpha=1,beta=1
 		a <- 2*i+alpha-2
 		b <- sqrt(i1*(i1+alpha-1))
 	})
-	A <- rep(0,n*n)
-	A[(n+1)*(i-1)+1] <- a
-	A[(n+1)*(i1-1)+2] <- b
-	A[(n+1)*i1] <- b
-	dim(A) <- c(n,n)
-	vd <- eigen(A,symmetric=TRUE)
-	w <- rev(as.vector( vd$vectors[1,] ))^2
-	x <- rev( vd$values )
+	b <- c(b,0)
+	z <- rep.int(0,n)
+	z[1] <- 1
+	ierr <- 0L
+	out <- .Fortran("gausq2",n,as.double(a),as.double(b),as.double(z),ierr,PACKAGE="statmod")
+	x <- out[[2]]
+	w <- out[[4]]^2
 	switch(dist,
 		uniform = x <- l+(u-l)*(x+1)/2,
 		beta1=,beta2=,beta = x <- (x+1)/2,

@@ -37,11 +37,6 @@ Laguerre quadrature: \code{w(x)=x^alpha*exp(-x)} on \code{(0,Inf)}.
 The method is explained in Golub and Welsch (1969).
 }
 
-\note{
-This function solves a dense \code{n}x\code{n} eigenvector problem and is therefore slow for large \code{n}.
-It could be made far more efficient by using an eigenvector function designed to compute the leading terms of the eigenvectors for tridiagonal matrices.
-}
-
 \references{
 Golub, G. H., and Welsch, J. H. (1969). Calculation of Gaussian
 quadrature rules. \emph{Mathematics of Computation} \bold{23}, 221-230.
@@ -49,19 +44,24 @@ quadrature rules. \emph{Mathematics of Computation} \bold{23}, 221-230.
 Golub, G. H. (1973). Some modified matrix eigenvalue problems.
 \emph{Siam Review} \bold{15}, 318-334.
 
-Stroud and Secrest (1966). \emph{Gaussian Quadrature Formulas}. Prentice-
-Hall, Englewood Cliffs, N.J.
+Smyth, G. K. (1998). Numerical integration. In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pages 3088-3095.
+\url{http://www.statsci.org/smyth/pubs/EoB/ban042-.pdf}
+
+Smyth, G. K. (1998). Polynomial approximation. In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pages 3425-3429.
+\url{http://www.statsci.org/smyth/pubs/EoB/bap064-.pdf}
+
+Stroud, AH, and Secrest, D (1966). \emph{Gaussian Quadrature Formulas}. Prentice-Hall, Englewood Cliffs, N.J.
 }
 
-\author{Gordon Smyth, based on the Netlib Fortran routine gaussq.f, and including an improvement from Stephane Laurent}
+\author{Gordon Smyth, using Netlib Fortran code gauss.f, and including a suggestion from Stephane Laurent}
 
 \seealso{
 \code{\link[statmod:gauss.quad.prob]{gauss.quad.prob}}, \code{\link{integrate}}
 }
 
 \examples{
+#  mean of gamma distribution with alpha=6
 out <- gauss.quad(10,"laguerre",alpha=5)
 sum(out$weights * out$nodes) / gamma(6)
-#  mean of gamma distribution with alpha=6
 }
 \keyword{math}
