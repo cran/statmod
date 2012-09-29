@@ -1,3 +1,15 @@
+28 September 2012: statmod 1.4.16
+
+- gauss.quad() and gauss.quad.prob() now use Fortran to solve
+  tridiagonal eigenvalue problem, with considerable gain in speed.
+  Updates to references for the same two functions.
+
+- Formatting of gauss.quad test output to ensure agreement between
+  Unix and Windows.
+
+- mixedModel2 test code no longer prints REML residuals, because
+  these are not reproducible between Windows and Unix.
+
 6 August 2012: statmod 1.4.15
 
 - improvements to glmnb.fit() to make it more numerically robust.

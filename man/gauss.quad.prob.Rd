@@ -44,26 +44,28 @@ quadrature rules. \emph{Mathematics of Computation} \bold{23}, 221-230.
 Golub, G. H. (1973). Some modified matrix eigenvalue problems.
 \emph{Siam Review} \bold{15}, 318-334.
 
-Smyth, G. K. (1998). Polynomial approximation. In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pp. 3425-3429.
-\url{http://www.statsci.org/smyth/pubs/poly.ps}
+Smyth, G. K. (1998). Numerical integration. In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pages 3088-3095.
+\url{http://www.statsci.org/smyth/pubs/EoB/ban042-.pdf}
 
-Stroud and Secrest (1966). \emph{Gaussian Quadrature Formulas}. Prentice-
-Hall, Englewood Cliffs, N.J.
+Smyth, G. K. (1998). Polynomial approximation. In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pages 3425-3429.
+\url{http://www.statsci.org/smyth/pubs/EoB/bap064-.pdf}
+
+Stroud, AH, and Secrest, D (1966). \emph{Gaussian Quadrature Formulas}. Prentice-Hall, Englewood Cliffs, N.J.
 }
 
-\author{Gordon Smyth}
+\author{Gordon Smyth, based on Netlib Fortran code gauss.f, with corrections from Spencer Graves}
 
 \seealso{
 \code{\link[statmod:gauss.quad]{gauss.quad}}, \code{\link{integrate}}
 }
 
 \examples{
+#  the 4th moment of the standard normal is 3
 out <- gauss.quad.prob(10,"normal")
 sum(out$weights * out$nodes^4)
-#  the 4th moment of the standard normal is 3
 
+#  the expected value of log(X) where X is gamma is digamma(alpha)
 out <- gauss.quad.prob(32,"gamma",alpha=5)
 sum(out$weights * log(out$nodes))
-#  the expected value of log(X) where X is gamma is digamma(alpha)
 }
 \keyword{math}

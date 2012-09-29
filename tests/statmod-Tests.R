@@ -26,14 +26,18 @@ glmnb.fit(X=cbind(1,c(1,1,0,0,0)),y=c(0,0,6,2,9),dispersion=0.1)
 y <- rnorm(6)
 x <- rnorm(6)
 z <- c(1,1,2,2,3,3)
-mixedModel2(y~x,random=z)
+m <- mixedModel2(y~x,random=z)
+m$reml.residuals <- m$qr <- NULL
+m
 
 ### mixedModel2Fit
 
-y <- c(-1,1,-2,2,0.5)
-X <- matrix(1,5,1)
-Z <- model.matrix(~factor(c(1,1,2,2,3))-1)
-mixedModel2Fit(y,X,Z)
+y <- c(-1,1,-2,2,0.5,1.7,-0.1)
+X <- matrix(1,7,1)
+Z <- model.matrix(~0+factor(c(1,1,2,2,3,3,4)))
+m <- mixedModel2Fit(y,X,Z)
+m$reml.residuals <- m$qr <- NULL
+m
 
 ### qresiduals
 
@@ -50,3 +54,26 @@ fit <- glm.nb(Days~Age,link=log,data = quine)
 print(summary(qresiduals(fit)))
 }
 
+### gauss.quad
+
+options(digits=10)
+g <- gauss.quad(5,"legendre")
+zapsmall(data.frame(g),digits=15)
+g <- gauss.quad(5,"chebyshev1")
+zapsmall(data.frame(g),digits=15)
+g <- gauss.quad(5,"chebyshev2")
+zapsmall(data.frame(g),digits=15)
+g <- gauss.quad(5,"hermite")
+zapsmall(data.frame(g),digits=15)
+g <- gauss.quad(5,"laguerre",alpha=5)
+zapsmall(data.frame(g),digits=15)
+g <- gauss.quad(5,"jacobi",alpha=5,beta=1.1)
+zapsmall(data.frame(g),digits=15)
+g <- gauss.quad.prob(5,dist="uniform")
+zapsmall(data.frame(g),digits=15)
+g <- gauss.quad.prob(5,dist="normal")
+zapsmall(data.frame(g),digits=15)
+g <- gauss.quad.prob(5,dist="beta")
+zapsmall(data.frame(g),digits=15)
+g <- gauss.quad.prob(5,dist="gamma")
+zapsmall(data.frame(g),digits=15)

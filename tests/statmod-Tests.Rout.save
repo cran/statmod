@@ -1,8 +1,8 @@
 
-R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
+R version 2.15.1 Patched (2012-09-16 r60736) -- "Roasted Marshmallows"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
-Platform: i386-pc-mingw32/i386 (32-bit)
+Platform: i386-w64-mingw32/i386 (32-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -138,17 +138,12 @@ $convergence
 > y <- rnorm(6)
 > x <- rnorm(6)
 > z <- c(1,1,2,2,3,3)
-> mixedModel2(y~x,random=z)
+> m <- mixedModel2(y~x,random=z)
+> m$reml.residuals <- m$qr <- NULL
+> m
 $varcomp
   Residual      Block 
  0.4541410 -0.1830805 
-
-$reml.residuals
-           [,1]
-[1,] -0.9986108
-[2,] -1.0304595
-[3,] -1.3751171
-[4,] -0.2236154
 
 $se.varcomp
 [1] 0.3764600 0.1997047
@@ -176,31 +171,6 @@ $rank
 $assign
 NULL
 
-$qr
-$qr
-       (Intercept)          x
-[1,]  8.258170e+00  2.8499558
-[2,]  5.773503e-01  6.2248218
-[3,]  5.773503e-01 -0.9371695
-[4,] -1.994946e-17 -0.1206563
-[5,] -3.989891e-17  0.1406694
-[6,] -3.989891e-17  0.1023403
-
-$qraux
-[1] 1.577350 1.277298
-
-$pivot
-[1] 1 2
-
-$tol
-[1] 1e-07
-
-$rank
-[1] 2
-
-attr(,"class")
-[1] "qr"
-
 $df.residual
 [1] 4
 
@@ -210,40 +180,35 @@ $se.coefficients
 > 
 > ### mixedModel2Fit
 > 
-> y <- c(-1,1,-2,2,0.5)
-> X <- matrix(1,5,1)
-> Z <- model.matrix(~factor(c(1,1,2,2,3))-1)
-> mixedModel2Fit(y,X,Z)
+> y <- c(-1,1,-2,2,0.5,1.7,-0.1)
+> X <- matrix(1,7,1)
+> Z <- model.matrix(~0+factor(c(1,1,2,2,3,3,4)))
+> m <- mixedModel2Fit(y,X,Z)
+> m$reml.residuals <- m$qr <- NULL
+> m
 $varcomp
  Residual     Block 
- 3.139385 -1.569692 
-
-$reml.residuals
-              [,1]
-[1,] -1.675893e-13
-[2,]  3.990825e-01
-[3,] -4.427007e-01
-[4,] -1.728975e+00
+ 2.923462 -1.098564 
 
 $se.varcomp
-[1] 2.565233 1.282617
+[1] 2.195145 1.177909
 
 $coefficients
-          x1 
-4.651561e-08 
+       x1 
+0.3376358 
 
 $residuals
-[1]  6.578301e-08  6.578301e-08 -5.000000e-01  1.000000e+00  3.000000e+00
+[1]  0.4774892 -1.0781457  0.4774892  0.4376358  1.5213203  2.7213203 -1.0000000
 
 $fitted.values
-[1] -6.578301e-08 -6.578301e-08 -4.651561e-08  0.000000e+00  0.000000e+00
+[1] -0.4774892 -0.4774892 -0.4774892 -0.3376358  0.0000000  0.0000000  0.0000000
 
 $effects
-           x1                                                         
- 1.217242e-04  5.041983e-05 -3.990825e-01  5.643880e-01  1.693164e+00 
+        x1                                                                   
+ 1.0020814 -1.4659700  0.3593523  0.2343331  0.8897582  1.5915892 -0.5848592 
 
 $weights
-[1] 1.711972e+06 1.711972e+06 6.370674e-01 3.185338e-01 3.185338e-01
+[1] 1.3767775 1.3767775 1.3767775 0.5479759 0.3420603 0.3420603 0.3420603
 
 $rank
 [1] 1
@@ -251,35 +216,11 @@ $rank
 $assign
 NULL
 
-$qr
-$qr
-              [,1]
-[1,]  2.616847e+03
-[2,]  7.071067e-01
-[3,]  3.050102e-04
-[4,] -2.394471e-20
-[5,]  2.394471e-20
-
-$qraux
-[1] 1.707107
-
-$pivot
-[1] 1
-
-$tol
-[1] 1e-07
-
-$rank
-[1] 1
-
-attr(,"class")
-[1] "qr"
-
 $df.residual
-[1] 4
+[1] 6
 
 $se.coefficients
-[1] 0.0003821393
+[1] 0.3369346
 
 > 
 > ### qresiduals
@@ -308,7 +249,90 @@ Loading required package: MASS
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 -2.90900 -0.52600 -0.02938 -0.01204  0.67880  2.45600 
 > 
+> ### gauss.quad
+> 
+> options(digits=10)
+> g <- gauss.quad(5,"legendre")
+> zapsmall(data.frame(g),digits=15)
+          nodes      weights
+1 -0.9061798459 0.2369268851
+2 -0.5384693101 0.4786286705
+3  0.0000000000 0.5688888889
+4  0.5384693101 0.4786286705
+5  0.9061798459 0.2369268851
+> g <- gauss.quad(5,"chebyshev1")
+> zapsmall(data.frame(g),digits=15)
+          nodes      weights
+1 -0.9510565163 0.6283185307
+2 -0.5877852523 0.6283185307
+3  0.0000000000 0.6283185307
+4  0.5877852523 0.6283185307
+5  0.9510565163 0.6283185307
+> g <- gauss.quad(5,"chebyshev2")
+> zapsmall(data.frame(g),digits=15)
+          nodes      weights
+1 -0.8660254038 0.1308996939
+2 -0.5000000000 0.3926990817
+3  0.0000000000 0.5235987756
+4  0.5000000000 0.3926990817
+5  0.8660254038 0.1308996939
+> g <- gauss.quad(5,"hermite")
+> zapsmall(data.frame(g),digits=15)
+          nodes       weights
+1 -2.0201828705 0.01995324206
+2 -0.9585724646 0.39361932315
+3  0.0000000000 0.94530872048
+4  0.9585724646 0.39361932315
+5  2.0201828705 0.01995324206
+> g <- gauss.quad(5,"laguerre",alpha=5)
+> zapsmall(data.frame(g),digits=15)
+         nodes        weights
+1  2.510558565 18.05274373485
+2  5.115656536 63.52567706777
+3  8.635874626 34.74331388323
+4 13.417467882  3.63334627180
+5 20.320442391  0.04491904235
+> g <- gauss.quad(5,"jacobi",alpha=5,beta=1.1)
+> zapsmall(data.frame(g),digits=15)
+          nodes       weights
+1 -0.8844049819 0.40981005618
+2 -0.6382606000 1.16318993548
+3 -0.2943950347 0.93716413992
+4  0.1024254205 0.26378902100
+5  0.5034550719 0.01840428809
+> g <- gauss.quad.prob(5,dist="uniform")
+> zapsmall(data.frame(g),digits=15)
+          nodes      weights
+1 0.04691007703 0.1184634425
+2 0.23076534495 0.2393143352
+3 0.50000000000 0.2844444444
+4 0.76923465505 0.2393143352
+5 0.95308992297 0.1184634425
+> g <- gauss.quad.prob(5,dist="normal")
+> zapsmall(data.frame(g),digits=15)
+         nodes       weights
+1 -2.856970014 0.01125741133
+2 -1.355626180 0.22207592201
+3  0.000000000 0.53333333333
+4  1.355626180 0.22207592201
+5  2.856970014 0.01125741133
+> g <- gauss.quad.prob(5,dist="beta")
+> zapsmall(data.frame(g),digits=15)
+          nodes      weights
+1 0.04691007703 0.1184634425
+2 0.23076534495 0.2393143352
+3 0.50000000000 0.2844444444
+4 0.76923465505 0.2393143352
+5 0.95308992297 0.1184634425
+> g <- gauss.quad.prob(5,dist="gamma")
+> zapsmall(data.frame(g),digits=15)
+          nodes         weights
+1  0.2635603197 5.217556106e-01
+2  1.4134030591 3.986668111e-01
+3  3.5964257710 7.594244968e-02
+4  7.0858100059 3.611758680e-03
+5 12.6408008443 2.336997239e-05
 > 
 > proc.time()
    user  system elapsed 
-   0.24    0.01    0.25 
+   0.26    0.01    0.26 
