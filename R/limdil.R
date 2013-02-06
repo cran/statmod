@@ -1,13 +1,13 @@
 #  LIMDIL.R
 
-elda <- limdil <- function (response, dose, tested = rep(1, length(response)), group=rep(1,length(response)),observed = FALSE, confidence = 0.95, test.unit.slope = FALSE) 
+elda <- limdil <- function(response, dose, tested = rep(1, length(response)), group=rep(1,length(response)), observed = FALSE, confidence = 0.95, test.unit.slope = FALSE) 
 #	Limiting dilution analysis
 #	Gordon Smyth, Yifang Hu
-#	21 June 2005. Last revised 12 October 2009.
+#	21 June 2005. Last revised 6 February 2013.
 {
-	group <- as.factor(group)
+	group <- factor(group)
 
-	alpha <- 1 - confidence
+	size <- 1 - confidence
 	out <- list()
 	f <- binomial(link = "cloglog")
 	f$aic <- quasi()$aic
@@ -15,8 +15,8 @@ elda <- limdil <- function (response, dose, tested = rep(1, length(response)), g
 	if (any(y < 0)) stop("Negative values for response or tested")
 	if (any(y > 1)) stop("The response cannot be greater than the number tested")
 
-	num.group<-length(levels(group))
-	groupLevel<-levels(group)
+	num.group <- length(levels(group))
+	groupLevel <- levels(group)
 
 	out$response <- response
 	out$tested <- tested
@@ -24,294 +24,265 @@ elda <- limdil <- function (response, dose, tested = rep(1, length(response)), g
 	out$group <- group
 	out$num.group <- num.group
 	class(out) <- "limdil"
-	
-	if(num.group==1)
-	{
-		tmp <- (group == groupLevel[1])
-		index<-which(tmp==TRUE)
-		y.element<-response[index]/tested[index]
 
-		if(all(y.element<1e-15))
-		{
-		 	N <- sum(dose[index] * tested[index])
-			if (observed) U <- 1 - alpha^(1/N)
-			else U <- -log(alpha)/N
-			out$CI<-c(Lower = Inf, Estimate = Inf, Upper = 1/U)
-			if (test.unit.slope) out$test.unit.slope<- c(Chisq = NA, P.value = NA, df=1)
-	   
-			return(out)
-		}
-		
-		if(all(1- y.element<1e-15))
-		{
-			U <- .limdil.allpos(tested=tested[index],dose=dose[index],confidence=confidence,observed=observed)
-			out$CI<- c(Lower = 1/U, Estimate = 1, Upper = 1)
-			if (test.unit.slope) out$test.unit.slope<- c(Chisq = NA, P.value = NA, df=1)
+	out$CI <- matrix(nrow=num.group,ncol=3)
+	colnames(out$CI) <- c("Lower","Estimate","Upper")
+	rownames(out$CI) <- paste("Group",levels(group))
 
-			return(out)
-		}
-	
-	
-		fit0 <- glm(y ~ offset(log(dose)), family = f, weights = tested)
-		s <- summary(fit0)
-		Estimate <- s$coef[, "Estimate"]
-		SE <- s$coef[, "Std. Error"]
-		z <- qnorm(alpha/2, lower.tail = FALSE)
-		CI <- c(Lower = Estimate - z * SE, Estimate = Estimate, Upper = Estimate + z * SE)
-
-		if (observed) Frequency <- 1 - exp(-exp(CI))
-		else Frequency <- exp(CI)
-		out$CI <- 1/Frequency
-		if (test.unit.slope && length(response) > 1)
-		{
-			fit1 <- glm(y ~ log(dose), family = f, weights = tested)
-			dev <- fit0$deviance - fit1$deviance
-			p.value <- pchisq(dev, df = 1, lower.tail = FALSE)
-			
-			fit1.slope <- glm(y~offset(log(dose))+log(dose),family=binomial(link="cloglog"),weights=tested)
-			s.slope<-summary(fit1.slope)
-			est.slope<-1+s.slope$coef["log(dose)","Estimate"]
-			se.slope<-s.slope$coef["log(dose)", "Std. Error"]
-			se.z<-s.slope$coef["log(dose)", "z value"]
-			se.p<-s.slope$coef["log(dose)", "Pr(>|z|)"]
-			out$test.slope.wald <- c("Estimate"=est.slope, "Std. Error"=se.slope, "z value"=se.z,"Pr(>|z|)"=se.p)
-			out$test.slope.lr<- c("Estimate"=NA, "Std. Error"=NA, "z value"=sqrt(dev)*sign((est.slope)-1),"Pr(>|z|)"=p.value)
-			
-			fit2.slope <- glm(y~offset(log(dose)),family=binomial(link="cloglog"),weights=tested)
-			x2 <- cbind(LDose=log(dose),Dose=dose)
-			scores<-glm.scoretest(fit2.slope,x2)
-			scores.p<-pchisq(scores^2,df=1,lower.tail=FALSE)			
-			out$test.slope.scorel<-c("Estimate"= NA, "Std. Error"=NA, "z value"=scores[1],"Pr(>|z|)"=scores.p[1])
-			out$test.slope.score<-c("Estimate"= NA, "Std. Error"=NA, "z value"=scores[2],"Pr(>|z|)"=scores.p[2])
-		
-		}
+#	Groupwise frequency estimates
+	deviance0 <- dloglik.logdose <- FisherInfo.logdose <- dloglik.dose <- FisherInfo.dose <- 0
+	for(i in 1:num.group) {
+		index <- (group == groupLevel[i])
+		fit0 <- eldaOneGroup(response=response[index],dose=dose[index],tested=tested[index],observed=observed,confidence=confidence,trace=FALSE)
+		deviance0 <- deviance0 + fit0$deviance
+		dloglik.logdose <- dloglik.logdose + fit0$dloglik.logdose
+		FisherInfo.logdose <- FisherInfo.logdose + fit0$FisherInfo.logdose
+		dloglik.dose <- dloglik.dose + fit0$dloglik.dose
+		FisherInfo.dose <- FisherInfo.dose + fit0$FisherInfo.dose
+		out$CI[i,] <- fit0$CI.frequency
 	}
 
-	if(num.group>1)
-	{
-		y.element.all<-response/tested
-		
-		if(all(y.element.all<1e-15) || all(1-y.element.all<1e-15))
-		{
-			out$CI<-matrix(nrow=num.group,ncol=3)
-			colnames(out$CI)<-c("Lower","Estimate","Upper")
-			rownames(out$CI)<-paste("Group",groupLevel)
-			
-			for(i in 1:num.group)
-			{
-	 			tmp <- (group == groupLevel[i])
-				index<-which(tmp==TRUE)
-				y.element<-response[index]/tested[index]
-				
-				if(all(y.element<1e-15))
-				{
-					N <- sum(dose[index] * tested[index])
-					if (observed) U <- 1 - alpha^(1/N)
-					else U <- -log(alpha)/N
-					out$CI[i,]<-c(Lower = Inf, Estimate = Inf, Upper = 1/U)
-				}
-					
-				if(all(1- y.element<1e-15))
-				{
-					U <- .limdil.allpos(tested=tested[index],dose=dose[index],confidence=confidence,observed=observed)
-					out$CI[i,]<- c(Lower = 1/U, Estimate = 1, Upper = 1)
-					
-				}
-			}	
-			out$test.difference<-c(Chisq = 0, P.value = 1, df=num.group-1)
-			if (test.unit.slope) out$test.unit.slope<- c(Chisq = NA, P.value = NA, df=1)
-			
-			return(out)
-		}
-	
-		fit0 <- glm(y ~ offset(log(dose))+group-1, family = f, weights = tested)
-		s <- summary(fit0)
-		Estimate <- s$coef[, "Estimate"]
-		SE <- s$coef[, "Std. Error"]
-		z <- qnorm(alpha/2, lower.tail = FALSE)
-		CI <- cbind(Lower = Estimate - z * SE, Estimate = Estimate, Upper = Estimate + z * SE)
-		if (observed) Frequency <- 1 - exp(-exp(CI))
-		else Frequency <- exp(CI)
-		out$CI <- 1/Frequency
-		rownames(out$CI)<-paste("Group",levels(group))
-
-		fit2 <- glm(y~offset(log(dose))+group,family=f,weights=tested)
-		dev.g <- fit2$null.deviance-fit2$deviance
-		if(dev.g<0) dev.g<-0
-		group.p <- pchisq(dev.g,df=num.group-1,lower.tail=FALSE)
-		out$test.difference<-c(Chisq = dev.g, P.value = group.p, df=num.group-1)
-
-		if (test.unit.slope && length(response) > 1)
-		{
-			fit3 <- glm(y ~ log(dose)+group, family = f, weights = tested)
-			dev <- fit2$deviance - fit3$deviance
-			slope.p <- pchisq(dev, df = 1, lower.tail = FALSE)
-			
-			fit1.slope <- glm(y~offset(log(dose))+group+log(dose),family=binomial(link="cloglog"),weights=tested)
-						
-			s.slope<-summary(fit1.slope)
-			est.slope<-1+s.slope$coef["log(dose)","Estimate"]
-			se.slope<-s.slope$coef["log(dose)", "Std. Error"]
-			se.z<-s.slope$coef["log(dose)", "z value"]
-			se.p<-s.slope$coef["log(dose)", "Pr(>|z|)"]
-			
-			out$test.slope.wald <- c("Estimate"=est.slope, "Std. Error"=se.slope, "z value"=se.z,"Pr(>|z|)"=se.p)
-			out$test.slope.lr<- c("Estimate"=NA, "Std. Error"=NA, "z value"=sqrt(dev)*sign((est.slope)-1),"Pr(>|z|)"=slope.p)
-		
-			fit2.slope <- glm(y~offset(log(dose))+group,family=binomial(link="cloglog"),weights=tested)
-			x2 <- cbind(LDose=log(dose),Dose=dose)
-			scores<-glm.scoretest(fit2.slope,x2)
-			scores.p<-pchisq(scores^2,df=1,lower.tail=FALSE)
-			
-			out$test.slope.scorel<-c("Estimate"= NA, "Std. Error"=NA, "z value"=scores[1],"Pr(>|z|)"=scores.p[1])
-			out$test.slope.score<-c("Estimate"= NA, "Std. Error"=NA, "z value"=scores[2],"Pr(>|z|)"=scores.p[2])
-		}
-	}
-	
-
-	for(i in 1:num.group)
-	{
-	 	tmp <- (group == groupLevel[i])
-		index<-which(tmp==TRUE)
-		y.element<-response[index]/tested[index]
-
-		if(all(y.element<1e-15))
-		{
-		 	N <- sum(dose[index] * tested[index])
-			if (observed) U <- 1 - alpha^(1/N)
-			else U <- -log(alpha)/N
-			out$CI[i,]<-c(Lower = Inf, Estimate = Inf, Upper = 1/U)
-		}
-
-		if(all(1- y.element<1e-15))
-		{
-			U <- .limdil.allpos(tested=tested[index],dose=dose[index],confidence=confidence,observed=observed)
-			out$CI[i,]<- c(Lower = 1/U, Estimate = 1, Upper = 1)
-		}
+#	Test for difference between groups
+	if(num.group>1) {
+		fitequal <- eldaOneGroup(response=response,dose=dose,tested=tested,observed=observed,confidence=confidence,trace=FALSE)
+		dev.g <- pmax(fitequal$deviance - deviance0, 0)
+		group.p <- pchisq(dev.g, df=num.group-1, lower.tail=FALSE)
+		out$test.difference <- c(Chisq=dev.g, P.value=group.p, df=num.group-1)
 	}
 
-	return(out)
+#	Test for unit slope
+	if(test.unit.slope)
+	if(FisherInfo.logdose > 1e-15) {
 
+#		Wald test
+		if(num.group>1)
+			fit.slope <- suppressWarnings(glm(y~group+log(dose), family=f, weights=tested))
+		else
+			fit.slope <- suppressWarnings(glm(y~log(dose), family=f, weights=tested))
+		s.slope <- summary(fit.slope)
+		est.slope <- s.slope$coef["log(dose)","Estimate"]
+		se.slope <- s.slope$coef["log(dose)", "Std. Error"]
+		z.wald <- (est.slope-1)/se.slope
+		p.wald <- 2*pnorm(-abs(z.wald))
+		out$test.slope.wald <- c("Estimate"=est.slope, "Std. Error"=se.slope, "z value"=z.wald, "Pr(>|z|)"=p.wald)
+
+#		Likelihood ratio test
+		dev <- pmax(deviance0 - fit.slope$deviance,0)
+		z.lr <- sqrt(dev)*sign(z.wald)
+		p.lr <- pchisq(dev, df = 1, lower.tail = FALSE)
+		out$test.slope.lr <- c("Estimate"=NA, "Std. Error"=NA, "z value"=z.lr, "Pr(>|z|)"=p.lr)
+
+#		Score tests for log(dose) and dose
+		z.score.logdose <- dloglik.logdose / sqrt(FisherInfo.logdose)
+		p.score.logdose <- 2*pnorm(-abs(z.score.logdose))
+		z.score.dose <- dloglik.dose / sqrt(FisherInfo.dose)
+		p.score.dose <- 2*pnorm(-abs(z.score.dose))
+		out$test.slope.score.logdose <- c("Estimate"= NA, "Std. Error"=NA, "z value"=z.score.logdose,"Pr(>|z|)"=p.score.logdose)
+		out$test.slope.score.dose <- c("Estimate"= NA, "Std. Error"=NA, "z value"=z.score.dose,"Pr(>|z|)"=p.score.dose)
+
+	} else {
+		out$test.slope.wald <- out$test.slope.lr <- out$test.slope.score.logdose <- out$test.slope.score.dose  <- c("Estimate"=NA, "Std. Error"=NA, "z value"=NA, "Pr(>|z|)"=1)
+	}
+
+	out
 }
 
 print.limdil <- function(x, ...)
-{
-#	Print limiting dilution analysis
+#	Print method for limdil objects
 #	Yifang Hu and Gordon Smyth
-#	20 February 2009. Last revised 12 October 2009.
-
+#	20 February 2009. Last revised 31 January 2013.
+{
 	cat("Confidence intervals for frequency:\n\n")
 	print(x$CI)
-	cat("\n")
-	difference<-NULL
-	wald<-NULL
-	lr<-NULL
-	scorel<-NULL
-	score<-NULL
 	
-	if(is.null(x$test.difference)!=TRUE) 
-	{
-		difference<-x$test.difference
-		cat("Differences between groups:\n")
-		cat("Chisq",difference[1], "on", difference[3], "DF, p-value:", format.pval(difference[2],4), "\n\n")
+	if(!is.null(x$test.difference)) {
+		difference <- x$test.difference
+		cat("\nDifferences between groups:\n")
+		cat("Chisq",difference[1], "on", difference[3], "DF, p-value:", format.pval(difference[2],4), "\n")
 	}
-	
-	if(is.null(x$test.slope.wald)!=TRUE) 
-	{
-		
-		wald<-x$test.slope.wald
-		lr<-x$test.slope.lr
-		scorel<-x$test.slope.scorel
-		score <-x$test.slope.score
-		
-		a <- data.frame(rbind(wald,lr,scorel,score))
-		colnames(a)<-c("Estimate","Std. Error","z value","Pr(>|z|)")
-		rownames(a)<-c("Wald test","LR test", "Score test", "Score test: Dose")
-		
-		cat("Goodness of fit (test log-Dose slope equals 1): \n")
+
+	if(!is.null(x$test.slope.wald)) {
+		a <- rbind(x$test.slope.wald, x$test.slope.lr, x$test.slope.score.logdose, x$test.slope.score.dose)
+		a <- data.frame(a, check.names=FALSE)
+		rownames(a) <- c("Wald test", "LR test", "Score test: log(Dose)", "Score test: Dose")
+		cat("\nGoodness of fit (test log-Dose slope equals 1):\n")
 		suppressWarnings(printCoefmat(a,tst.ind=1,has.Pvalue=TRUE,P.values=TRUE))
 	}
 }
 
-plot.limdil <- function(x, col.group=NULL, ...)
-#	Plot limiting dilution analysis
+plot.limdil <- function(x, col.group=NULL, cex=1, lwd=1, legend.pos="bottomleft", ...)
+#	Plot method for limdil objects
 #	Yifang Hu and Gordon Smyth
-#	20 February 2009. Last revised 23 February 2009.
+#	20 February 2009.  Last revised 6 February 2013.
 {
-	num.group<-length(levels(x$group))
-	if(is.null(col.group)) col.group <- 1:num.group
+	x$group <- factor(x$group)
+	num.group <- nlevels(x$group)
+	if(is.null(col.group)) 
+		col.group <- 1:num.group
+	else
+		col.group <- rep(col.group,num.group)
 
 	col <- x$group
 	levels(col) <- col.group
-	col <- as.vector(col)
-	dose<-x$dose
-	maxx<-max(dose)	
+	col <- as.character(col)
+	dose <- x$dose
+	maxx <- max(dose)	
 	
-	if(any(x$response==x$tested)==TRUE)
-	{
-		i<-which(x$response==x$tested)
-		x$response[i]<-x$response[i]-0.5
+	i <- x$response==x$tested
+	x$response[i] <- x$response[i]-0.5
 
-		nonres<-log(1-x$response/x$tested)
-		if(num.group>1) nonres<-pmin(0,jitter(nonres))
+	nonres <- log(1-x$response/x$tested)
+	if(num.group>1 && any(i)) nonres <- pmin(0,jitter(nonres))
 		
-		miny<-min(nonres)
+	miny <- min(nonres)
+	plot(x=1,y=1,xlim=c(0,maxx),ylim=c(min(miny,-0.5),0),xlab="dose (number of cells)",ylab="log fraction nonresponding",type="n",...)
+	points(dose[!i],nonres[!i],pch=1,col=col[!i],cex=cex)
+	points(dose[i],nonres[i],pch=6,col=col[i],cex=cex)
 
-		plot(dose[-i],nonres[-i],xlim=c(0,maxx),ylim=c(min(miny,-0.5),0),xlab="dose (number of cells)",ylab="log fraction nonresponding", col=col[-i],...)
-		points(dose[i],nonres[i],pch=6,col=col[i],...)
+	for(g in 1:num.group) {
+		abline(a=0,b=-1/x$CI[g,2],col=col.group[g],lty=1,lwd=lwd)
+		abline(a=0,b=-1/x$CI[g,1],col=col.group[g],lty=2,lwd=lwd)
+		abline(a=0,b=-1/x$CI[g,3],col=col.group[g],lty=2,lwd=lwd)
 	}
-	else
-	{
-		nonres<-log(1-x$response/x$tested)
-		miny<-min(nonres)
-		if(num.group>1) nonres<-pmin(0,jitter(nonres))		
-		plot(dose,nonres,,xlim=c(0,maxx),ylim=c(min(miny,-0.5),0),xlab="dose (number of cells)",ylab="log fraction nonresponding", col=col, ...)
-	}
-
-	if(num.group==1)
-	{	
-		abline(a=0,b=-exp(log(1/(x$CI[2]))),col=col.group, lty=1,...)
-		abline(a=0,b=-exp(log(1/(x$CI[1]))),col=col.group, lty=2,...)
-		abline(a=0,b=-exp(log(1/(x$CI[3]))),col=col.group, lty=2,...)
-	}
-	else
-	{
-		for(i in 1:num.group)
-		{
-			abline(a=0,b=-exp(log(1/(x$CI[i,2]))),col=col.group[i],lty=1,...)
-			abline(a=0,b=-exp(log(1/(x$CI[i,1]))),col=col.group[i],lty=2,...)
-			abline(a=0,b=-exp(log(1/(x$CI[i,3]))),col=col.group[i],lty=2,...)
-
-		}
-		legend("bottomleft",legend=paste("Group",levels(x$group)),col=col.group,text.col=col.group,cex=0.6, ...)
-	}
+	if(num.group>1) legend(legend.pos,legend=paste("Group",levels(x$group)),text.col=col.group,cex=0.6*cex)
+	invisible(list(x=dose,y=nonres,group=x$group))
 }
 
 .limdil.allpos <- function(tested, dose, confidence, observed)
-#	Yifang Hu. 18 March 2009.
+#	One-sided confidence interval when all assays are positive
+#	Uses globally convergent Newton iteration
+#	Yifang Hu.
+#	Created 18 March 2009.  Last modified 18 Dec 2012.
 {
 	alpha <- 1 - confidence
 
 	dosem <- min(dose)
-	tested.group<-tested
+	tested.group <- tested
 	tested.sum <- sum(tested.group[dose == dosem])
 	beta <- log(-log(1 - alpha^(1/tested.sum))) - log(dosem)
 
-	if (observed) U <- 1 - exp(-exp(beta))
-	else U <- exp(beta)
+#	Starting value
+	lambda <- exp(beta)
+	if(observed) lambda <- -expm1(lambda)
 
-	lambda <- U
-	
-	repeat
-	{
-		if(observed) f <- sum(tested*log(1-(1-lambda)^dose))-log(alpha)
-		else f <- sum(tested*log(1-exp(-lambda*dose)))-log(alpha)
-		if(observed) deriv <- sum(tested*(-dose)*(1-lambda)^(dose-1)/(1-(1-lambda)^dose)) 
-		else deriv <- sum(tested*dose*exp(-dose*lambda)/(1-exp(-dose*lambda)))
+#	Newton-iteration
+	repeat {
+		if(observed)
+			f <- sum(tested*log(1-(1-lambda)^dose))-log(alpha)
+		else
+			f <- sum(tested*log(1-exp(-lambda*dose)))-log(alpha)
+		if(observed)
+			deriv <- sum(tested*(-dose)*(1-lambda)^(dose-1)/(1-(1-lambda)^dose)) 
+		else
+			deriv <- sum(tested*dose*exp(-dose*lambda)/(1-exp(-dose*lambda)))
 		step <- f/deriv
 		lambda <- lambda-step
-		if(-step < 1e-6)
-			break
+		if(-step < 1e-6) break
 	}
 	lambda
+}
+
+eldaOneGroup <- function(response,dose,tested,observed=FALSE,confidence=0.95,tol=1e-8,maxit=100,trace=FALSE)
+#	Estimate active cell frequency from LDA data
+#	using globally convergent Newton iteration
+#	Gordon Smyth
+#	5 Dec 2012.  Last modified 30 Jan 2013.
+{
+	y <- response
+	n <- tested
+	d <- dose
+	phat <- y/n
+	size <- 1-confidence
+
+#	Special case of all negative responses
+	if(all(y < 1e-14)) {
+	 	N <- sum(dose*tested)
+		if (observed)
+			U <- 1 - size^(1/N)
+		else
+			U <- -log(size)/N
+		out <- list()
+		out$CI.frequency <- c(Lower = Inf, Estimate = Inf, Upper = 1/U)
+		out$deviance <- out$dloglik.logdose <- out$FisherInfo.logdose <- out$dloglik.dose <- out$FisherInfo.dose <- 0
+		return(out)
+	}
+
+#	Special case of all positive responses
+	if(all(phat > 1-1e-14)) {
+		U <- .limdil.allpos(tested=tested,dose=dose,confidence=confidence,observed=observed)
+		out <- list()
+		out$CI.frequency <- c(Lower = 1/U, Estimate = 1, Upper = 1)
+		out$deviance <- out$dloglik.logdose <- out$FisherInfo.logdose <- out$dloglik.dose <- out$FisherInfo.dose <- 0
+		return(out)
+	}
+
+#	Starting value guaranteed to be left of the solution
+	pmean <- mean(y)/mean(n)
+	lambda <- -log1p(-pmean) / max(d)
+	if(trace) cat(0,lambda,1/lambda,"\n")
+
+#	Globally convergent Newton iteration
+	iter <- 0
+	repeat{
+		iter <- iter+1
+		if(iter > maxit) {
+			warning("max iterations exceeded")
+			break
+		}
+		p <- -expm1(-lambda*d)
+		onemp <- exp(-lambda*d)
+
+#		First derivative
+		dloglik.lambda <- mean(n*d*(phat-p)/p)
+
+#		Second derivative
+		d2loglik.lambda <- -mean(n*phat*d*d*onemp/p/p)
+
+#		Newton step
+		step <- dloglik.lambda / d2loglik.lambda
+		lambda <- lambda - step
+		if(trace) cat(iter,lambda,1/lambda,step,"\n")
+		if(abs(step) < tol) break
+	}
+
+#	Wald confidence interval for alpha
+	alpha <- log(lambda)
+	p <- -expm1(-lambda*d)
+	onemp <- exp(-lambda*d)
+	FisherInfo.alpha <- sum(n*d*d*onemp/p)*lambda^2
+	SE.alpha <- 1/sqrt(FisherInfo.alpha)
+	z <- qnorm( (1-confidence)/2, lower.tail=FALSE )
+	CI.alpha <- c(Lower=alpha-z*SE.alpha,Estimate=alpha,Upper=alpha+z*SE.alpha)
+
+#	Wald confidence interval for frequency
+	if(observed)
+		CI.frequency <- -1/expm1(-exp(CI.alpha))
+	else
+		CI.frequency <- exp(-CI.alpha)
+
+#	Deviance
+	f <- binomial(link="cloglog")
+	deviance <- sum(f$dev.resid(phat,p,n))
+
+#	Score test for log(dose) unit slope
+	v <- p*onemp/n
+	x <- log(d)
+	eta <- alpha+x
+	mu.eta <- f$mu.eta(eta)
+	info.alpha <- mu.eta^2/v
+	xmean <- sum(x*info.alpha)/sum(info.alpha)
+	mu.beta <- (x-xmean)*mu.eta
+	dloglik.beta <- sum(mu.beta*(phat-p)/v)
+	FisherInfo.beta <- sum(mu.beta^2/v)
+	z.scoretest <- dloglik.beta/sqrt(FisherInfo.beta)
+
+#	Score test for dose
+	x <- d
+	xmean <- sum(x*info.alpha)/sum(info.alpha)
+	mu.beta <- (x-xmean)*mu.eta
+	dloglik.beta.dose <- sum(mu.beta*(phat-p)/v)
+	FisherInfo.beta.dose <- sum(mu.beta^2/v)
+	z.scoretest.dose <- dloglik.beta.dose/sqrt(FisherInfo.beta.dose)
+
+	list(p=p,lambda=lambda,alpha=alpha,CI.alpha=CI.alpha,CI.frequency=CI.frequency,deviance=deviance,iter=iter,z.scoretest=z.scoretest,z.scoretest.dose=z.scoretest.dose,dloglik.logdose=dloglik.beta,FisherInfo.logdose=FisherInfo.beta,dloglik.dose=dloglik.beta.dose,FisherInfo.dose=FisherInfo.beta.dose)
 }

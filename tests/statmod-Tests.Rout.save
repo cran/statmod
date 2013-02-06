@@ -333,6 +333,13 @@ Loading required package: MASS
 4  7.0858100059 3.611758680e-03
 5 12.6408008443 2.336997239e-05
 > 
+> ### extra tests done only locally
+> 
+> #GKSTest <- Sys.getenv("GKSTest")
+> #if(GKSTest=="on") {
+> #print("hello")
+> #}
+> 
 > proc.time()
    user  system elapsed 
-   0.26    0.01    0.26 
+   0.24    0.01    0.26 
