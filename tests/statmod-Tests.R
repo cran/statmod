@@ -77,3 +77,10 @@ g <- gauss.quad.prob(5,dist="beta")
 zapsmall(data.frame(g),digits=15)
 g <- gauss.quad.prob(5,dist="gamma")
 zapsmall(data.frame(g),digits=15)
+
+### extra tests done only locally
+
+#GKSTest <- Sys.getenv("GKSTest")
+#if(GKSTest=="on") {
+#print("hello")
+#}

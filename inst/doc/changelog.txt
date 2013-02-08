@@ -1,3 +1,22 @@
+30 January 2013: statmod 1.4.17
+
+- new function eldaOneGroup() to conduct limiting dilution analysis
+  when there is only one treatment group.  This function implements
+  a globally convergent Newton iteration to avoid occasional problems
+  with lack of convergence of the usual glm calculations.
+  
+- elda() (aka limdil) now call eldaOneGroup() to get confidence
+  intervals and score tests.  This improves the numerical reliability
+  of the function. 
+
+- more detail added to the elda() help page about the interpretations
+  of the goodness of fit tests.
+
+- new function forward() for forward selection in multiple regression
+  with an unlimited number of candidate covariates.
+
+- license upgraded to GPL from LGPL.
+
 28 September 2012: statmod 1.4.16
 
 - gauss.quad() and gauss.quad.prob() now use Fortran to solve

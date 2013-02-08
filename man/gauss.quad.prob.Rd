@@ -53,7 +53,7 @@ Smyth, G. K. (1998). Polynomial approximation. In: \emph{Encyclopedia of Biostat
 Stroud, AH, and Secrest, D (1966). \emph{Gaussian Quadrature Formulas}. Prentice-Hall, Englewood Cliffs, N.J.
 }
 
-\author{Gordon Smyth, based on Netlib Fortran code gauss.f, with corrections from Spencer Graves}
+\author{Gordon Smyth, using Netlib Fortran code \url{http://www.netlib.org/go/gaussq.f}, and including corrections suggested by Spencer Graves}
 
 \seealso{
 \code{\link[statmod:gauss.quad]{gauss.quad}}, \code{\link{integrate}}
