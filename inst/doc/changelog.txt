@@ -1,3 +1,15 @@
+27 September 2013: statmod 1.4.18
+
+- Update reference for permp().
+
+- bug fix to elda() so that it returns NA for the tests instead of
+  giving an error when the Fisher information for the slope isNA.
+
+- Exact roles of authors specified in DESCRIPTION file.
+
+- All usage lines in help files wrapped at 90 characters to ensure
+  that code is not truncated in pdf manual.
+
 30 January 2013: statmod 1.4.17
 
 - new function eldaOneGroup() to conduct limiting dilution analysis

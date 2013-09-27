@@ -1,6 +1,8 @@
 \name{mixedModel2}
 \alias{mixedModel2}
 \alias{mixedModel2Fit}
+\alias{randomizedBlock}
+\alias{randomizedBlockFit}
 
 \title{Fit Mixed Linear Model with 2 Error Components}
 \description{
@@ -8,8 +10,12 @@ Fits a mixed linear model by REML.  The linear model contains one random factor 
 }
 
 \usage{
-mixedModel2(formula, random, weights=NULL, only.varcomp=FALSE, data=list(), subset=NULL, contrasts=NULL, tol=1e-6, maxit=50, trace=FALSE)
+mixedModel2(formula, random, weights=NULL, only.varcomp=FALSE, data=list(),
+            subset=NULL, contrasts=NULL, tol=1e-6, maxit=50, trace=FALSE)
 mixedModel2Fit(y, X, Z, w=NULL, only.varcomp=FALSE, tol=1e-6, maxit=50, trace=FALSE)
+randomizedBlock(formula, random, weights=NULL, only.varcomp=FALSE, data=list(),
+            subset=NULL, contrasts=NULL, tol=1e-6, maxit=50, trace=FALSE)
+randomizedBlockFit(y, X, Z, w=NULL, only.varcomp=FALSE, tol=1e-6, maxit=50, trace=FALSE)
 }
 
 \arguments{
@@ -32,6 +38,8 @@ The arguments \code{y}, \code{X} and \code{w} have the same meaning as in \code{
 }
 
 \details{
+Note that \code{randomizedBlock} and \code{mixedModel2} are alternative names for the same function.
+
 This function fits the model \eqn{y=Xb+Zu+e} where \eqn{b} is a vector of fixed coefficients and \eqn{u} is a vector of random effects.
 Write \eqn{n} for the length of \eqn{y} and \eqn{q} for the length of \eqn{u}.
 The random effect vector \eqn{u} is assumed to be normal, mean zero, with covariance matrix \eqn{\sigma^2_uI_q} while \eqn{e} is normal, mean zero, with covariance matrix \eqn{\sigma^2I_n}.

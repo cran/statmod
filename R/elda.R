@@ -51,37 +51,39 @@ elda <- limdil <- function(response, dose, tested = rep(1, length(response)), gr
 	}
 
 #	Test for unit slope
-	if(test.unit.slope)
-	if(FisherInfo.logdose > 1e-15) {
+	if(test.unit.slope) {
+		if(is.na(FisherInfo.logdose)) FisherInfo.logdose <- 0
+		if(FisherInfo.logdose > 1e-15) {
 
-#		Wald test
-		if(num.group>1)
-			fit.slope <- suppressWarnings(glm(y~group+log(dose), family=f, weights=tested))
-		else
-			fit.slope <- suppressWarnings(glm(y~log(dose), family=f, weights=tested))
-		s.slope <- summary(fit.slope)
-		est.slope <- s.slope$coef["log(dose)","Estimate"]
-		se.slope <- s.slope$coef["log(dose)", "Std. Error"]
-		z.wald <- (est.slope-1)/se.slope
-		p.wald <- 2*pnorm(-abs(z.wald))
-		out$test.slope.wald <- c("Estimate"=est.slope, "Std. Error"=se.slope, "z value"=z.wald, "Pr(>|z|)"=p.wald)
+#			Wald test
+			if(num.group>1)
+				fit.slope <- suppressWarnings(glm(y~group+log(dose), family=f, weights=tested))
+			else
+				fit.slope <- suppressWarnings(glm(y~log(dose), family=f, weights=tested))
+			s.slope <- summary(fit.slope)
+			est.slope <- s.slope$coef["log(dose)","Estimate"]
+			se.slope <- s.slope$coef["log(dose)", "Std. Error"]
+			z.wald <- (est.slope-1)/se.slope
+			p.wald <- 2*pnorm(-abs(z.wald))
+			out$test.slope.wald <- c("Estimate"=est.slope, "Std. Error"=se.slope, "z value"=z.wald, "Pr(>|z|)"=p.wald)
 
-#		Likelihood ratio test
-		dev <- pmax(deviance0 - fit.slope$deviance,0)
-		z.lr <- sqrt(dev)*sign(z.wald)
-		p.lr <- pchisq(dev, df = 1, lower.tail = FALSE)
-		out$test.slope.lr <- c("Estimate"=NA, "Std. Error"=NA, "z value"=z.lr, "Pr(>|z|)"=p.lr)
+#			Likelihood ratio test
+			dev <- pmax(deviance0 - fit.slope$deviance,0)
+			z.lr <- sqrt(dev)*sign(z.wald)
+			p.lr <- pchisq(dev, df = 1, lower.tail = FALSE)
+			out$test.slope.lr <- c("Estimate"=NA, "Std. Error"=NA, "z value"=z.lr, "Pr(>|z|)"=p.lr)
 
-#		Score tests for log(dose) and dose
-		z.score.logdose <- dloglik.logdose / sqrt(FisherInfo.logdose)
-		p.score.logdose <- 2*pnorm(-abs(z.score.logdose))
-		z.score.dose <- dloglik.dose / sqrt(FisherInfo.dose)
-		p.score.dose <- 2*pnorm(-abs(z.score.dose))
-		out$test.slope.score.logdose <- c("Estimate"= NA, "Std. Error"=NA, "z value"=z.score.logdose,"Pr(>|z|)"=p.score.logdose)
-		out$test.slope.score.dose <- c("Estimate"= NA, "Std. Error"=NA, "z value"=z.score.dose,"Pr(>|z|)"=p.score.dose)
+#			Score tests for log(dose) and dose
+			z.score.logdose <- dloglik.logdose / sqrt(FisherInfo.logdose)
+			p.score.logdose <- 2*pnorm(-abs(z.score.logdose))
+			z.score.dose <- dloglik.dose / sqrt(FisherInfo.dose)
+			p.score.dose <- 2*pnorm(-abs(z.score.dose))
+			out$test.slope.score.logdose <- c("Estimate"= NA, "Std. Error"=NA, "z value"=z.score.logdose,"Pr(>|z|)"=p.score.logdose)
+			out$test.slope.score.dose <- c("Estimate"= NA, "Std. Error"=NA, "z value"=z.score.dose,"Pr(>|z|)"=p.score.dose)
 
-	} else {
-		out$test.slope.wald <- out$test.slope.lr <- out$test.slope.score.logdose <- out$test.slope.score.dose  <- c("Estimate"=NA, "Std. Error"=NA, "z value"=NA, "Pr(>|z|)"=1)
+		} else {
+			out$test.slope.wald <- out$test.slope.lr <- out$test.slope.score.logdose <- out$test.slope.score.dose  <- c("Estimate"=NA, "Std. Error"=NA, "z value"=NA, "Pr(>|z|)"=1)
+		}
 	}
 
 	out
