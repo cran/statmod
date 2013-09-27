@@ -10,9 +10,12 @@ Fit single-hit model to a dilution series using complementary log-log binomial r
 }
 
 \usage{
-elda(response, dose, tested=rep(1,length(response)), group=rep(1,length(response)), observed=FALSE, confidence=0.95, test.unit.slope=FALSE)
-limdil(response, dose, tested=rep(1,length(response)), group=rep(1,length(response)), observed=FALSE, confidence=0.95, test.unit.slope=FALSE)
-eldaOneGroup(response, dose, tested, observed=FALSE, confidence=0.95, tol=1e-8, maxit=100, trace=FALSE)
+elda(response, dose, tested=rep(1,length(response)), group=rep(1,length(response)),
+     observed=FALSE, confidence=0.95, test.unit.slope=FALSE)
+limdil(response, dose, tested=rep(1,length(response)), group=rep(1,length(response)),
+     observed=FALSE, confidence=0.95, test.unit.slope=FALSE)
+eldaOneGroup(response, dose, tested, observed=FALSE, confidence=0.95,
+     tol=1e-8, maxit=100, trace=FALSE)
 }
 
 \arguments{
@@ -29,15 +32,15 @@ eldaOneGroup(response, dose, tested, observed=FALSE, confidence=0.95, tol=1e-8, 
 }
 
 \details{
-These functions implement maximum likelihood analysis of limiting dilution data using methods proposed by Hu and Smyth (2009).
-The functions gracefully accommodate situations where 0\% or 100\% of the assays give positive results, which is why we call it "extreme" limiting dilution analysis.
-The functions provide the ability to test for differences in stem cell frequencies between groups, and to test goodness of fit in a number of ways.
-The methodology has been applied to the analysis of stem cell assays (Shackleton et al, 2006).
-
 \code{elda} and \code{limdil} are alternative names for the same function.
 (\code{limdil} was the older name before the 2009 paper by Hu and Smyth.)
 \code{eldaOneGroup} is a lower-level function that does the computations when there is just one group, using a globally convergent Newton iteration.
 It is called by the other functions.
+
+These functions implement maximum likelihood analysis of limiting dilution data using methods proposed by Hu and Smyth (2009).
+The functions gracefully accommodate situations where 0\% or 100\% of the assays give positive results, which is why we call it "extreme" limiting dilution analysis.
+The functions provide the ability to test for differences in stem cell frequencies between groups, and to test goodness of fit in a number of ways.
+The methodology has been applied to the analysis of stem cell assays (Shackleton et al, 2006).
 
 The statistical method is explained by Hu and Smyth (2009).
 A binomial generalized linear model is fitted for each group with cloglog link and offset \code{log(dose)}.
@@ -89,6 +92,7 @@ Hu, Y, and Smyth, GK (2009).
 ELDA: Extreme limiting dilution analysis for comparing depleted and enriched populations in stem cell and other assays.
 \emph{Journal of Immunological Methods} 347, 70-78.
 \url{http://dx.doi.org/10.1016/j.jim.2009.06.008}
+\url{http://www.statsci.org/smyth/pubs/ELDAPreprint.pdf}
 
 Shackleton, M., Vaillant, F., Simpson, K. J., Stingl, J., Smyth, G. K., Asselin-Labat, M.-L., Wu, L., Lindeman, G. J., and Visvader, J. E. (2006).
 Generation of a functional mammary gland from a single stem cell.

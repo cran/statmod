@@ -8,7 +8,8 @@ Provided for gamma glm with identity links or negative binomial glm with log-lin
 }
 \usage{
 glmgam.fit(X, y, coef.start=NULL, tol=1e-6, maxit=50, trace=FALSE)
-glmnb.fit(X, y, dispersion, offset=0, coef.start=NULL, start.method="mean", tol=1e-6, maxit=50, trace=FALSE)
+glmnb.fit(X, y, dispersion, offset=0, coef.start=NULL, start.method="mean",
+          tol=1e-6, maxit=50, trace=FALSE)
 }
 \arguments{
   \item{X}{design matrix, assumed to be of full column rank.  Missing values not allowed.}

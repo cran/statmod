@@ -4,7 +4,7 @@
 \title{Exact Binomial Tests For Comparing Two SAGE Libraries (Obsolete)}
 \description{
 This function is kept here so as not to break code that depends on it,
-but has been replaced by \code{\link[edgeR]{binomTest}} in the edgeR Bioconductor package and 
+but has been replaced by \code{binomTest} in the edgeR Bioconductor package and 
 is no longer updated.
 It may be removed in a later release of this package.
 
@@ -44,7 +44,7 @@ When the counts are reasonably large, the binomial test, Fisher's test and Pears
 When the counts are smaller, the binomial test is usually to be preferred in this context.
 
 This function is a later version of the earlier \code{sage.test} function in the sagenhaft Bioconductor package.
-This function has been replaced by \code{binomTest} in the edgeR package.
+This function has been made obsolete by \code{binomTest} in the edgeR package.
 }
 
 \value{
@@ -64,7 +64,7 @@ http://en.wikipedia.org/wiki/RNA-Seq
 \author{Gordon Smyth}
 
 \seealso{
-\code{\link[edgeR]{binomTest}} (edgeR package), \code{\link{binom.test}} (stats package)
+\code{binomTest} (edgeR package), \code{\link{binom.test}} (stats package)
 }
 
 \examples{

@@ -9,9 +9,10 @@ Do all pairwise comparisons between groups of growth curves using a permutation 
 }
 
 \usage{
-compareGrowthCurves(group,y,levels=NULL,nsim=100,fun=meanT,times=NULL,verbose=TRUE,adjust="holm")
-compareTwoGrowthCurves(group,y,nsim=100,fun=meanT)
-plotGrowthCurves(group,y,levels=sort(unique(group)),times=NULL,col=NULL,...)
+compareGrowthCurves(group, y, levels=NULL, nsim=100, fun=meanT, times=NULL,
+                    verbose=TRUE, adjust="holm")
+compareTwoGrowthCurves(group, y, nsim=100, fun=meanT)
+plotGrowthCurves(group, y, levels=sort(unique(group)), times=NULL, col=NULL,...)
 }
 
 \arguments{
@@ -19,8 +20,8 @@ plotGrowthCurves(group,y,levels=sort(unique(group)),times=NULL,col=NULL,...)
 \item{y}{matrix of response values with rows for individuals and columns for times.  The number of rows must agree with the length of \code{group}. Missing values are allowed.}
 \item{levels}{a character vector containing the identifiers of the groups to be compared.  By default all groups with two more more members will be compared.}
 \item{nsim}{number of permutations to estimated p-values.}
-\item{fun}{the statistic used to measure the distance between two groups of growth curves.
-Default to a mean t-statistic.}
+\item{fun}{a function defining the statistic used to measure the distance between two groups of growth curves.
+Defaults to \code{\link{meanT}}.}
 \item{times}{a numeric vector containing the column numbers on which the groups should be compared.
 By default all the columns are used.}
 \item{verbose}{should progress results be printed?}
@@ -59,7 +60,7 @@ Wound healing response is a major contributor to the severity of cutaneous leish
 }
 
 \seealso{
-\code{\link{compareGrowthCurves}}, \code{\link{compareTwoGrowthCurves}}
+\code{\link{meanT}}, \code{\link{compareGrowthCurves}}, \code{\link{compareTwoGrowthCurves}}
 }
 
 \examples{

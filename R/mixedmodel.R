@@ -1,12 +1,6 @@
 #  MIXEDMODEL.R
 
-randomizedBlock <- function(formula, random, weights=NULL, only.varcomp=FALSE, data=list(), subset=NULL, contrasts=NULL, tol=1e-6, maxit=50, trace=FALSE)
-{
-	.Deprecated("mixedModel2")
-	mixedModel2(formula, random, weights, only.varcomp, data, subset, contrasts, tol, maxit, trace)
-}
-
-mixedModel2 <- function(formula, random, weights=NULL, only.varcomp=FALSE, data=list(), subset=NULL, contrasts=NULL, tol=1e-6, maxit=50, trace=FALSE)
+randomizedBlock <- mixedModel2 <- function(formula, random, weights=NULL, only.varcomp=FALSE, data=list(), subset=NULL, contrasts=NULL, tol=1e-6, maxit=50, trace=FALSE)
 #	REML for mixed linear models with 2 variance components
 #	Gordon Smyth, Walter and Eliza Hall Institute
 #	28 Jan 2003.  Last revised 20 October 2005.
@@ -41,13 +35,7 @@ mixedModel2 <- function(formula, random, weights=NULL, only.varcomp=FALSE, data=
 	mixedModel2Fit(y,x,z,w=w,only.varcomp=only.varcomp,tol=tol,maxit=maxit,trace=trace)
 }
 
-randomizedBlockFit <- function(y,X,Z,w=NULL,only.varcomp=FALSE,tol=1e-6,maxit=50,trace=FALSE)
-{
-	.Deprecated("mixedModel2Fit")
-	mixedModel2Fit(y,X,Z,w,only.varcomp,tol,maxit,trace)
-}
-
-mixedModel2Fit <- function(y,X,Z,w=NULL,only.varcomp=FALSE,tol=1e-6,maxit=50,trace=FALSE)
+randomizedBlockFit <- mixedModel2Fit <- function(y,X,Z,w=NULL,only.varcomp=FALSE,tol=1e-6,maxit=50,trace=FALSE)
 #	REML for mixed linear models with 2 variance components
 #	Fits the model  Y = X*BETA + Z*U + E  where BETA is fixed
 #	and U is random.
