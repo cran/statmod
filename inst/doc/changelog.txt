@@ -1,3 +1,10 @@
+13 April 2014: statmod 1.4.19
+
+- qinvgauss() now uses a globally convergent Newton iteration, which
+  produces accurate values for a greater range of parameter values.
+
+- glmnb.fit() now supports weights.
+
 27 September 2013: statmod 1.4.18
 
 - Update reference for permp().

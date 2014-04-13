@@ -13,7 +13,7 @@ Density, cumulative probability, quantiles and random generation for the inverse
 \usage{
 dinvgauss(x, mu, lambda=1, log=FALSE)
 pinvgauss(q, mu, lambda=1)
-qinvgauss(p, mu, lambda=1)
+qinvgauss(p, mu, lambda=1, iter=20L, trace=FALSE)
 rinvgauss(n, mu, lambda=1)
 }
 
@@ -25,6 +25,8 @@ rinvgauss(n, mu, lambda=1)
   \item{mu}{vector of (positive) means. This is replicated to be the same length as \code{p} or \code{q} or the number of deviates generated.}
   \item{lambda}{vector of (positive) precision parameters. This is replicated to be the same length as \code{p} or \code{q} or the number of deviates generated.}
   \item{log}{logical; if \code{TRUE}, the log-density is returned.}
+  \item{iter}{number of Newton iterations used to find \code{q} from \code{p}.}
+  \item{trace}{logical, if \code{TRUE} then working estimate for \code{q} from each iteration will be printed.}
 }
 
 \value{
@@ -42,8 +44,7 @@ The inverse Gaussian distribution takes values on the positive real line. The va
 Chhikara, R. S., and Folks, J. Leroy, (1989). \emph{The inverse Gaussian distribution: Theory, methodology, and  applications}. Marcel Dekker, New York.
 }
 
-\author{Gordon Smyth; Paul Bagshaw, Centre National d'Etudes des Telecommunications (DIH/DIPS), France (\code{qinvgauss}); Trevor Park,
-Department of Statistics, University of Florida}
+\author{Gordon Smyth with contributions from Paul Bagshaw, Centre National d'Etudes des Telecommunications, France, and Trevor Park, Department of Statistics, University of Florida}
 
 \seealso{
 \code{dinvGauss}, \code{pinvGauss}, \code{qinvGauss} and \code{rinvGauss} in the SuppDists package.

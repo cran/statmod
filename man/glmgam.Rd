@@ -8,13 +8,14 @@ Provided for gamma glm with identity links or negative binomial glm with log-lin
 }
 \usage{
 glmgam.fit(X, y, coef.start=NULL, tol=1e-6, maxit=50, trace=FALSE)
-glmnb.fit(X, y, dispersion, offset=0, coef.start=NULL, start.method="mean",
+glmnb.fit(X, y, dispersion, weights=NULL, offset=0, coef.start=NULL, start.method="mean",
           tol=1e-6, maxit=50, trace=FALSE)
 }
 \arguments{
   \item{X}{design matrix, assumed to be of full column rank.  Missing values not allowed.}
   \item{y}{numeric vector of responses. Negative or missing values not allowed.}
   \item{dispersion}{numeric vector of over-dispersion parameters for negative binomial. If of length 1, then same over-dispersion is assumed for all observations.}
+  \item{weights}{numeric vector of positive weights, defaults to all one.}
   \item{offset}{offset vector for linear model}
   \item{coef.start}{numeric vector of starting values for the regression coefficients}
   \item{start.method}{method used to find starting values, possible values are \code{"mean"} and \code{"log(y)"}}

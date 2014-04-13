@@ -50,35 +50,40 @@ rinvgauss <- function(n, mu, lambda = 1)
 	ifelse(u < mu/(mu+r1), r1, r2)
 }
 
-qinvgauss  <- function(p, mu, lambda = 1)
+qinvgauss  <- function(p, mu, lambda = 1, iter=20L, trace=FALSE)
+#	Quantiles of the inverse Gaussian distribution
+
+#	Original version by Dr Paul Bagshaw
+#	Centre National d'Etudes des Telecommunications (DIH/DIPS)
+#	Technopole Anticipa, France
+#	paul.bagshaw@cnet.francetelecom.fr
+#	23 Dec 1998
+
+#	Current version by Gordon Smyth
+#	13 April 2014
 {
-#  Quantiles of the inverse Gaussian distribution
-#  Dr Paul Bagshaw
-#  Centre National d'Etudes des Telecommunications (DIH/DIPS)
-#  Technopole Anticipa, France
-#  paul.bagshaw@cnet.francetelecom.fr
-#  23 Dec 98
-#
-  if(any(mu <= 0.))
-    stop("mu must be positive")
-  if(any(lambda <= 0.))
-    stop("lambda must be positive")
-  n <- length(p)
-  if(length(mu) > 1 && length(mu) != n)
-    mu <- rep(mu, length = n)
-  if(length(lambda) > 1 && length(lambda) != n)
-    lambda <- rep(lambda, length = n)
-  thi <- lambda / mu
-  U <- qnorm (p)
-  r1 <- 1 + U / sqrt (thi) + U^2 / (2 * thi) + U^3 / (8 * thi * sqrt(thi))
-  x <- r1
-  for (i in 1:10) {
-    cum <- pinvgauss (x, 1., thi)
-    dx <- (cum - p) / dinvgauss (x, 1., thi)
-    dx <- ifelse (is.finite(dx), dx, ifelse (p > cum, -1, 1))
-    dx[dx < -1] <- -1
-    if (all(dx == 0.)) break
-    x <- x - dx
-  }
-  x * mu
+	if(any(mu <= 0)) stop("mu must be positive")
+	if(any(lambda <= 0)) stop("lambda must be positive")
+	n <- length(p)
+	if(length(mu) > 1 && length(mu) != n) mu <- rep(mu, length = n)
+	if(length(lambda) > 1 && length(lambda) != n) lambda <- rep(lambda, length = n)
+
+#	Shape of distribution depends only on phi
+	phi <- lambda / mu
+
+#	Mode of density and point of inflexion of cdf (when mu=1)
+	x <- sqrt(1+9/4/phi^2)-3/2/phi
+	if(trace) cat("mode",x,"\n")
+
+#	Newton iteration is monotonically convergent from point of inflexion
+	for (i in 1L:iter) {
+		cum <- pinvgauss (x, 1, phi)
+		dx <- (cum - p) / dinvgauss (x, 1, phi)
+		if (all(abs(dx) < 1e-5)) break
+		x <- x - dx
+		if(trace) cat(iter,x,"\n")
+	}
+
+#	Mu scales the distribution
+	x * mu
 }

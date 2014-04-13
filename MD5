@@ -1,4 +1,4 @@
-98f7d45e4c21f0932ab5d809ded66921 *DESCRIPTION
+25a3b6ee30be37bb15f5e3e3dd63b9c1 *DESCRIPTION
 99a5e80f7f195bbf7e65fcd7919e56af *NAMESPACE
 cabcedc80916e132755147508dc1808b *R/digamma.R
 b67d4c729d215c0952dc4594882da6fa *R/digammaf.R
@@ -7,11 +7,11 @@ f48cdb780b1cc86bfeef8c4722912c2f *R/fitNBP.R
 27838c3de5b6c7ff37ea6e92870903cc *R/forward.R
 d269c19fdeee45694c0553cef42c4633 *R/gaussquad.R
 7871d84512b208401cec51e401c990d9 *R/glmgam.R
-cfa52e54605e4314137fe65f2c93dbc0 *R/glmnb.R
+99187037b66bc90438229911a23f1f2d *R/glmnb.R
 87e2551f59f03a67cf4b0a9bf6479972 *R/glmscoretest.R
 98e67ef55b5ac6c79e18608e6e6e2b91 *R/growthcurve.R
 1747893341300d18e4af7032e4f91fc0 *R/hommel.R
-4bd5cdbf31ebe7097ae1900770bb341f *R/invgauss.R
+c53bd04d7c1a1a3b898aca76677dd9f2 *R/invgauss.R
 c85f7bc07419ec6489a122fd6c5d9d41 *R/matvec.R
 95567b5481bab1b1b23cde0c9ce8369a *R/mixedmodel.R
 aead17fe81a6209b2c9cc7414ab7aa53 *R/mscale.R
@@ -23,7 +23,7 @@ cb4885f03160dcbca66990cd8db7ae0a *R/remlscor.R
 a3185c8c817e40182c9c31a41970df90 *R/sagetest.R
 afad3149539912e729cb6d0aea8e53df *R/tweedief.R
 e600a474fedf570b1913b278022d46bf *data/welding.rdata
-701a0d06a9ea2f8bef53315d79b78dea *inst/doc/changelog.txt
+7d49b263c6fc2de6fece63bc159a35e0 *inst/doc/changelog.txt
 495d2f0e0e2a548d7ee7696eb159be71 *inst/doc/index.html
 1149af73c8c82d7bc1552c15b5b91d57 *man/1Introduction.Rd
 d37cd00f740faf6738e9a0c992f54eda *man/digammaf.Rd
@@ -32,11 +32,11 @@ d37cd00f740faf6738e9a0c992f54eda *man/digammaf.Rd
 3508ac5839f19813b7894387b7a21bb7 *man/forward.Rd
 5d3ab76b6ab3f922d5abeb027c76a797 *man/gauss.quad.Rd
 33d5058c22bd5c9e8bb0f308db9bcdf4 *man/gauss.quad.prob.Rd
-00e13ad61f87aba2851327c4919140fc *man/glmgam.Rd
+809ccf2ff24e804a2a5bb17baa1c80b9 *man/glmgam.Rd
 552561fc0f9300d1564fb3acb0ab0d84 *man/glmscoretest.Rd
 26d687ea8e66ede996ecf62873dc59ad *man/growthcurve.Rd
 0f8f3ac69241aedf8664fbdf9d50f085 *man/hommel.test.Rd
-26c3b834fd4277819452e98b57316404 *man/invgauss.Rd
+d600d773a195b976cca3b062a106a32c *man/invgauss.Rd
 ee394dd22edb184f213f2e3e754cc980 *man/logmdigamma.Rd
 ae5d97dda72b73d6688128ac79753757 *man/matvec.Rd
 e9426cfaf3b6bd604658f95c3e57a032 *man/meanT.Rd
