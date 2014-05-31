@@ -57,10 +57,8 @@ qres.gamma <- function(glm.obj, dispersion = NULL)
 	y <- glm.obj$y
 	df <- glm.obj$df.residual
 	w <- glm.obj$prior.weights
-	if(is.null(w))
-		w <- 1
-	if(is.null(dispersion))
-		dispersion <- sum(w * ((y - mu)/mu)^2)/df
+	if(is.null(w)) w <- 1
+	if(is.null(dispersion)) dispersion <- sum(w * ((y - mu)/mu)^2)/df
 	u <- pgamma((w * y)/mu/dispersion, w/dispersion)
 	qnorm(u)
 }
@@ -68,18 +66,19 @@ qres.gamma <- function(glm.obj, dispersion = NULL)
 qres.invgauss <- function(glm.obj, dispersion = NULL)
 #	Quantile residuals for inverse Gaussian glm
 #	Gordon Smyth
-#	15 Jan 98
+#	Created 15 Jan 98. Last modified 31 May 2014.
 {
 	mu <- fitted(glm.obj)
 	y <- glm.obj$y
 	df <- glm.obj$df.residual
 	w <- glm.obj$prior.weights
-	if(is.null(w))
-		w <- 1
-	if(is.null(dispersion))
-		dispersion <- sum(w * (y - mu)^2 / (mu^2*y)) / df
-	u <- pinvgauss(y, mu, lambda=1/dispersion)
-	qnorm(u)
+	if(is.null(w)) w <- 1
+	if(is.null(dispersion)) dispersion <- sum(w * (y - mu)^2 / (mu^2*y)) / df
+	up <- y>mu
+	down <- y<mu
+	if(any(down)) y[down] <- qnorm(pinvgauss(y,mean=mu,dispersion=dispersion,log.p=TRUE),log.p=TRUE)
+	if(any(up)) y[up] <- qnorm(pinvgauss(y,mean=mu,dispersion=dispersion,lower.tail=FALSE,log.p=TRUE),lower.tail=FALSE,log.p=TRUE)
+	y
 }
 
 qres.nbinom <- function(glm.obj)

@@ -1,89 +1,239 @@
-dinvgauss <- function(x, mu, lambda = 1, log=FALSE)
-#  Density of inverse Gaussian distribution
-#  Gordon Smyth
-#	15 Jan 1998.  Last revised 19 June 2009.
+dinvgauss <- function(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
+#	Probability density function of inverse Gaussian distribution
+#	Gordon Smyth
+#	Created 15 Jan 1998.  Last revised 31 May 2014.
 {
-	if(any(mu<=0)) stop("mu must be positive")
-	if(any(lambda<=0)) stop("lambda must be positive")
-	d <- rep(-Inf,length(x))
-	i <- x>0
-	d[i] <- (log(lambda)-log(2*pi)-3*log(x[i]))/2-lambda*(x[i]-mu)^2/(2*mu^2*x[i])
-	if(!log) d <- exp(d)
-	if(!is.null(Names <- names(x))) names(d) <- rep(Names, length = length(d))
-	d
+#	Dispersion is reciprocal of shape
+	if(!is.null(shape)) dispersion <- 1/shape
+
+#	Make arguments same length
+	nx <- length(x)
+	if(nx==0) return(numeric(0))
+	n <- max(nx,length(mean),length(dispersion))
+	if(n>nx) x <- rep_len(x,n)
+	mu <- rep_len(mean,n)
+	phi <- rep_len(dispersion,n)
+
+#	Special cases
+	NA.cases <- (is.na(x) | mu<=0 | phi<=0)
+	left.limit <- x<=0
+	right.limit <- x==Inf
+
+#	Check for attributes
+	has.attr <- !is.null(attributes(x))
+
+	any.special <- has.attr | any(NA.cases) | any(left.limit) | any(right.limit)
+	if(any.special) {
+		logd <- x
+		logd[left.limit] <- -Inf
+		logd[right.limit] <- -Inf
+		logd[NA.cases] <- NA
+		ok <- !(NA.cases | left.limit | right.limit)
+		logd[ok] <- .dinvgauss(x[ok],mean=mu[ok],dispersion=phi[ok],log=TRUE)
+	} else {
+		logd <- .dinvgauss(x,mean=mu,dispersion=phi,log=TRUE)
+	}
+
+	if(log) logd else exp(logd)
 }
 
-pinvgauss <- function(q, mu, lambda = 1)
+.dinvgauss <- function(x, mean=NULL, dispersion=1, log=FALSE)
+#	Probability density function of inverse Gaussian distribution
+#	with no argument checking and assuming mean=1
 {
-#  Inverse Gaussian distribution function
-#  GKS  15 Jan 98
-#
-	if(any(mu<=0)) stop("mu must be positive")
-	if(any(lambda<=0)) stop("lambda must be positive")
-	n <- length(q)
-	if(length(mu)>1 && length(mu)!=n) mu <- rep(mu,length=n)
-	if(length(lambda)>1 && length(lambda)!=n) lambda <- rep(lambda,length=n)
-	lq <- sqrt(lambda/q)
-	qm <- q/mu
-	p <- ifelse(q>0,pnorm(lq*(qm-1))+exp(2*lambda/mu)*pnorm(-lq*(qm+1)),0)
-	if(!is.null(Names <- names(q)))
-		names(p) <- rep(Names, length = length(p))
-	p
+	notnullmean <- !is.null(mean)
+	if(notnullmean) {
+		x <- x/mean
+		dispersion <- dispersion*mean
+	}
+	d <- (-log(dispersion)-log(2*pi)-3*log(x) - (x-1)^2/dispersion/x)/2
+	if(notnullmean) d <- d-log(mean)
+	if(log) d else exp(d)
 }
 
-rinvgauss <- function(n, mu, lambda = 1)
+pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE)
+#	Cumulative distribution function of inverse Gaussian distribution
+#	Gordon Smyth
+#	Created 15 Jan 1998.  Last revised 29 May 2014.
+{
+#	Dispersion is reciprocal of shape
+	if(!is.null(shape)) dispersion <- 1/shape
+
+#	Make arguments same length
+	nq <- length(q)
+	if(nq==0) return(numeric(0))
+	n <- max(nq,length(mean),length(dispersion))
+	if(n>nq) q <- rep_len(q,n)
+	mu <- rep_len(mean,n)
+	phi <- rep_len(dispersion,n)
+
+#	Special cases
+	NA.cases <- (is.na(q) | mu<=0 | phi<=0)
+	left.limit <- q<=0
+	right.limit <- q==Inf
+
+#	Check for attributes
+	has.attr <- !is.null(attributes(q))
+
+	any.special <- has.attr | any(NA.cases) | any(left.limit) | any(right.limit)
+	if(any.special) {
+		logp <- q
+		if(lower.tail) {
+			logp[left.limit] <- -Inf
+			logp[right.limit] <- 0
+		} else {
+			logp[left.limit] <- 0
+			logp[right.limit] <- -Inf
+		}
+		logp[NA.cases] <- NA
+		ok <- !(NA.cases | left.limit | right.limit)
+		logp[ok] <- .pinvgauss(q[ok],mean=mu[ok],dispersion=phi[ok],lower.tail=lower.tail,log.p=TRUE)
+	} else {
+		logp <- .pinvgauss(q,mean=mu,dispersion=phi,lower.tail=lower.tail,log.p=TRUE)
+	}
+
+	if(log.p) logp else(exp(logp))
+}
+
+.pinvgauss <- function(q, mean=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE)
+#	Cumulative distribution function of inverse Gaussian distribution
+#	without argument checking
+{
+	if(!is.null(mean)) {
+		q <- q/mean
+		dispersion <- dispersion*mean
+	}
+	pq <- sqrt(dispersion*q)
+	a <- pnorm((q-1)/pq,lower.tail=lower.tail,log.p=TRUE)
+	b <- 2/dispersion + pnorm(-(q+1)/pq,log.p=TRUE)
+	if(lower.tail) b <- exp(b-a) else b <- -exp(b-a)
+	logp <- a+log1p(b)
+	if(log.p) logp else exp(logp)
+}
+
+rinvgauss <- function(n, mean=1, shape=NULL, dispersion=1)
 #	Random variates from inverse Gaussian distribution
-#	Reference:  Chhikara and Folks, The Inverse Gaussian
-#	Distribution, Marcel Dekker, 1989, page 53.
-#	Gordon Smyth 15 Jan 98.
-#	Revised by Trevor Park 14 June 2005.
+#	Gordon Smyth (with a correction by Trevor Park 14 June 2005)
+#	Created 15 Jan 1998.  Last revised 27 May 2014.
 {
-	if(any(mu<=0)) stop("mu must be positive")
-	if(any(lambda<=0)) stop("lambda must be positive")
+#	Check input
 	if(length(n)>1) n <- length(n)
-	if(length(mu)>1 && length(mu)!=n) mu <- rep(mu,length=n)
-	if(length(lambda)>1 && length(lambda)!=n) lambda <- rep(lambda,length=n)
-	y2 <- rchisq(n,1)
-	u <- runif(n)
-	r2 <- mu/(2*lambda)*(2*lambda+mu*y2+sqrt(4*lambda*mu*y2+mu^2*y2^2))
-	r1 <- mu^2/r2
-	ifelse(u < mu/(mu+r1), r1, r2)
+	if(n<0) stop("n can't be negative")
+	n <- as.integer(n)
+	if(n==0) return(numeric(0))
+	if(!is.null(shape)) dispersion <- 1/shape
+
+#	Make arguments same length
+	mu <- rep_len(mean,n)
+	phi <- rep_len(dispersion,n)
+
+#	Setup output vector
+	r <- rep_len(0,n)
+
+#	Non-positive parameters give NA
+	i <- (mu > 0 & phi > 0)
+	if(!all(i)) {
+		r[!i] <- NA
+		n <- sum(i)
+	}
+
+#	Divide out mu	
+	phi[i] <- phi[i]*mu[i]
+
+	Y <- rchisq(n,df=1)
+	X1 <- 1 + phi[i]/2 * (Y - sqrt(4*Y/phi[i]+Y^2))
+	firstroot <- as.logical(rbinom(n,size=1L,prob=1/(1+X1)))
+	r[i][firstroot] <- X1[firstroot]
+	r[i][!firstroot] <- 1/X1[!firstroot]
+
+	mu*r
 }
 
-qinvgauss  <- function(p, mu, lambda = 1, iter=20L, trace=FALSE)
+qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE, maxit=50L, tol=1e-5, trace=FALSE)
 #	Quantiles of the inverse Gaussian distribution
-
-#	Original version by Dr Paul Bagshaw
-#	Centre National d'Etudes des Telecommunications (DIH/DIPS)
-#	Technopole Anticipa, France
-#	paul.bagshaw@cnet.francetelecom.fr
-#	23 Dec 1998
-
-#	Current version by Gordon Smyth
-#	13 April 2014
+#	Gordon Smyth
+#	Last revised 31 May 2014.
 {
-	if(any(mu <= 0)) stop("mu must be positive")
-	if(any(lambda <= 0)) stop("lambda must be positive")
+#	Check input
 	n <- length(p)
-	if(length(mu) > 1 && length(mu) != n) mu <- rep(mu, length = n)
-	if(length(lambda) > 1 && length(lambda) != n) lambda <- rep(lambda, length = n)
+	if(n==0) return(numeric(0))
+	if(!is.null(shape)) dispersion <- 1/shape
+	mu <- rep_len(mean,n)
+	phi <- rep_len(dispersion,n)
 
-#	Shape of distribution depends only on phi
-	phi <- lambda / mu
+#	Setup output
+	q <- p
 
-#	Mode of density and point of inflexion of cdf (when mu=1)
-	x <- sqrt(1+9/4/phi^2)-3/2/phi
+#	Special cases
+	if(log.p) {
+		NA.cases <- (is.na(p) | p>0 | mu<=0 | phi<=0)
+		if(lower.tail) {
+			left.limit <- p == -Inf
+			right.limit <- p == 0
+		} else {
+			left.limit <- p == 0
+			right.limit <- p == -Inf
+		}
+	} else {
+		NA.cases <- (is.na(p) | p<0 | p>1 | mu<=0 | phi<=0)
+		if(lower.tail) {
+			left.limit <- p == 0
+			right.limit <- p == 1
+		} else {
+			left.limit <- p == 1
+			right.limit <- p == 0
+		}
+	}
+	q[left.limit] <- 0
+	q[right.limit] <- Inf
+	q[NA.cases] <- NA
+	ok <- !(NA.cases | left.limit | right.limit)
+
+#	Convert to mean=1
+	phi <- phi[ok]*mu[ok]
+	p <- p[ok]
+
+#	Mode of density and point of inflexion of cdf
+	phi2 <- 1.5*phi
+	x <- sqrt(1+phi2^2)-phi2
 	if(trace) cat("mode",x,"\n")
 
+	if(log.p) {
+		step <- function(p,x,phi) {
+			logF <- .pinvgauss(x,dispersion=phi,lower.tail=lower.tail,log.p=TRUE)
+			logf <- .dinvgauss(x,dispersion=phi,log=TRUE)
+			dlogp <- p-logF
+			pos <- p>logF
+			maxlogp <- logF
+			maxlogp[pos] <- p[pos]
+			d <- exp(maxlogp+log1p(-exp(-abs(dlogp)))-logf)
+			d[!pos] <- -d[!pos]
+			d
+		}
+	} else {
+		step <- function(p,x,phi) (p - .pinvgauss(x, dispersion=phi, lower.tail=lower.tail)) / .dinvgauss(x, dispersion=phi)
+	}
+
 #	Newton iteration is monotonically convergent from point of inflexion
-	for (i in 1L:iter) {
-		cum <- pinvgauss (x, 1, phi)
-		dx <- (cum - p) / dinvgauss (x, 1, phi)
-		if (all(abs(dx) < 1e-5)) break
-		x <- x - dx
+	iter <- 0
+	i <- rep_len(TRUE,length(phi))
+	while(any(i)) {
+		iter <- iter+1
+		if(iter > maxit) {
+			warning("max iterations exceeded")
+			break
+		}
+		dx <- step(p[i],x[i],phi[i])
+		if(lower.tail)
+			x[i] <- x[i] + dx
+		else
+			x[i] <- x[i] - dx
+		i[i] <- (abs(dx) > tol)
+		if(trace) cat("Iter=",iter,"Still converging=",sum(i),"\n")
 		if(trace) cat(iter,x,"\n")
 	}
 
 #	Mu scales the distribution
-	x * mu
+	q[ok] <- x*mu[ok]
+	q
 }

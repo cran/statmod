@@ -3,7 +3,7 @@
 elda <- limdil <- function(response, dose, tested = rep(1, length(response)), group=rep(1,length(response)), observed = FALSE, confidence = 0.95, test.unit.slope = FALSE) 
 #	Limiting dilution analysis
 #	Gordon Smyth, Yifang Hu
-#	21 June 2005. Last revised 6 February 2013.
+#	21 June 2005. Last revised 12 May 2014.
 {
 	group <- factor(group)
 
@@ -39,7 +39,7 @@ elda <- limdil <- function(response, dose, tested = rep(1, length(response)), gr
 		FisherInfo.logdose <- FisherInfo.logdose + fit0$FisherInfo.logdose
 		dloglik.dose <- dloglik.dose + fit0$dloglik.dose
 		FisherInfo.dose <- FisherInfo.dose + fit0$FisherInfo.dose
-		out$CI[i,] <- fit0$CI.frequency
+		out$CI[i,] <- pmax(fit0$CI.frequency,1)
 	}
 
 #	Test for difference between groups

@@ -11,37 +11,66 @@ Density, cumulative probability, quantiles and random generation for the inverse
 }
 
 \usage{
-dinvgauss(x, mu, lambda=1, log=FALSE)
-pinvgauss(q, mu, lambda=1)
-qinvgauss(p, mu, lambda=1, iter=20L, trace=FALSE)
-rinvgauss(n, mu, lambda=1)
+dinvgauss(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
+pinvgauss(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE)
+qinvgauss(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE,
+          maxit=50L, tol=1e-5, trace=FALSE)
+rinvgauss(n, mean=1, shape=NULL, dispersion=1)
 }
 
 \arguments{
-  \item{x}{vector of quantiles. Missing values (NAs) are allowed.}
-  \item{q}{vector of quantiles. Missing values (NAs) are allowed.}
-  \item{p}{vector of probabilities. Missing values (NAs) are allowed.}
+  \item{x,q}{vector of quantiles.}
+  \item{p}{vector of probabilities.}
   \item{n}{sample size. If \code{length(n)} is larger than 1, then \code{length(n)} random values are returned.}
-  \item{mu}{vector of (positive) means. This is replicated to be the same length as \code{p} or \code{q} or the number of deviates generated.}
-  \item{lambda}{vector of (positive) precision parameters. This is replicated to be the same length as \code{p} or \code{q} or the number of deviates generated.}
+  \item{mean}{vector of (positive) means.}
+  \item{shape}{vector of (positive) shape parameters.}
+  \item{dispersion}{vector of (positive) dispersion parameters.}
+  \item{lower.tail}{logical; if \code{TRUE}, probabilities are P(X<q) otherwise P(X>q).}
   \item{log}{logical; if \code{TRUE}, the log-density is returned.}
-  \item{iter}{number of Newton iterations used to find \code{q} from \code{p}.}
-  \item{trace}{logical, if \code{TRUE} then working estimate for \code{q} from each iteration will be printed.}
+  \item{log.p}{logical; if \code{TRUE}, probabilities are on the log-scale.}
+  \item{maxit}{maximum number of Newton iterations used to find \code{q}.}
+  \item{tol}{small positive numeric value giving the convergence tolerance for the quantile.}
+  \item{trace}{logical, if \code{TRUE} then the working estimate for \code{q} from each iteration will be output.}
 }
 
 \value{
-Vector of same length as \code{x} or \code{q} giving the density (\code{dinvgauss}), probability (\code{pinvgauss}), quantile (\code{qinvgauss}) or random sample (\code{rinvgauss}) for the inverse
-Gaussian distribution with mean \code{mu} and inverse dispersion \code{lambda}.
-Elements of \code{q} or \code{p} that are missing will cause the corresponding elements of
-the result to be missing.
+Output values give density (\code{dinvgauss}), probability (\code{pinvgauss}), quantile (\code{qinvgauss}) or random sample (\code{rinvgauss}) for the inverse Gaussian distribution with mean \code{mean} and dispersion \code{dispersion}.
+Output is a vector of length equal to the maximum length of any of the arguments \code{x}, \code{q}, \code{mean}, \code{shape} or \code{dispersion}.
+If the first argument is the longest, then all the attributes of the input argument are preserved on output, for example, a matrix \code{x} will give a matrix on output.
+Elements of \code{q} or \code{p} that are missing will cause the corresponding elements of the result to be missing, as will non-positive values for \code{mean} or \code{dispersion}.
 }
 
 \details{
-The inverse Gaussian distribution takes values on the positive real line. The variance of the distribution is \eqn{\mu^3/\lambda}. Applications of the inverse Gaussian include sequential analysis, diffusion processes and radiotechniques. The inverse Gaussian is one of the response distributions used in generalized linear models.
+The inverse Gaussian distribution takes values on the positive real line (Tweedie, 1957; Chhikara and Folks, 1989).
+It is somewhat more right skew than the gamma distribution, with variance given by \code{dispersion*mean^3}.
+The shape and dispersion parameters are alternative parametrizations for the variability, the shape being the inverse of the dispersion.
+The distribution has applications in reliability and survival analysis, and is one of the response distributions used in generalized linear models.
+
+\code{pinvgauss} uses a result from Chhikara and Folks (1974), with enhancements for right tails and log-probabilities.
+\code{rinvgauss} uses an algorithm from Michael et al (1976).
+\code{qinvgauss} uses code and algorithm from Giner and Smyth (2014).
 }
  
 \references{
-Chhikara, R. S., and Folks, J. Leroy, (1989). \emph{The inverse Gaussian distribution: Theory, methodology, and  applications}. Marcel Dekker, New York.
+Chhikara, R. S., and Folks, J. L., (1989).
+\emph{The inverse Gaussian distribution: Theory, methodology and applications}.
+Marcel Dekker, New York.
+
+Chhikara, R. S., and Folks, J. L., (1974).
+Estimation of the inverse Gaussian distribution function.
+\emph{Journal of the American Statistical Association} 69, 250-254.
+
+Giner, G., and Smyth, G. K. (2014).
+A monotonically convergent Newton iteration for the quantiles of any unimodal distribution, with application to the inverse Gaussian distribution.
+\url{http://www.statsci.org/smyth/pubs/qinvgaussPreprint.pdf}
+
+Michael, J. R., Schucany, W. R., and Haas, R. W. (1976).
+Generating random variates using transformations with multiple roots.
+\emph{The American Statistician}, 30, 88--90.
+
+Tweedie, M. C. (1957).
+Statistical Properties of Inverse Gaussian Distributions I.
+\emph{Annals of Mathematical Statistics} 28, 362-377.
 }
 
 \author{Gordon Smyth with contributions from Paul Bagshaw, Centre National d'Etudes des Telecommunications, France, and Trevor Park, Department of Statistics, University of Florida}
@@ -51,8 +80,8 @@ Chhikara, R. S., and Folks, J. Leroy, (1989). \emph{The inverse Gaussian distrib
 }
 
 \examples{
-y <- rinvgauss(20,1,2) # generate vector of 20 random numbers
-p <- pinvgauss(y,1,2) # p should be uniform
+q <- rinvgauss(20,mean=1,dispersion=0.5) # generate vector of 20 random numbers
+p <- pinvgauss(q,mean=1,dispersion=0.5) # p should be uniform
 }
 
 \keyword{distribution}

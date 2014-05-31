@@ -1,3 +1,22 @@
+30 May 2014: statmod 1.4.20
+
+- Considerable work on the inverse Gaussian functions dinvgauss(),
+  pinvgauss(), qinvgauss() and rinvgauss().  The parameter arguments
+  are changed to mean, shape and dispersion instead of mu and lambda.
+  The functions now include arguments lower.tail and log.p, meaning
+  that right-tailed probabilities can be used and probabilities can
+  be specified on the log-scale.  Good numerical precision is
+  maintained in these case.  The functions now respect attributes,
+  so that a matrix argument for example will produce a matrix result.
+  Checking is now done for missing values and invalid parameter
+  values on an element-wise basis.  A technical report has been
+  written to describe the methodology behind qinvgauss().
+
+- This file has been renamed to NEWS instead of changelog.txt.
+
+- The introductory help page previously called 1.Introduction is now
+  named statmod-package.
+
 13 April 2014: statmod 1.4.19
 
 - qinvgauss() now uses a globally convergent Newton iteration, which

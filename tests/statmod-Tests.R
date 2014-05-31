@@ -78,6 +78,18 @@ zapsmall(data.frame(g),digits=15)
 g <- gauss.quad.prob(5,dist="gamma")
 zapsmall(data.frame(g),digits=15)
 
+### invgauss
+
+pinvgauss(c(0,0.1,1,2.3,3.1,NA),mean=c(1,2,3,0,1,2),dispersion=0.5)
+pinvgauss(c(0,0.1,1,2.3,3.1,NA),mean=c(1,2,3,0,1,2),dispersion=0.5,log.p=TRUE)
+pinvgauss(c(0,0.1,1,2.3,3.1,NA),mean=c(1,2,3,0,1,2),dispersion=0.5,lower.tail=FALSE,log.p=TRUE)
+p <- c(0,0.001,0.5,0.999,1)
+qinvgauss(p,mean=1.3,dispersion=0.6)
+qinvgauss(p,mean=1.3,dispersion=0.6,lower.tail=FALSE)
+qinvgauss(log(p),mean=1.3,dispersion=0.6,log.p=TRUE)
+qinvgauss(log(p),mean=1.3,dispersion=0.6,lower.tail=FALSE,log.p=TRUE)
+
+
 ### extra tests done only locally
 
 #GKSTest <- Sys.getenv("GKSTest")
