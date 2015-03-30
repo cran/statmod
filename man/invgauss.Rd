@@ -14,7 +14,7 @@ Density, cumulative probability, quantiles and random generation for the inverse
 dinvgauss(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
 pinvgauss(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE)
 qinvgauss(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE,
-          maxit=50L, tol=1e-5, trace=FALSE)
+          maxit=40L, tol=1e-7, trace=FALSE)
 rinvgauss(n, mean=1, shape=NULL, dispersion=1)
 }
 
@@ -24,7 +24,7 @@ rinvgauss(n, mean=1, shape=NULL, dispersion=1)
   \item{n}{sample size. If \code{length(n)} is larger than 1, then \code{length(n)} random values are returned.}
   \item{mean}{vector of (positive) means.}
   \item{shape}{vector of (positive) shape parameters.}
-  \item{dispersion}{vector of (positive) dispersion parameters.}
+  \item{dispersion}{vector of (positive) dispersion parameters. Ignored if \code{shape} is not \code{NULL}, in which case \code{dispersion=1/shape}.}
   \item{lower.tail}{logical; if \code{TRUE}, probabilities are P(X<q) otherwise P(X>q).}
   \item{log}{logical; if \code{TRUE}, the log-density is returned.}
   \item{log.p}{logical; if \code{TRUE}, probabilities are on the log-scale.}
@@ -37,14 +37,17 @@ rinvgauss(n, mean=1, shape=NULL, dispersion=1)
 Output values give density (\code{dinvgauss}), probability (\code{pinvgauss}), quantile (\code{qinvgauss}) or random sample (\code{rinvgauss}) for the inverse Gaussian distribution with mean \code{mean} and dispersion \code{dispersion}.
 Output is a vector of length equal to the maximum length of any of the arguments \code{x}, \code{q}, \code{mean}, \code{shape} or \code{dispersion}.
 If the first argument is the longest, then all the attributes of the input argument are preserved on output, for example, a matrix \code{x} will give a matrix on output.
-Elements of \code{q} or \code{p} that are missing will cause the corresponding elements of the result to be missing, as will non-positive values for \code{mean} or \code{dispersion}.
+Elements of input vectors that are missing will cause the corresponding elements of the result to be missing, as will non-positive values for \code{mean} or \code{dispersion}.
 }
 
 \details{
 The inverse Gaussian distribution takes values on the positive real line (Tweedie, 1957; Chhikara and Folks, 1989).
 It is somewhat more right skew than the gamma distribution, with variance given by \code{dispersion*mean^3}.
-The shape and dispersion parameters are alternative parametrizations for the variability, the shape being the inverse of the dispersion.
 The distribution has applications in reliability and survival analysis, and is one of the response distributions used in generalized linear models.
+
+The shape and dispersion parameters are alternative parametrizations for the variability, with \code{dispersion=1/shape}.
+Only one of these two arguments needs to be specified.
+If both are set, then \code{shape} takes precedence.
 
 \code{pinvgauss} uses a result from Chhikara and Folks (1974), with enhancements for right tails and log-probabilities.
 \code{rinvgauss} uses an algorithm from Michael et al (1976).

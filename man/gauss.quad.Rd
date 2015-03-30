@@ -34,7 +34,7 @@ Jacobi quadrature: \code{w(x)=(1-x)^alpha*(1+x)^beta} on \code{(-1,1)}. Note tha
 
 Laguerre quadrature: \code{w(x)=x^alpha*exp(-x)} on \code{(0,Inf)}.
 
-The method is explained in Golub and Welsch (1969).
+The algorithm used to generated the nodes and weights is explained in Golub and Welsch (1969).
 }
 
 \references{

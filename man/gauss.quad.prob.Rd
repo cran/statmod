@@ -24,6 +24,8 @@
 
 \details{
 This is a rewriting and simplification of \code{gauss.quad} in terms of probability distributions.
+The probability interpretation is explained by Smyth (1998).
+For details on the underlying quadrature rules, see \code{\link[statmod:gauss.quad]{gauss.quad}}.
 
 The expected value of \code{f(X)} is approximated by \code{sum(w*f(x))} where \code{x} is the vector of nodes and \code{w} is the vector of weights.  The approximation is exact if \code{f(x)} is a polynomial of order no more than \code{2n-1}.
 The possible choices for the distribution of \code{X} are as follows:
@@ -38,19 +40,8 @@ Gamma with density \code{x^(alpha-1)*exp(-x/beta)/beta^alpha/gamma(alpha)}.
 }
 
 \references{
-Golub, G. H., and Welsch, J. H. (1969). Calculation of Gaussian
-quadrature rules. \emph{Mathematics of Computation} \bold{23}, 221-230.
-
-Golub, G. H. (1973). Some modified matrix eigenvalue problems.
-\emph{Siam Review} \bold{15}, 318-334.
-
-Smyth, G. K. (1998). Numerical integration. In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pages 3088-3095.
-\url{http://www.statsci.org/smyth/pubs/EoB/ban042-.pdf}
-
 Smyth, G. K. (1998). Polynomial approximation. In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pages 3425-3429.
 \url{http://www.statsci.org/smyth/pubs/EoB/bap064-.pdf}
-
-Stroud, AH, and Secrest, D (1966). \emph{Gaussian Quadrature Formulas}. Prentice-Hall, Englewood Cliffs, N.J.
 }
 
 \author{Gordon Smyth, using Netlib Fortran code \url{http://www.netlib.org/go/gaussq.f}, and including corrections suggested by Spencer Graves}

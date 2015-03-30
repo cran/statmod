@@ -19,16 +19,16 @@ eldaOneGroup(response, dose, tested, observed=FALSE, confidence=0.95,
 }
 
 \arguments{
-\item{response}{numeric of integer counts of positive cases, out of \code{tested} trials}
-\item{dose}{numeric vector of expected number of cells in assay}
-\item{tested}{numeric vector giving number of trials at each dose}
-\item{group}{vector or factor giving group to which the response belongs}
+\item{response}{numeric vector giving number of positive cases out of \code{tested} trials. Should take non-negative integer values.}
+\item{dose}{numeric vector of expected number of cells in assay. Values must be positive.}
+\item{tested}{numeric vector giving number of trials at each dose. Should take integer values.}
+\item{group}{vector or factor giving group to which the response belongs.}
 \item{observed}{logical, is the actual number of cells observed?}
-\item{confidence}{numeric level for confidence interval}
+\item{confidence}{numeric level for confidence interval. Should be strictly between 0 and 1.}
 \item{test.unit.slope}{logical, should the adequacy of the single-hit model be tested?}
-\item{tol}{convergence tolerance}
-\item{maxit}{maximum number of Newton iterations to perform}
-\item{trace}{logical, whether to output results at each iteration}
+\item{tol}{convergence tolerance.}
+\item{maxit}{maximum number of Newton iterations to perform.}
+\item{trace}{logical, if \code{TRUE} then iterim results are output at each iteration.}
 }
 
 \details{

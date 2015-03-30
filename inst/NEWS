@@ -1,3 +1,16 @@
+30 March 2015: statmod 1.4.21
+
+- qinvgauss() now treats input arguments of different lengths or NA
+  parameter values more carefully.
+
+- elda() now gracefully removes structural zeros, i.e., rows where
+  the number of cells or the number of assays is zero.
+
+- S3 print and plot methods for "limdil" class now registered.
+
+- Use of require("tweedie") in the qres.tweedie() code replaced by
+  requireNameSpace("tweedie").
+
 30 May 2014: statmod 1.4.20
 
 - Considerable work on the inverse Gaussian functions dinvgauss(),

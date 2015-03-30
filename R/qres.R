@@ -104,9 +104,9 @@ qres.nbinom <- function(glm.obj)
 qres.tweedie <- function(glm.obj, dispersion = NULL)
 #	Quantile residuals for Tweedie glms
 #	Gordon Smyth
-#	29 April 98.  Last modified 5 Oct 2004.
+#	Created 29 April 1998.  Last modified 30 March 2015.
 {
-	require("tweedie")
+	requireNamespace("tweedie")
 	mu <- fitted(glm.obj)
 	y <- glm.obj$y
 	df <- glm.obj$df.residual
@@ -116,7 +116,7 @@ qres.tweedie <- function(glm.obj, dispersion = NULL)
 	p <- get("p",envir=environment(glm.obj$family$variance))
 	if(is.null(dispersion))
 		dispersion <- sum((w * (y - mu)^2)/mu^p)/df
-	u <- ptweedie(q=y, power=p, mu=fitted(glm.obj), phi=dispersion/w)
+	u <- tweedie::ptweedie(q=y, power=p, mu=fitted(glm.obj), phi=dispersion/w)
 	if(p>1&&p<2)
 		u[y == 0] <- runif(sum(y == 0), min = 0, max = u[y == 0])
 	qnorm(u)

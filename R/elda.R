@@ -3,18 +3,41 @@
 elda <- limdil <- function(response, dose, tested = rep(1, length(response)), group=rep(1,length(response)), observed = FALSE, confidence = 0.95, test.unit.slope = FALSE) 
 #	Limiting dilution analysis
 #	Gordon Smyth, Yifang Hu
-#	21 June 2005. Last revised 12 May 2014.
+#	21 June 2005. Last revised 17 Nov 2014.
 {
-	group <- factor(group)
+	n <- length(response)
+	if(n==0) stop("No data")
+	if(length(dose) != n) stop("length(dose) doesn't match length(response")
+	if(length(tested) != n) {
+		if(length(tested)==1)
+			tested <- rep_len(tested,n)
+		else
+			stop("length(tested) doesn't match length(response)")
+	}
+
+#	Allow for structural zeros
+	SZ <- response==0 & (dose==0 | tested==0)
+	if(any(SZ)) {
+		i <- !SZ
+		out <- Recall(response=response[i],dose=dose[i],tested=tested[i],group=group[i],observed=observed,confidence=confidence,test.unit.slope=test.unit.slope)
+		out$response <- response
+		out$dose <- dose
+		out$tested <- tested
+		return(out)
+	}
+
+#	Check valid data
+	y <- response/tested
+	if (any(y < 0)) stop("Negative values for response or tested")
+	if (any(y > 1)) stop("The response cannot be greater than the number tested")
+	if (any(dose <= 0)) stop("dose must be positive")
 
 	size <- 1 - confidence
 	out <- list()
 	f <- binomial(link = "cloglog")
 	f$aic <- quasi()$aic
-	y <- response/tested
-	if (any(y < 0)) stop("Negative values for response or tested")
-	if (any(y > 1)) stop("The response cannot be greater than the number tested")
 
+	group <- factor(group)
 	num.group <- length(levels(group))
 	groupLevel <- levels(group)
 

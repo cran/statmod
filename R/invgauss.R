@@ -1,21 +1,21 @@
 dinvgauss <- function(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
 #	Probability density function of inverse Gaussian distribution
 #	Gordon Smyth
-#	Created 15 Jan 1998.  Last revised 31 May 2014.
+#	Created 15 Jan 1998.  Last revised 30 March 2015.
 {
 #	Dispersion is reciprocal of shape
 	if(!is.null(shape)) dispersion <- 1/shape
 
 #	Make arguments same length
-	nx <- length(x)
-	if(nx==0) return(numeric(0))
-	n <- max(nx,length(mean),length(dispersion))
-	if(n>nx) x <- rep_len(x,n)
+	r <- range(length(x),length(mean),length(dispersion))
+	if(r[1L]==0L) return(numeric(0L))
+	n <- r[2L]
+	x <- rep_len(x,n)
 	mu <- rep_len(mean,n)
 	phi <- rep_len(dispersion,n)
 
 #	Special cases
-	NA.cases <- (is.na(x) | mu<=0 | phi<=0)
+	NA.cases <- (is.na(x) | is.na(mu) | is.na(phi) | mu<=0 | phi<=0)
 	left.limit <- x<=0
 	right.limit <- x==Inf
 
@@ -54,12 +54,19 @@ dinvgauss <- function(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
 pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE)
 #	Cumulative distribution function of inverse Gaussian distribution
 #	Gordon Smyth
-#	Created 15 Jan 1998.  Last revised 29 May 2014.
+#	Created 15 Jan 1998.  Last revised 30 March 2015.
 {
 #	Dispersion is reciprocal of shape
 	if(!is.null(shape)) dispersion <- 1/shape
 
 #	Make arguments same length
+	r <- range(length(q),length(mean),length(dispersion))
+	if(r[1L]==0L) return(numeric(0L))
+	n <- r[2L]
+	q <- rep_len(q,n)
+	mu <- rep_len(mean,n)
+	phi <- rep_len(dispersion,n)
+
 	nq <- length(q)
 	if(nq==0) return(numeric(0))
 	n <- max(nq,length(mean),length(dispersion))
@@ -68,7 +75,7 @@ pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.
 	phi <- rep_len(dispersion,n)
 
 #	Special cases
-	NA.cases <- (is.na(q) | mu<=0 | phi<=0)
+	NA.cases <- (is.na(q) | is.na(mu) | is.na(phi) | mu<=0 | phi<=0)
 	left.limit <- q<=0
 	right.limit <- q==Inf
 
@@ -114,14 +121,15 @@ pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.
 rinvgauss <- function(n, mean=1, shape=NULL, dispersion=1)
 #	Random variates from inverse Gaussian distribution
 #	Gordon Smyth (with a correction by Trevor Park 14 June 2005)
-#	Created 15 Jan 1998.  Last revised 27 May 2014.
+#	Created 15 Jan 1998.  Last revised 30 March 2015.
 {
-#	Check input
-	if(length(n)>1) n <- length(n)
-	if(n<0) stop("n can't be negative")
-	n <- as.integer(n)
-	if(n==0) return(numeric(0))
+#	Dispersion is reciprocal of shape
 	if(!is.null(shape)) dispersion <- 1/shape
+
+#	Check n
+	if(length(n)>1L) n <- length(n) else n <- as.integer(n)
+	if(n<0L) stop("n can't be negative")
+	if(n==0L || length(mean)==0L || length(dispersion)==0L) return(numeric(0L))
 
 #	Make arguments same length
 	mu <- rep_len(mean,n)
@@ -132,6 +140,7 @@ rinvgauss <- function(n, mean=1, shape=NULL, dispersion=1)
 
 #	Non-positive parameters give NA
 	i <- (mu > 0 & phi > 0)
+	i[is.na(i)] <- FALSE
 	if(!all(i)) {
 		r[!i] <- NA
 		n <- sum(i)
@@ -149,15 +158,22 @@ rinvgauss <- function(n, mean=1, shape=NULL, dispersion=1)
 	mu*r
 }
 
-qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE, maxit=50L, tol=1e-5, trace=FALSE)
+qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE, maxit=40L, tol=1e-7, trace=FALSE)
 #	Quantiles of the inverse Gaussian distribution
-#	Gordon Smyth
-#	Last revised 31 May 2014.
+#
+#	Current version using globally convergent Newton iteration
+#	by created by Gordon Smyth 12 May 2014, last revised 30 March 2015.
+#
+#	Replaces an earlier function by Paul Bagshaw of 23 Dec 1998
 {
-#	Check input
-	n <- length(p)
-	if(n==0) return(numeric(0))
+#	Dispersion is reciprocal of shape
 	if(!is.null(shape)) dispersion <- 1/shape
+
+#	Make arguments same length
+	r <- range(length(p),length(mean),length(dispersion))
+	if(r[1L]==0L) return(numeric(0L))
+	n <- r[2L]
+	p <- rep_len(p,n)
 	mu <- rep_len(mean,n)
 	phi <- rep_len(dispersion,n)
 
@@ -166,7 +182,7 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 
 #	Special cases
 	if(log.p) {
-		NA.cases <- (is.na(p) | p>0 | mu<=0 | phi<=0)
+		NA.cases <- (is.na(p) | is.na(mu) | is.na(phi) | p>0 | mu<=0 | phi<=0)
 		if(lower.tail) {
 			left.limit <- p == -Inf
 			right.limit <- p == 0
@@ -175,7 +191,7 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 			right.limit <- p == -Inf
 		}
 	} else {
-		NA.cases <- (is.na(p) | p<0 | p>1 | mu<=0 | phi<=0)
+		NA.cases <- (is.na(p) | is.na(mu) | is.na(phi) | p<0 | p>1 | mu<=0 | phi<=0)
 		if(lower.tail) {
 			left.limit <- p == 0
 			right.limit <- p == 1
@@ -229,8 +245,13 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 		else
 			x[i] <- x[i] - dx
 		i[i] <- (abs(dx) > tol)
-		if(trace) cat("Iter=",iter,"Still converging=",sum(i),"\n")
-		if(trace) cat(iter,x,"\n")
+		if(trace) {
+			cat("Iter=",iter,"Still converging=",sum(i),"\n")
+			if(n < 6L)
+				cat("x ",x,"\ndx ",dx,"\n")
+			else
+				cat("Quantiles x ",quantile(x),"\nMax dx ",max(dx),"\n")
+		}
 	}
 
 #	Mu scales the distribution

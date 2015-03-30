@@ -3,3 +3,6 @@ useDynLib(statmod)
 
 #  All functions exported other than those starting with "."
 exportPattern("^[^\\.]")
+
+S3method(print,limdil)
+S3method(plot,limdil)
