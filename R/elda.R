@@ -3,11 +3,11 @@
 elda <- limdil <- function(response, dose, tested = rep(1, length(response)), group=rep(1,length(response)), observed = FALSE, confidence = 0.95, test.unit.slope = FALSE) 
 #	Limiting dilution analysis
 #	Gordon Smyth, Yifang Hu
-#	21 June 2005. Last revised 17 Nov 2014.
+#	21 June 2005. Last revised 18 August 2015.
 {
 	n <- length(response)
 	if(n==0) stop("No data")
-	if(length(dose) != n) stop("length(dose) doesn't match length(response")
+	if(length(dose) != n) stop("length(dose) doesn't match length(response)")
 	if(length(tested) != n) {
 		if(length(tested)==1)
 			tested <- rep_len(tested,n)

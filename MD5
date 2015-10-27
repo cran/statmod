@@ -1,8 +1,8 @@
-c2094319d647861ca54692a5daf3616f *DESCRIPTION
-978ae914885b2c4f796553c4c3955896 *NAMESPACE
+f6e54ca4c39b6d09d085fac66a63be3b *DESCRIPTION
+ba75524ef2c02cc4002605903a6d6dcc *NAMESPACE
 cabcedc80916e132755147508dc1808b *R/digamma.R
 b67d4c729d215c0952dc4594882da6fa *R/digammaf.R
-9593ee23d122d37de29cfd521edecb25 *R/elda.R
+2ca5d21ceedcedb7a85e9f46800187c7 *R/elda.R
 f48cdb780b1cc86bfeef8c4722912c2f *R/fitNBP.R
 27838c3de5b6c7ff37ea6e92870903cc *R/forward.R
 d269c19fdeee45694c0553cef42c4633 *R/gaussquad.R
@@ -23,7 +23,7 @@ cb4885f03160dcbca66990cd8db7ae0a *R/remlscor.R
 a3185c8c817e40182c9c31a41970df90 *R/sagetest.R
 afad3149539912e729cb6d0aea8e53df *R/tweedief.R
 e600a474fedf570b1913b278022d46bf *data/welding.rdata
-770d7e0d3e304f2d7dd7a186d02b6347 *inst/NEWS
+f2e65d9bcf9baed7853a62088fd5e7a6 *inst/NEWS
 d37cd00f740faf6738e9a0c992f54eda *man/digammaf.Rd
 1ee58cb70d97c57b1aeb31e2f94258a9 *man/elda.Rd
 2f065b8fef25cc88b80bd996eb24b0f1 *man/fitNBP.Rd

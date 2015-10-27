@@ -1,3 +1,8 @@
+26 October 2015: statmod 1.4.22
+
+- Functions needed from the stats and graphics packages are now
+  explicitly imported into the package NAMESPACE.
+
 30 March 2015: statmod 1.4.21
 
 - qinvgauss() now treats input arguments of different lengths or NA
