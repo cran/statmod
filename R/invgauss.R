@@ -1,37 +1,59 @@
 dinvgauss <- function(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
 #	Probability density function of inverse Gaussian distribution
 #	Gordon Smyth
-#	Created 15 Jan 1998.  Last revised 30 March 2015.
+#	Created 15 Jan 1998.  Last revised 2 Jan 2016.
 {
 #	Dispersion is reciprocal of shape
 	if(!is.null(shape)) dispersion <- 1/shape
 
-#	Make arguments same length
+#	Check for special cases
+	spec.x <- any(!is.finite(x) | x<=0)
+	spec.mean <- any(!is.finite(mean) | mean<=0)
+	spec.disp <- any(!is.finite(dispersion) | dispersion<=0)
+	any.special <- spec.x | spec.mean | spec.disp
+
+#	If any parameter has length 0, return result of length 0
 	r <- range(length(x),length(mean),length(dispersion))
 	if(r[1L]==0L) return(numeric(0L))
+
+#	Make arguments same length
 	n <- r[2L]
 	x <- rep_len(x,n)
 	mu <- rep_len(mean,n)
 	phi <- rep_len(dispersion,n)
 
-#	Special cases
-	NA.cases <- (is.na(x) | is.na(mu) | is.na(phi) | mu<=0 | phi<=0)
-	left.limit <- x<=0
-	right.limit <- x==Inf
-
-#	Check for attributes
-	has.attr <- !is.null(attributes(x))
-
-	any.special <- has.attr | any(NA.cases) | any(left.limit) | any(right.limit)
+	logd <- x
 	if(any.special) {
-		logd <- x
+#		If x is NA, negative or infinite, don't need to know mu or phi
+		spec.x <- is.na(x) | x<0 | x==Inf
+		mu[spec.x] <- 1
+		phi[spec.x] <- 1
+
+#		If phi is Inf, don't need to know mu
+		mu[phi==Inf] <- 1
+
+#		If mu is zero, don't need to know phi
+		phi[mu==0] <- 1
+
+		left.limit <- x<0 | (x==0 & mu>0 & phi<Inf) | (x<mu & phi==0)
+		right.limit <- (x>mu & (mu==0 | phi==0)) | x==Inf | (x>0 & phi==Inf)
+		spike <- (x==mu & (mu==0 | phi==0)) | (x==0 & phi==Inf)
+		invchisq <- mu==Inf & !(left.limit | right.limit | spike)
+		NA.cases <- is.na(x) | is.na(mu) | is.na(phi) | mu<0 | phi<0
+		left.limit[NA.cases] <- FALSE
+		right.limit[NA.cases] <- FALSE
+		spike[NA.cases] <- FALSE
+		invchisq[NA.cases] <- FALSE
+
 		logd[left.limit] <- -Inf
 		logd[right.limit] <- -Inf
+		logd[spike] <- Inf
+		logd[invchisq] <- .dinvgaussInfMean(x=x[invchisq],dispersion=phi[invchisq])
 		logd[NA.cases] <- NA
-		ok <- !(NA.cases | left.limit | right.limit)
+		ok <- !(left.limit | right.limit | spike | invchisq | NA.cases)
 		logd[ok] <- .dinvgauss(x[ok],mean=mu[ok],dispersion=phi[ok],log=TRUE)
 	} else {
-		logd <- .dinvgauss(x,mean=mu,dispersion=phi,log=TRUE)
+		logd[] <- .dinvgauss(x,mean=mu,dispersion=phi,log=TRUE)
 	}
 
 	if(log) logd else exp(logd)
@@ -51,40 +73,59 @@ dinvgauss <- function(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
 	if(log) d else exp(d)
 }
 
+.dinvgaussInfMean <- function(x, dispersion=1)
+{
+	(-log(dispersion) - log(2*pi) - 3*log(x) - 1/dispersion/x) / 2
+}
+
 pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE)
 #	Cumulative distribution function of inverse Gaussian distribution
 #	Gordon Smyth
-#	Created 15 Jan 1998.  Last revised 30 March 2015.
+#	Created 15 Jan 1998.  Last revised 2 January 2016.
 {
 #	Dispersion is reciprocal of shape
 	if(!is.null(shape)) dispersion <- 1/shape
 
-#	Make arguments same length
+#	Check for special cases
+	spec.q <- any(!is.finite(q) | q<=0)
+	spec.mean <- any(!is.finite(mean) | mean<=0)
+	spec.disp <- any(!is.finite(dispersion) | dispersion<=0)
+	any.special <- spec.q | spec.mean | spec.disp
+
+#	If any parameter has length 0, return result of length 0
 	r <- range(length(q),length(mean),length(dispersion))
 	if(r[1L]==0L) return(numeric(0L))
+
+#	Make arguments same length
 	n <- r[2L]
 	q <- rep_len(q,n)
 	mu <- rep_len(mean,n)
 	phi <- rep_len(dispersion,n)
 
-	nq <- length(q)
-	if(nq==0) return(numeric(0))
-	n <- max(nq,length(mean),length(dispersion))
-	if(n>nq) q <- rep_len(q,n)
-	mu <- rep_len(mean,n)
-	phi <- rep_len(dispersion,n)
-
-#	Special cases
-	NA.cases <- (is.na(q) | is.na(mu) | is.na(phi) | mu<=0 | phi<=0)
-	left.limit <- q<=0
-	right.limit <- q==Inf
-
-#	Check for attributes
-	has.attr <- !is.null(attributes(q))
-
-	any.special <- has.attr | any(NA.cases) | any(left.limit) | any(right.limit)
+	logp <- q
 	if(any.special) {
-		logp <- q
+#		If q is NA, negative or infinite, don't need to know mu or phi
+		spec.q <- is.na(q) | q<0 | q==Inf
+		mu[spec.q] <- 1
+		phi[spec.q] <- 1
+
+#		If phi is Inf, don't need to know mu
+		mu[phi==Inf] <- 1
+
+#		If mu is zero, don't need to know phi
+		phi[mu==0] <- 1
+
+		left.limit <- q<0 | (q==0 & mu>0 & phi<Inf) | (q<mu & phi==0)
+		right.limit <- (q>mu & (mu==0 | phi==0)) | q==Inf | (q>0 & phi==Inf)
+		spike <- (q==mu & (mu==0 | phi==0)) | (q==0 & phi==Inf)
+		invchisq <- mu==Inf & !(left.limit | right.limit | spike)
+		NA.cases <- is.na(q) | is.na(mu) | is.na(phi) | mu<0 | phi<0
+		left.limit[NA.cases] <- FALSE
+		right.limit[NA.cases] <- FALSE
+		spike[NA.cases] <- FALSE
+		invchisq[NA.cases] <- FALSE
+		ok <- !(left.limit | right.limit | spike | invchisq | NA.cases)
+
 		if(lower.tail) {
 			logp[left.limit] <- -Inf
 			logp[right.limit] <- 0
@@ -92,8 +133,9 @@ pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.
 			logp[left.limit] <- 0
 			logp[right.limit] <- -Inf
 		}
+		logp[spike] <- 0
+		logp[invchisq] <- pchisq(1/q[invchisq]/phi[invchisq],df=1,lower.tail=!lower.tail,log.p=TRUE)
 		logp[NA.cases] <- NA
-		ok <- !(NA.cases | left.limit | right.limit)
 		logp[ok] <- .pinvgauss(q[ok],mean=mu[ok],dispersion=phi[ok],lower.tail=lower.tail,log.p=TRUE)
 	} else {
 		logp <- .pinvgauss(q,mean=mu,dispersion=phi,lower.tail=lower.tail,log.p=TRUE)
@@ -158,11 +200,10 @@ rinvgauss <- function(n, mean=1, shape=NULL, dispersion=1)
 	mu*r
 }
 
-qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE, maxit=40L, tol=1e-7, trace=FALSE)
+qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE, maxit=200L, tol=1e-15, trace=FALSE)
 #	Quantiles of the inverse Gaussian distribution
-#
-#	Current version using globally convergent Newton iteration
-#	by created by Gordon Smyth 12 May 2014, last revised 30 March 2015.
+#	using globally convergent Newton iteration.
+#	by created by Gordon Smyth 12 May 2014, last revised 4 Jan 2016.
 #
 #	Replaces an earlier function by Paul Bagshaw of 23 Dec 1998
 {
@@ -210,8 +251,12 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 	p <- p[ok]
 
 #	Mode of density and point of inflexion of cdf
-	phi2 <- 1.5*phi
-	x <- sqrt(1+phi2^2)-phi2
+	kappa <- 1.5*phi
+	x <- sqrt(1+kappa^2)-kappa
+#	Taylor series correction for large kappa
+	bigcv <- kappa>1e3
+	k1 <- 1/2/kappa[bigcv]
+	if(length(k1)) x[bigcv] <- k1*(1-k1^2)
 	if(trace) cat("mode",x,"\n")
 
 	if(log.p) {
@@ -230,9 +275,17 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 		step <- function(p,x,phi) (p - .pinvgauss(x, dispersion=phi, lower.tail=lower.tail)) / .dinvgauss(x, dispersion=phi)
 	}
 
-#	Newton iteration is monotonically convergent from point of inflexion
+#	First Newton step
 	iter <- 0
-	i <- rep_len(TRUE,length(phi))
+	dx <- step(p,x,phi)
+	sdx <- sign(dx)
+	if(lower.tail)
+		x <- x + dx
+	else
+		x <- x - dx
+	i <- (abs(dx) > tol)
+
+#	Newton iteration is monotonically convergent from point of inflexion
 	while(any(i)) {
 		iter <- iter+1
 		if(iter > maxit) {
@@ -240,6 +293,10 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 			break
 		}
 		dx <- step(p[i],x[i],phi[i])
+
+#		Change of sign indicates that machine precision has been overstepped
+		dx[dx * sdx[i] < 0] <- 0
+
 		if(lower.tail)
 			x[i] <- x[i] + dx
 		else
@@ -250,7 +307,7 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 			if(n < 6L)
 				cat("x ",x,"\ndx ",dx,"\n")
 			else
-				cat("Quantiles x ",quantile(x),"\nMax dx ",max(dx),"\n")
+				cat("Quantiles x ",quantile(x),"\nMax dx ",max(abs(dx)),"\n")
 		}
 	}
 

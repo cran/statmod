@@ -14,7 +14,7 @@ Density, cumulative probability, quantiles and random generation for the inverse
 dinvgauss(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
 pinvgauss(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE)
 qinvgauss(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE,
-          maxit=40L, tol=1e-7, trace=FALSE)
+          maxit=200L, tol=1e-15, trace=FALSE)
 rinvgauss(n, mean=1, shape=NULL, dispersion=1)
 }
 
@@ -76,7 +76,7 @@ Statistical Properties of Inverse Gaussian Distributions I.
 \emph{Annals of Mathematical Statistics} 28, 362-377.
 }
 
-\author{Gordon Smyth with contributions from Paul Bagshaw, Centre National d'Etudes des Telecommunications, France, and Trevor Park, Department of Statistics, University of Florida}
+\author{Gordon Smyth with suggestions from Paul Bagshaw, Centre National d'Etudes des Telecommunications, France, and Trevor Park, Department of Statistics, University of Florida}
 
 \seealso{
 \code{dinvGauss}, \code{pinvGauss}, \code{qinvGauss} and \code{rinvGauss} in the SuppDists package.

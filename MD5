@@ -1,4 +1,4 @@
-f6e54ca4c39b6d09d085fac66a63be3b *DESCRIPTION
+ce0cc3e6f3cfddfe113a3de987d2a4fa *DESCRIPTION
 ba75524ef2c02cc4002605903a6d6dcc *NAMESPACE
 cabcedc80916e132755147508dc1808b *R/digamma.R
 b67d4c729d215c0952dc4594882da6fa *R/digammaf.R
@@ -11,7 +11,7 @@ d269c19fdeee45694c0553cef42c4633 *R/gaussquad.R
 87e2551f59f03a67cf4b0a9bf6479972 *R/glmscoretest.R
 98e67ef55b5ac6c79e18608e6e6e2b91 *R/growthcurve.R
 1747893341300d18e4af7032e4f91fc0 *R/hommel.R
-686c1f4ed6942060151565b1d6f32b56 *R/invgauss.R
+84b6c7cb4b8b1cfaa815bfaa576ea0f2 *R/invgauss.R
 c85f7bc07419ec6489a122fd6c5d9d41 *R/matvec.R
 95567b5481bab1b1b23cde0c9ce8369a *R/mixedmodel.R
 aead17fe81a6209b2c9cc7414ab7aa53 *R/mscale.R
@@ -23,7 +23,7 @@ cb4885f03160dcbca66990cd8db7ae0a *R/remlscor.R
 a3185c8c817e40182c9c31a41970df90 *R/sagetest.R
 afad3149539912e729cb6d0aea8e53df *R/tweedief.R
 e600a474fedf570b1913b278022d46bf *data/welding.rdata
-f2e65d9bcf9baed7853a62088fd5e7a6 *inst/NEWS
+4e706b1a304238b5b5b87f3c28a64123 *inst/NEWS
 d37cd00f740faf6738e9a0c992f54eda *man/digammaf.Rd
 1ee58cb70d97c57b1aeb31e2f94258a9 *man/elda.Rd
 2f065b8fef25cc88b80bd996eb24b0f1 *man/fitNBP.Rd
@@ -34,7 +34,7 @@ e7e925c42126683be04079a71b1d8022 *man/gauss.quad.Rd
 552561fc0f9300d1564fb3acb0ab0d84 *man/glmscoretest.Rd
 26d687ea8e66ede996ecf62873dc59ad *man/growthcurve.Rd
 0f8f3ac69241aedf8664fbdf9d50f085 *man/hommel.test.Rd
-013b556c4a53e133dfe965f964933396 *man/invgauss.Rd
+19db5f474edc942b5000a747d45555b3 *man/invgauss.Rd
 ee394dd22edb184f213f2e3e754cc980 *man/logmdigamma.Rd
 ae5d97dda72b73d6688128ac79753757 *man/matvec.Rd
 e9426cfaf3b6bd604658f95c3e57a032 *man/meanT.Rd
@@ -52,4 +52,4 @@ ac05feb7d63c4dd33f0f0d79e8903bff *man/mscale.Rd
 d8a58e7e91ba0dbf41668a06d0bc34dc *man/welding.Rd
 bb605bd4a6615e3cd151df9bd01b88bd *src/gaussq.f
 858e7cd614337b896cdba7b531453dc8 *tests/statmod-Tests.R
-acdd318b07ee46c7e6cd14ef492ad506 *tests/statmod-Tests.Rout.save
+1c27b6296006bb145bc707035ba46fb9 *tests/statmod-Tests.Rout.save

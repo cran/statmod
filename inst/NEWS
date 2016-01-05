@@ -1,3 +1,8 @@
+30 December 2015: statmod 1.4.23
+
+- qinvgauss() has been improved to return best achievable machine
+  accuracy.
+
 26 October 2015: statmod 1.4.22
 
 - Functions needed from the stats and graphics packages are now
