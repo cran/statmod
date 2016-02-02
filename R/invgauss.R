@@ -1,7 +1,7 @@
 dinvgauss <- function(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
 #	Probability density function of inverse Gaussian distribution
 #	Gordon Smyth
-#	Created 15 Jan 1998.  Last revised 2 Jan 2016.
+#	Created 15 Jan 1998.  Last revised 2 Feb 2016.
 {
 #	Dispersion is reciprocal of shape
 	if(!is.null(shape)) dispersion <- 1/shape
@@ -18,7 +18,7 @@ dinvgauss <- function(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
 
 #	Make arguments same length
 	n <- r[2L]
-	x <- rep_len(x,n)
+	if(length(x)<n) x <- rep_len(x,n)
 	mu <- rep_len(mean,n)
 	phi <- rep_len(dispersion,n)
 
@@ -81,7 +81,7 @@ dinvgauss <- function(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
 pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE)
 #	Cumulative distribution function of inverse Gaussian distribution
 #	Gordon Smyth
-#	Created 15 Jan 1998.  Last revised 2 January 2016.
+#	Created 15 Jan 1998.  Last revised 2 Feb 2016.
 {
 #	Dispersion is reciprocal of shape
 	if(!is.null(shape)) dispersion <- 1/shape
@@ -98,7 +98,7 @@ pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.
 
 #	Make arguments same length
 	n <- r[2L]
-	q <- rep_len(q,n)
+	if(length(q)<n) q <- rep_len(q,n)
 	mu <- rep_len(mean,n)
 	phi <- rep_len(dispersion,n)
 
@@ -163,7 +163,7 @@ pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.
 rinvgauss <- function(n, mean=1, shape=NULL, dispersion=1)
 #	Random variates from inverse Gaussian distribution
 #	Gordon Smyth (with a correction by Trevor Park 14 June 2005)
-#	Created 15 Jan 1998.  Last revised 30 March 2015.
+#	Created 15 Jan 1998.  Last revised 12 Jan 2016.
 {
 #	Dispersion is reciprocal of shape
 	if(!is.null(shape)) dispersion <- 1/shape
@@ -191,30 +191,44 @@ rinvgauss <- function(n, mean=1, shape=NULL, dispersion=1)
 #	Divide out mu	
 	phi[i] <- phi[i]*mu[i]
 
-	Y <- rchisq(n,df=1)
+	Y <- rnorm(n)^2
 	X1 <- 1 + phi[i]/2 * (Y - sqrt(4*Y/phi[i]+Y^2))
-	firstroot <- as.logical(rbinom(n,size=1L,prob=1/(1+X1)))
+	firstroot <- (runif(n) < 1/(1+X1))
 	r[i][firstroot] <- X1[firstroot]
 	r[i][!firstroot] <- 1/X1[!firstroot]
 
 	mu*r
 }
 
-qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE, maxit=200L, tol=1e-15, trace=FALSE)
+qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE, maxit=200L, tol=1e-14, trace=FALSE)
 #	Quantiles of the inverse Gaussian distribution
 #	using globally convergent Newton iteration.
-#	by created by Gordon Smyth 12 May 2014, last revised 4 Jan 2016.
+#	Gordon Smyth
+#	Created 12 May 2014.  Last revised 2 Feb 2016.
 #
-#	Replaces an earlier function by Paul Bagshaw of 23 Dec 1998
+#	Replaced an earlier function by Paul Bagshaw of 23 Dec 1998
 {
 #	Dispersion is reciprocal of shape
 	if(!is.null(shape)) dispersion <- 1/shape
+
+#	Make sure that p is exp(logp)
+	if(log.p)
+		logp <- p
+	else {
+		p[p<0] <- NA
+		p[p>1] <- NA
+		logp <- log(p)
+	}
+	p <- exp(logp)
 
 #	Make arguments same length
 	r <- range(length(p),length(mean),length(dispersion))
 	if(r[1L]==0L) return(numeric(0L))
 	n <- r[2L]
-	p <- rep_len(p,n)
+	if(length(p)<n) {
+		logp <- rep_len(logp,n)
+		p <- rep_len(p,n)
+	}
 	mu <- rep_len(mean,n)
 	phi <- rep_len(dispersion,n)
 
@@ -222,24 +236,13 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 	q <- p
 
 #	Special cases
-	if(log.p) {
-		NA.cases <- (is.na(p) | is.na(mu) | is.na(phi) | p>0 | mu<=0 | phi<=0)
-		if(lower.tail) {
-			left.limit <- p == -Inf
-			right.limit <- p == 0
-		} else {
-			left.limit <- p == 0
-			right.limit <- p == -Inf
-		}
+	NA.cases <- (is.na(p) | is.na(mu) | is.na(phi) | mu<=0 | phi<=0)
+	if(lower.tail) {
+		left.limit <- logp == -Inf
+		right.limit <- logp == 0
 	} else {
-		NA.cases <- (is.na(p) | is.na(mu) | is.na(phi) | p<0 | p>1 | mu<=0 | phi<=0)
-		if(lower.tail) {
-			left.limit <- p == 0
-			right.limit <- p == 1
-		} else {
-			left.limit <- p == 1
-			right.limit <- p == 0
-		}
+		left.limit <- logp == 0
+		right.limit <- logp == -Inf
 	}
 	q[left.limit] <- 0
 	q[right.limit] <- Inf
@@ -248,6 +251,7 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 
 #	Convert to mean=1
 	phi <- phi[ok]*mu[ok]
+	logp <- logp[ok]
 	p <- p[ok]
 
 #	Mode of density and point of inflexion of cdf
@@ -257,33 +261,57 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 	bigcv <- kappa>1e3
 	k1 <- 1/2/kappa[bigcv]
 	if(length(k1)) x[bigcv] <- k1*(1-k1^2)
-	if(trace) cat("mode",x,"\n")
+	if(trace) {
+		if(n < 6L)
+			cat("mode ",x,"\n")
+		else
+			cat("quantile(mode) ",quantile(x),"\n")
+	}
 
-	if(log.p) {
-		step <- function(p,x,phi) {
-			logF <- .pinvgauss(x,dispersion=phi,lower.tail=lower.tail,log.p=TRUE)
-			logf <- .dinvgauss(x,dispersion=phi,log=TRUE)
-			dlogp <- p-logF
-			pos <- p>logF
-			maxlogp <- logF
-			maxlogp[pos] <- p[pos]
-			d <- exp(maxlogp+log1p(-exp(-abs(dlogp)))-logf)
-			d[!pos] <- -d[!pos]
-			d
-		}
+#	Identify cases with very small tail probabilities
+	if(lower.tail) {
+		small.left <- (logp < -11.51)
+		small.right <- (logp > -1e-5)
 	} else {
-		step <- function(p,x,phi) (p - .pinvgauss(x, dispersion=phi, lower.tail=lower.tail)) / .dinvgauss(x, dispersion=phi)
+		small.left <- (logp > -1e-5)
+		small.right <- (logp < -11.51)
+	}
+
+#	For small left tail prob, use inverse chisq as starting value
+	if(any(small.left)) x[small.left] <- 1/phi[small.left]/qnorm(logp[small.left],lower.tail=lower.tail,log.p=TRUE)^2
+
+#	For small right tail prob, use qgamma with same mean and var as starting value
+	if(any(small.right)) {
+		alpha <- 1/phi[small.right]
+		q.gam <- qgamma(logp[small.right],shape=alpha,rate=alpha,lower.tail=lower.tail,log.p=TRUE)
+		x[small.right] <- q.gam
+	}
+
+	step <- function(x,p,logp,phi) {
+		logF <- .pinvgauss(x,dispersion=phi,lower.tail=lower.tail,log.p=TRUE)
+		dp <- dlogp <- logp-logF
+		smallstep <- abs(dlogp) < 1e-5
+		dp[smallstep] <- exp(logp[smallstep]+log1p(-dlogp[smallstep]/2)) * dlogp[smallstep]
+		dp[!smallstep] <- p[!smallstep]-exp(logF[!smallstep])
+		dp / .dinvgauss(x,dispersion=phi)
 	}
 
 #	First Newton step
 	iter <- 0
-	dx <- step(p,x,phi)
+	dx <- step(x,p,logp,phi)
 	sdx <- sign(dx)
 	if(lower.tail)
 		x <- x + dx
 	else
 		x <- x - dx
 	i <- (abs(dx) > tol)
+	if(trace) {
+		cat("Iter=",iter,"Still converging=",sum(i),"\n")
+		if(n < 6L)
+			cat("x ",x,"\ndx ",dx,"\n")
+		else
+			cat("quantile(x) ",quantile(x),"\nMax dx ",max(abs(dx)),"\n")
+	}
 
 #	Newton iteration is monotonically convergent from point of inflexion
 	while(any(i)) {
@@ -292,7 +320,7 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 			warning("max iterations exceeded")
 			break
 		}
-		dx <- step(p[i],x[i],phi[i])
+		dx <- step(x[i],p[i],logp[i],phi[i])
 
 #		Change of sign indicates that machine precision has been overstepped
 		dx[dx * sdx[i] < 0] <- 0
@@ -301,13 +329,13 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 			x[i] <- x[i] + dx
 		else
 			x[i] <- x[i] - dx
-		i[i] <- (abs(dx) > tol)
+		i[i] <- (abs(dx)/pmax(x[i],1) > tol)
 		if(trace) {
 			cat("Iter=",iter,"Still converging=",sum(i),"\n")
 			if(n < 6L)
 				cat("x ",x,"\ndx ",dx,"\n")
 			else
-				cat("Quantiles x ",quantile(x),"\nMax dx ",max(abs(dx)),"\n")
+				cat("quantile(x) ",quantile(x),"\nMax dx ",max(abs(dx)),"\n")
 		}
 	}
 

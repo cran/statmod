@@ -14,7 +14,7 @@ Density, cumulative probability, quantiles and random generation for the inverse
 dinvgauss(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
 pinvgauss(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE)
 qinvgauss(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE,
-          maxit=200L, tol=1e-15, trace=FALSE)
+          maxit=200L, tol=1e-14, trace=FALSE)
 rinvgauss(n, mean=1, shape=NULL, dispersion=1)
 }
 
@@ -49,9 +49,12 @@ The shape and dispersion parameters are alternative parametrizations for the var
 Only one of these two arguments needs to be specified.
 If both are set, then \code{shape} takes precedence.
 
+These functions implement algorithms described by Giner and Goknur (2016).
 \code{pinvgauss} uses a result from Chhikara and Folks (1974), with enhancements for right tails and log-probabilities.
-\code{rinvgauss} uses an algorithm from Michael et al (1976).
-\code{qinvgauss} uses code and algorithm from Giner and Smyth (2014).
+\code{rinvgauss} uses an algorithm proposed by Michael et al (1976).
+\code{qinvgauss} uses a monotonically convergent Newton iteration developed by Giner and Smyth (2016).
+All internal computations are undertaken on the log-scale as far as possible.
+The \code{pinvgauss} and \code{qinvgauss} functions make use of Taylor series expansions to achieve full floating point accuracy for small tail probabilities.
 }
  
 \references{
@@ -63,8 +66,8 @@ Chhikara, R. S., and Folks, J. L., (1974).
 Estimation of the inverse Gaussian distribution function.
 \emph{Journal of the American Statistical Association} 69, 250-254.
 
-Giner, G., and Smyth, G. K. (2014).
-A monotonically convergent Newton iteration for the quantiles of any unimodal distribution, with application to the inverse Gaussian distribution.
+Giner, G., and Smyth, G. K. (2016).
+statmod: Probability Calculations for the Inverse Gaussian Distribution.
 \url{http://www.statsci.org/smyth/pubs/qinvgaussPreprint.pdf}
 
 Michael, J. R., Schucany, W. R., and Haas, R. W. (1976).
@@ -83,8 +86,14 @@ Statistical Properties of Inverse Gaussian Distributions I.
 }
 
 \examples{
-q <- rinvgauss(20,mean=1,dispersion=0.5) # generate vector of 20 random numbers
-p <- pinvgauss(q,mean=1,dispersion=0.5) # p should be uniform
+q <- rinvgauss(10, mean=1, disp=0.5) # generate vector of 10 random numbers
+p <- pinvgauss(q, mean=1, disp=0.5) # p should be uniformly distributed
+
+# Quantile for small right tail probability:
+qinvgauss(1e-20, mean=1.5, disp=0.7, lower.tail=FALSE)
+
+# Same quantile, but represented in terms of left tail probability on log-scale
+qinvgauss(-1e-20, mean=1.5, disp=0.7, lower.tail=TRUE, log.p=TRUE)
 }
 
 \keyword{distribution}

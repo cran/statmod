@@ -1,7 +1,29 @@
+ 2 February 2016: statmod 1.4.24
+
+- speedup for rinvgauss() by replacing rchisq() with rnorm() and
+  rbinom() with runif().
+
+- speedup for qinvgauss() by using qgamma as starting approximation
+  for very small right tail probabilities, and inverse chisq as
+  starting approximation for very small left tail probabilities.
+
+- qinvgauss() now computes Newton step using log probabilities
+  and a Taylor series expansion for small steps.  This improves
+  accuracy in extreme cases.  The stopping criterion for the Newton
+  iteration has been revised.
+
+- Bug fix to dinvgauss(), pinvgauss() and qinvgauss() which were not
+  preserving attributes of the first argument.
+
 30 December 2015: statmod 1.4.23
 
 - qinvgauss() has been improved to return best achievable machine
-  accuracy.
+  accuracy.  It now checks for backtracking of the Newton iteration.
+
+- dinvgauss() and pinvgauss() now check for a wider range of special
+  cases.  This allows them to give valid results in some cases
+  for infinite or missing parameter values and for x outside the
+  support of the distribution.
 
 26 October 2015: statmod 1.4.22
 
@@ -29,7 +51,7 @@
   The functions now include arguments lower.tail and log.p, meaning
   that right-tailed probabilities can be used and probabilities can
   be specified on the log-scale.  Good numerical precision is
-  maintained in these case.  The functions now respect attributes,
+  maintained in these cases.  The functions now respect attributes,
   so that a matrix argument for example will produce a matrix result.
   Checking is now done for missing values and invalid parameter
   values on an element-wise basis.  A technical report has been

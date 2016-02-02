@@ -44,11 +44,13 @@ quadrature rules. \emph{Mathematics of Computation} \bold{23}, 221-230.
 Golub, G. H. (1973). Some modified matrix eigenvalue problems.
 \emph{Siam Review} \bold{15}, 318-334.
 
-Smyth, G. K. (1998). Numerical integration. In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pages 3088-3095.
-\url{http://www.statsci.org/smyth/pubs/EoB/ban042-.pdf}
+Smyth, G. K. (1998). Numerical integration.
+In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pages 3088-3095.
+\url{http://www.statsci.org/smyth/pubs/NumericalIntegration-Preprint.pdf}
 
-Smyth, G. K. (1998). Polynomial approximation. In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pages 3425-3429.
-\url{http://www.statsci.org/smyth/pubs/EoB/bap064-.pdf}
+Smyth, G. K. (1998). Polynomial approximation.
+In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pages 3425-3429.
+\url{http://www.statsci.org/smyth/pubs/PolyApprox-Preprint.pdf}
 
 Stroud, AH, and Secrest, D (1966). \emph{Gaussian Quadrature Formulas}. Prentice-Hall, Englewood Cliffs, N.J.
 }

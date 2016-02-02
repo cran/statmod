@@ -40,14 +40,15 @@ Gamma with density \code{x^(alpha-1)*exp(-x/beta)/beta^alpha/gamma(alpha)}.
 }
 
 \references{
-Smyth, G. K. (1998). Polynomial approximation. In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pages 3425-3429.
-\url{http://www.statsci.org/smyth/pubs/EoB/bap064-.pdf}
+Smyth, G. K. (1998). Polynomial approximation.
+In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wiley, London, pages 3425-3429.
+\url{http://www.statsci.org/smyth/pubs/PolyApprox-Preprint.pdf}
 }
 
 \author{Gordon Smyth, using Netlib Fortran code \url{http://www.netlib.org/go/gaussq.f}, and including corrections suggested by Spencer Graves}
 
 \seealso{
-\code{\link[statmod:gauss.quad]{gauss.quad}}, \code{\link{integrate}}
+\code{\link{gauss.quad}}, \code{\link{integrate}}
 }
 
 \examples{
