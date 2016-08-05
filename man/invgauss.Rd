@@ -41,45 +41,25 @@ Elements of input vectors that are missing will cause the corresponding elements
 }
 
 \details{
-The inverse Gaussian distribution takes values on the positive real line (Tweedie, 1957; Chhikara and Folks, 1989).
+The inverse Gaussian distribution takes values on the positive real line.
 It is somewhat more right skew than the gamma distribution, with variance given by \code{dispersion*mean^3}.
 The distribution has applications in reliability and survival analysis, and is one of the response distributions used in generalized linear models.
+
+These functions implement numeric algorithms due to Giner and Smyth (2016) that achieve close to full machine accuracy for all possible parameter values.
 
 The shape and dispersion parameters are alternative parametrizations for the variability, with \code{dispersion=1/shape}.
 Only one of these two arguments needs to be specified.
 If both are set, then \code{shape} takes precedence.
-
-These functions implement algorithms described by Giner and Goknur (2016).
-\code{pinvgauss} uses a result from Chhikara and Folks (1974), with enhancements for right tails and log-probabilities.
-\code{rinvgauss} uses an algorithm proposed by Michael et al (1976).
-\code{qinvgauss} uses a monotonically convergent Newton iteration developed by Giner and Smyth (2016).
-All internal computations are undertaken on the log-scale as far as possible.
-The \code{pinvgauss} and \code{qinvgauss} functions make use of Taylor series expansions to achieve full floating point accuracy for small tail probabilities.
 }
  
 \references{
-Chhikara, R. S., and Folks, J. L., (1989).
-\emph{The inverse Gaussian distribution: Theory, methodology and applications}.
-Marcel Dekker, New York.
-
-Chhikara, R. S., and Folks, J. L., (1974).
-Estimation of the inverse Gaussian distribution function.
-\emph{Journal of the American Statistical Association} 69, 250-254.
-
 Giner, G., and Smyth, G. K. (2016).
-statmod: Probability Calculations for the Inverse Gaussian Distribution.
-\url{http://www.statsci.org/smyth/pubs/qinvgaussPreprint.pdf}
-
-Michael, J. R., Schucany, W. R., and Haas, R. W. (1976).
-Generating random variates using transformations with multiple roots.
-\emph{The American Statistician}, 30, 88--90.
-
-Tweedie, M. C. (1957).
-Statistical Properties of Inverse Gaussian Distributions I.
-\emph{Annals of Mathematical Statistics} 28, 362-377.
+statmod: Probability calculations for the inverse Gaussian distribution.
+\emph{R Journal}, Volume 8, in press.
+\url{http://arxiv.org/abs/1603.06687}
 }
 
-\author{Gordon Smyth with suggestions from Paul Bagshaw, Centre National d'Etudes des Telecommunications, France, and Trevor Park, Department of Statistics, University of Florida}
+\author{Gordon Smyth.  Paul Bagshaw (Centre National d'Etudes des Telecommunications, France) and Trevor Park (Department of Statistics, University of Florida) made suggestions on an earlier version of the code.}
 
 \seealso{
 \code{dinvGauss}, \code{pinvGauss}, \code{qinvGauss} and \code{rinvGauss} in the SuppDists package.

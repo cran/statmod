@@ -1,3 +1,18 @@
+ 5 August 2016: statmod 1.4.25
+
+- Add CITATION file.
+
+- pinvgauss() now uses an asymptotic approximation to compute right
+  tail probabilities for extreme large quantiles.  This allows it to
+  give correct right tail probabilities for virtually any quantile.
+
+- Fix to qinvgauss() to avoid NA values when computing extreme tail
+  quantiles where the inverse Gaussian density is subject to floating
+  underflow.
+
+- Bug fix to qresiduals() and qresid.invgauss() for the inverse
+  Guassian distribution.
+
  2 February 2016: statmod 1.4.24
 
 - speedup for rinvgauss() by replacing rchisq() with rnorm() and
@@ -43,7 +58,7 @@
 - Use of require("tweedie") in the qres.tweedie() code replaced by
   requireNameSpace("tweedie").
 
-30 May 2014: statmod 1.4.20
+31 May 2014: statmod 1.4.20
 
 - Considerable work on the inverse Gaussian functions dinvgauss(),
   pinvgauss(), qinvgauss() and rinvgauss().  The parameter arguments
@@ -56,6 +71,10 @@
   Checking is now done for missing values and invalid parameter
   values on an element-wise basis.  A technical report has been
   written to describe the methodology behind qinvgauss().
+
+- Change to qresid.invgauss() to compute extreme tail residuals
+  accurately. (This introduced a bug that was fixed in version
+  1.4.25.)
 
 - This file has been renamed to NEWS instead of changelog.txt.
 

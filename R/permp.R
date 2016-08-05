@@ -1,7 +1,7 @@
 permp <- function(x,nperm,n1,n2,total.nperm=NULL,method="auto",twosided=TRUE)
 #	 Exact permutation p-values
-#	 Belinda Phipson and Gordon Smyth
-#	 16 February 2010. Last modified 27 May 2010.
+#	 Gordon Smyth and Belinda Phipson
+#	 16 February 2010. Last modified 17 March 2016.
 {
 	if(any(x<0)) stop("negative x values")
 	if(any(x>nperm)) stop("x cannot exceed nperm")
@@ -12,7 +12,7 @@ permp <- function(x,nperm,n1,n2,total.nperm=NULL,method="auto",twosided=TRUE)
 	}
 
 	method <- match.arg(method,c("auto","exact","approximate"))
-	if(method=="auto") method <- ifelse(total.nperm>10000,"approximate","exact")
+	if(method=="auto") if(total.nperm>10000) method <- "approximate" else method <- "exact"
 
 #	exact p-value by summation
 	if(method=="exact") {
@@ -20,7 +20,7 @@ permp <- function(x,nperm,n1,n2,total.nperm=NULL,method="auto",twosided=TRUE)
 		prob <- rep(p,length(x))
 		x2 <- rep(x,each=total.nperm)
 		Y <- matrix(pbinom(x2,prob=prob,size=nperm),total.nperm,length(x))
-		x[] <- colSums(Y)/total.nperm
+		x[] <- colMeans(Y)
 	}
 
 #	integral approximation

@@ -147,6 +147,8 @@ pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.
 .pinvgauss <- function(q, mean=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE)
 #	Cumulative distribution function of inverse Gaussian distribution
 #	without argument checking
+#	Gordon Smyth
+#	Created 15 Jan 1998. Last revised 2 May 2016
 {
 	if(!is.null(mean)) {
 		q <- q/mean
@@ -157,6 +159,17 @@ pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.
 	b <- 2/dispersion + pnorm(-(q+1)/pq,log.p=TRUE)
 	if(lower.tail) b <- exp(b-a) else b <- -exp(b-a)
 	logp <- a+log1p(b)
+
+#	Asymptotic right tail
+	if(!lower.tail) {
+		i <- (q > 1e6 & q/2/dispersion > 5e5)
+		if(any(i)) {
+			q <- q[i]
+			phi <- dispersion[i]
+			logp[i] <- 1/phi-0.5*log(pi)-log(2*phi)-1.5*log1p(q/2/phi)-q/2/phi
+		}
+	}
+
 	if(log.p) logp else exp(logp)
 }
 
@@ -204,7 +217,7 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 #	Quantiles of the inverse Gaussian distribution
 #	using globally convergent Newton iteration.
 #	Gordon Smyth
-#	Created 12 May 2014.  Last revised 2 Feb 2016.
+#	Created 12 May 2014.  Last revised 24 April 2016.
 #
 #	Replaced an earlier function by Paul Bagshaw of 23 Dec 1998
 {
@@ -299,6 +312,7 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 #	First Newton step
 	iter <- 0
 	dx <- step(x,p,logp,phi)
+	dx[is.na(dx)] <- 0
 	sdx <- sign(dx)
 	if(lower.tail)
 		x <- x + dx
@@ -323,7 +337,7 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 		dx <- step(x[i],p[i],logp[i],phi[i])
 
 #		Change of sign indicates that machine precision has been overstepped
-		dx[dx * sdx[i] < 0] <- 0
+		dx[is.na(dx) | dx * sdx[i] < 0] <- 0
 
 		if(lower.tail)
 			x[i] <- x[i] + dx

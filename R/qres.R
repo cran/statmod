@@ -5,17 +5,17 @@ qresiduals <- qresid <- function(glm.obj, dispersion=NULL)
 #	Peter K Dunn
 #	28 Sep 2004.  Last modified 5 Oct 2004.
 {
-glm.family <- glm.obj$family$family
-if(substr(glm.family,1,17)=="Negative Binomial") glm.family <- "nbinom"
-switch(glm.family,
-   binomial = qres.binom( glm.obj),
-   poisson = qres.pois(glm.obj),
-   Gamma = qres.gamma(glm.obj, dispersion),
-   inverse.gaussian = qres.invgauss(glm.obj, dispersion),
-   Tweedie = qres.tweedie(glm.obj, dispersion),
-   nbinom = qres.nbinom(glm.obj),
-   qres.default(glm.obj, dispersion)
-)}
+	glm.family <- glm.obj$family$family
+	if(substr(glm.family,1,17)=="Negative Binomial") glm.family <- "nbinom"
+	switch(glm.family,
+	   binomial = qres.binom( glm.obj),
+	   poisson = qres.pois(glm.obj),
+	   Gamma = qres.gamma(glm.obj, dispersion),
+	   inverse.gaussian = qres.invgauss(glm.obj, dispersion),
+	   Tweedie = qres.tweedie(glm.obj, dispersion),
+	   nbinom = qres.nbinom(glm.obj),
+	   qres.default(glm.obj, dispersion))
+}
 
 qres.binom <- function(glm.obj)
 #	Randomized quantile residuals for binomial glm
@@ -51,7 +51,7 @@ qres.pois <- function(glm.obj)
 qres.gamma <- function(glm.obj, dispersion = NULL)
 #	Quantile residuals for gamma glm
 #	Gordon Smyth
-#	28 Dec 96.  Last modified 10 Jan 97
+#	28 Dec 96.  Last modified 5 Augusts 2016
 {
 	mu <- fitted(glm.obj)
 	y <- glm.obj$y
@@ -59,14 +59,14 @@ qres.gamma <- function(glm.obj, dispersion = NULL)
 	w <- glm.obj$prior.weights
 	if(is.null(w)) w <- 1
 	if(is.null(dispersion)) dispersion <- sum(w * ((y - mu)/mu)^2)/df
-	u <- pgamma((w * y)/mu/dispersion, w/dispersion)
-	qnorm(u)
+	logp <- pgamma((w * y)/mu/dispersion, w/dispersion, log.p=TRUE)
+	qnorm(logp, log.p=TRUE)
 }
 
 qres.invgauss <- function(glm.obj, dispersion = NULL)
 #	Quantile residuals for inverse Gaussian glm
 #	Gordon Smyth
-#	Created 15 Jan 98. Last modified 31 May 2014.
+#	Created 15 Jan 98. Last modified 5 August 2016.
 {
 	mu <- fitted(glm.obj)
 	y <- glm.obj$y
@@ -76,8 +76,8 @@ qres.invgauss <- function(glm.obj, dispersion = NULL)
 	if(is.null(dispersion)) dispersion <- sum(w * (y - mu)^2 / (mu^2*y)) / df
 	up <- y>mu
 	down <- y<mu
-	if(any(down)) y[down] <- qnorm(pinvgauss(y,mean=mu,dispersion=dispersion,log.p=TRUE),log.p=TRUE)
-	if(any(up)) y[up] <- qnorm(pinvgauss(y,mean=mu,dispersion=dispersion,lower.tail=FALSE,log.p=TRUE),lower.tail=FALSE,log.p=TRUE)
+	if(any(down)) y[down] <- qnorm(pinvgauss(y[down],mean=mu[down],dispersion=dispersion,log.p=TRUE),log.p=TRUE)
+	if(any(up)) y[up] <- qnorm(pinvgauss(y[up],mean=mu[up],dispersion=dispersion,lower.tail=FALSE,log.p=TRUE),lower.tail=FALSE,log.p=TRUE)
 	y
 }
 
