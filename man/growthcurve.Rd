@@ -52,11 +52,10 @@ Elso, C. M., Roberts, L. J., Smyth, G. K., Thomson, R. J., Baldwin, T. M.,
 Foote, S. J., and Handman, E. (2004). Leishmaniasis host response loci 
 (lmr13) modify disease severity through a Th1/Th2-independent pathway.  
 \emph{Genes and Immunity} 5, 93-100.
-\url{http://www.nature.com/gene/journal/v5/n2/full/6364042a.html}
 
 Baldwin, T., Sakthianandeswaren, A., Curtis, J., Kumar, B., Smyth, G. K., Foote, S., and Handman, E. (2007).
 Wound healing response is a major contributor to the severity of cutaneous leishmaniasis in the ear model of infection.
-\emph{Parasite Immunology} 29, 501-513. \url{http://www.blackwell-synergy.com/doi/abs/10.1111/j.1365-3024.2007.00969.x}
+\emph{Parasite Immunology} 29, 501-513.
 }
 
 \seealso{

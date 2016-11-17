@@ -11,7 +11,7 @@ importFrom("stats", "Gamma", "binomial", "chisq.test", "dbinom",
            "lm.wfit", "make.link", "median", "model.matrix",
            "model.response", "model.weights", "p.adjust", "pbeta",
            "pbinom", "pchisq", "pgamma", "pnorm", "ppois",
-           "printCoefmat", "qgamma", "qnorm", "quantile", "quasi", "rbinom",
+           "printCoefmat", "qchisq", "qgamma", "qnorm", "quantile", "quasi", "rbinom",
            "rchisq", "rnorm", "residuals", "runif", "var", "weighted.mean")
 
 S3method(print,limdil)

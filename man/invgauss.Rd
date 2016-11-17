@@ -55,8 +55,8 @@ If both are set, then \code{shape} takes precedence.
 \references{
 Giner, G., and Smyth, G. K. (2016).
 statmod: Probability calculations for the inverse Gaussian distribution.
-\emph{R Journal}, Volume 8, in press.
-\url{http://arxiv.org/abs/1603.06687}
+\emph{R Journal} 8(1), 339-351.
+\url{https://journal.r-project.org/archive/2016-1}
 }
 
 \author{Gordon Smyth.  Paul Bagshaw (Centre National d'Etudes des Telecommunications, France) and Trevor Park (Department of Statistics, University of Florida) made suggestions on an earlier version of the code.}

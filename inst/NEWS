@@ -1,3 +1,7 @@
+17 December 2016: statmod 1.4.27
+
+- qinvgauss() now supports mean=Inf.
+
 28 August 2016: statmod 1.4.26
 
 - Fortran function gaussq2 updated to Fortran 77.
