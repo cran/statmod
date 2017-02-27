@@ -81,7 +81,7 @@ dinvgauss <- function(x, mean=1, shape=NULL, dispersion=1, log=FALSE)
 pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE)
 #	Cumulative distribution function of inverse Gaussian distribution
 #	Gordon Smyth
-#	Created 15 Jan 1998.  Last revised 2 Feb 2016.
+#	Created 15 Jan 1998.  Last revised 8 December 2016.
 {
 #	Dispersion is reciprocal of shape
 	if(!is.null(shape)) dispersion <- 1/shape
@@ -90,7 +90,8 @@ pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.
 	spec.q <- any(!is.finite(q) | q<=0)
 	spec.mean <- any(!is.finite(mean) | mean<=0)
 	spec.disp <- any(!is.finite(dispersion) | dispersion<=0)
-	any.special <- spec.q | spec.mean | spec.disp
+	spec.cv <- any(mean*dispersion < 1e-14)
+	any.special <- spec.q | spec.mean | spec.disp | spec.cv
 
 #	If any parameter has length 0, return result of length 0
 	r <- range(length(q),length(mean),length(dispersion))
@@ -119,12 +120,13 @@ pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.
 		right.limit <- (q>mu & (mu==0 | phi==0)) | q==Inf | (q>0 & phi==Inf)
 		spike <- (q==mu & (mu==0 | phi==0)) | (q==0 & phi==Inf)
 		invchisq <- mu==Inf & !(left.limit | right.limit | spike)
+		cv2 <- mu*phi
+		smallcv <- cv2<1e-14 & !(left.limit | right.limit | spike)
 		NA.cases <- is.na(q) | is.na(mu) | is.na(phi) | mu<0 | phi<0
 		left.limit[NA.cases] <- FALSE
 		right.limit[NA.cases] <- FALSE
 		spike[NA.cases] <- FALSE
 		invchisq[NA.cases] <- FALSE
-		ok <- !(left.limit | right.limit | spike | invchisq | NA.cases)
 
 		if(lower.tail) {
 			logp[left.limit] <- -Inf
@@ -135,7 +137,10 @@ pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.
 		}
 		logp[spike] <- 0
 		logp[invchisq] <- pchisq(1/q[invchisq]/phi[invchisq],df=1,lower.tail=!lower.tail,log.p=TRUE)
+		logp[smallcv] <- pgamma(q[smallcv],shape=1/cv2[smallcv],scale=cv2[smallcv]*mu[smallcv],lower.tail=lower.tail,log.p=TRUE)
 		logp[NA.cases] <- NA
+
+		ok <- !(left.limit | right.limit | spike | invchisq | smallcv | NA.cases)
 		logp[ok] <- .pinvgauss(q[ok],mean=mu[ok],dispersion=phi[ok],lower.tail=lower.tail,log.p=TRUE)
 	} else {
 		logp <- .pinvgauss(q,mean=mu,dispersion=phi,lower.tail=lower.tail,log.p=TRUE)
@@ -175,8 +180,8 @@ pinvgauss <- function(q, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.
 
 rinvgauss <- function(n, mean=1, shape=NULL, dispersion=1)
 #	Random variates from inverse Gaussian distribution
-#	Gordon Smyth (with a correction by Trevor Park 14 June 2005)
-#	Created 15 Jan 1998.  Last revised 12 Jan 2016.
+#	Gordon Smyth
+#	Created 15 Jan 1998.  Last revised 27 Feb 2017.
 {
 #	Dispersion is reciprocal of shape
 	if(!is.null(shape)) dispersion <- 1/shape
@@ -194,30 +199,60 @@ rinvgauss <- function(n, mean=1, shape=NULL, dispersion=1)
 	r <- rep_len(0,n)
 
 #	Non-positive parameters give NA
-	i <- (mu > 0 & phi > 0)
-	i[is.na(i)] <- FALSE
+	mu.ok <- (mu > 0 & is.finite(mu))
+	phi.ok <- (phi > 0 & is.finite(phi))
+	i <- (mu.ok & phi.ok)
 	if(!all(i)) {
-		r[!i] <- NA
+		j <- !i
+#		Infinite mu is special case
+		invchisq <- (mu[j]==Inf & phi.ok[j])
+		invchisq[is.na(invchisq)] <- FALSE
+		if(any(invchisq)) {
+			m <- sum(invchisq)
+			r[j][invchisq] <- rnorm(m)^(-2) / phi[j][invchisq]
+			j[j][invchisq] <- FALSE
+		}
+		infdisp <- (phi[j]==Inf)
+		infdisp[is.na(infdisp)] <- FALSE
+		if(any(infdisp)) {
+			r[j][infdisp] <- 0
+			j[j][infdisp] <- FALSE
+		}
+		r[j] <- NA
 		n <- sum(i)
+		if(n==0L) return(r)
 	}
 
-#	Divide out mu	
-	phi[i] <- phi[i]*mu[i]
-
+#	Generate chisquare on 1 df
 	Y <- rnorm(n)^2
-	X1 <- 1 + phi[i]/2 * (Y - sqrt(4*Y/phi[i]+Y^2))
+
+#	Divide out mu	
+	Yphi <- Y*phi[i]*mu[i]
+
+#	Taylor series is more accurate when Y*phi is large
+	bigphi <- (Yphi > 5e5)
+	if(any(bigphi)) {
+		X1 <- Y
+		X1[bigphi] <- 1 / Yphi[bigphi]
+		X1[!bigphi] <- 1 + Yphi[!bigphi]/2 * (1 - sqrt(1 + 4/Yphi[!bigphi]))
+	} else {
+		X1 <- 1 + Yphi/2 * (1 - sqrt(1 + 4/Yphi))
+	}
 	firstroot <- (runif(n) < 1/(1+X1))
 	r[i][firstroot] <- X1[firstroot]
 	r[i][!firstroot] <- 1/X1[!firstroot]
 
-	mu*r
+#	Add mu back in again
+	r[i] <- mu[i]*r[i]
+
+	r
 }
 
 qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log.p=FALSE, maxit=200L, tol=1e-14, trace=FALSE)
 #	Quantiles of the inverse Gaussian distribution
 #	using globally convergent Newton iteration.
 #	Gordon Smyth
-#	Created 12 May 2014.  Last revised 17 December 2016.
+#	Created 12 May 2014.  Last revised 18 December 2016.
 #
 #	Replaced an earlier function by Paul Bagshaw of 23 Dec 1998
 {
@@ -265,10 +300,17 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 	if(any(invchisq)) {
 		q[invchisq] <- 1 / qchisq(logp[invchisq],df=1,lower.tail=!lower.tail,log.p=TRUE) / phi[invchisq]
 		ok[invchisq] <- FALSE
-}
+	}
+#	Use gamma when CV is very small
+	cv2 <- phi*mu
+	smallcv <- (cv2<1e-8 & ok)
+	if(any(smallcv)) {
+		q[smallcv] <- qgamma(logp[smallcv],shape=1/cv2[smallcv],scale=cv2[smallcv]*mu[smallcv],lower.tail=lower.tail,log.p=TRUE)
+		ok[smallcv] <- FALSE
+	}
 
 #	Convert to mean=1
-	phi <- phi[ok]*mu[ok]
+	phi <- cv2[ok]
 	logp <- logp[ok]
 	p <- p[ok]
 

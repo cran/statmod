@@ -90,7 +90,7 @@ qinvgauss(p,mean=1.3,dispersion=0.6,lower.tail=FALSE)
 qinvgauss(0.5,mean=c(1,2,NA))
 qinvgauss(log(p),mean=1.3,dispersion=0.6,log.p=TRUE)
 qinvgauss(log(p),mean=1.3,dispersion=0.6,lower.tail=FALSE,log.p=TRUE)
-
+rinvgauss(5,mean=c(1,NA,3,Inf,1e10),disp=c(2,3,NA,Inf,4))
 
 ### extra tests done only locally
 

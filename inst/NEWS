@@ -1,3 +1,16 @@
+27 February 2017: statmod 1.4.29
+
+- rinvgauss() now accurately handles large or infinite values for the
+  mean or dispersion.
+
+26 February 2017: statmod 1.4.28
+
+- R_registerRoutines is now used to register the Fortran subroutine
+  gaussq2.
+
+- pinvgauss() and qinvgauss() now use a gamma approximation when the
+  coefficient of variation is very small.
+
 17 December 2016: statmod 1.4.27
 
 - qinvgauss() now supports mean=Inf.

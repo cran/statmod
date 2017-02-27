@@ -1,4 +1,4 @@
-a140318adfbdfb41ef63f31f5ade19e9 *DESCRIPTION
+c4048817102ca104814fb68601fbba0d *DESCRIPTION
 e1f88fb7fb33316042315e919b39cd7d *NAMESPACE
 cabcedc80916e132755147508dc1808b *R/digamma.R
 b67d4c729d215c0952dc4594882da6fa *R/digammaf.R
@@ -11,7 +11,7 @@ f48cdb780b1cc86bfeef8c4722912c2f *R/fitNBP.R
 87e2551f59f03a67cf4b0a9bf6479972 *R/glmscoretest.R
 98e67ef55b5ac6c79e18608e6e6e2b91 *R/growthcurve.R
 1747893341300d18e4af7032e4f91fc0 *R/hommel.R
-8b370040d98c34a71bf97559b8cf132b *R/invgauss.R
+bf8b5eb87c1e7f882e3d1364e22a401c *R/invgauss.R
 c85f7bc07419ec6489a122fd6c5d9d41 *R/matvec.R
 95567b5481bab1b1b23cde0c9ce8369a *R/mixedmodel.R
 aead17fe81a6209b2c9cc7414ab7aa53 *R/mscale.R
@@ -23,8 +23,8 @@ cb4885f03160dcbca66990cd8db7ae0a *R/remlscor.R
 a3185c8c817e40182c9c31a41970df90 *R/sagetest.R
 afad3149539912e729cb6d0aea8e53df *R/tweedief.R
 e600a474fedf570b1913b278022d46bf *data/welding.rdata
-aac43b4bf36a38068ce82bfd53d78e4f *inst/CITATION
-64e002a3dc29b3e164db58bfc288622f *inst/NEWS
+f61a7cb06ae08b5ec3747a6b0798740d *inst/CITATION
+a9fca1b4e67f20fd191cd8d837cd7375 *inst/NEWS
 d37cd00f740faf6738e9a0c992f54eda *man/digammaf.Rd
 1ee58cb70d97c57b1aeb31e2f94258a9 *man/elda.Rd
 2f065b8fef25cc88b80bd996eb24b0f1 *man/fitNBP.Rd
@@ -35,7 +35,7 @@ d37cd00f740faf6738e9a0c992f54eda *man/digammaf.Rd
 552561fc0f9300d1564fb3acb0ab0d84 *man/glmscoretest.Rd
 a3395b99cb1d5e2b0a4e65d367e760c9 *man/growthcurve.Rd
 0f8f3ac69241aedf8664fbdf9d50f085 *man/hommel.test.Rd
-58de3de2f8559814a628f668073dbed5 *man/invgauss.Rd
+f7ff3f35ae819d5ebd1639dcd79a0325 *man/invgauss.Rd
 ee394dd22edb184f213f2e3e754cc980 *man/logmdigamma.Rd
 ae5d97dda72b73d6688128ac79753757 *man/matvec.Rd
 e9426cfaf3b6bd604658f95c3e57a032 *man/meanT.Rd
@@ -52,5 +52,6 @@ ac05feb7d63c4dd33f0f0d79e8903bff *man/mscale.Rd
 3d0552637454f6b32b1ad801ce684dfe *man/tweedie.Rd
 d8a58e7e91ba0dbf41668a06d0bc34dc *man/welding.Rd
 0848d2cac41cdeea7c861b02f73fafea *src/gaussq2.f
-858e7cd614337b896cdba7b531453dc8 *tests/statmod-Tests.R
-ed56f13dc27d05feb2c2c90871513395 *tests/statmod-Tests.Rout.save
+f3404859db4cd3831a68abcad9917a9e *src/init.c
+f2c61b6611a1f2667184b8e24beba294 *tests/statmod-Tests.R
+bf1f58e9bb082bd0f1bf0733c495306a *tests/statmod-Tests.Rout.save

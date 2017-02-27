@@ -1,6 +1,6 @@
 
-R Under development (unstable) (2016-08-27 r71160) -- "Unsuffered Consequences"
-Copyright (C) 2016 The R Foundation for Statistical Computing
+R Under development (unstable) (2017-02-25 r72256) -- "Unsuffered Consequences"
+Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -356,7 +356,8 @@ Loading required package: MASS
 [1] 0.0000000000 0.1271035164 0.9446753861 9.2602074131          Inf
 > qinvgauss(log(p),mean=1.3,dispersion=0.6,lower.tail=FALSE,log.p=TRUE)
 [1]          Inf 9.2602074131 0.9446753861 0.1271035164 0.0000000000
-> 
+> rinvgauss(5,mean=c(1,NA,3,Inf,1e10),disp=c(2,3,NA,Inf,4))
+[1]  1.122583604           NA           NA  0.000000000 36.709796139
 > 
 > ### extra tests done only locally
 > 
@@ -367,4 +368,4 @@ Loading required package: MASS
 > 
 > proc.time()
    user  system elapsed 
-   0.15    0.01    0.18 
+   0.84    0.03    0.85 
