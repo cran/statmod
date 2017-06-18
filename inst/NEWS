@@ -1,3 +1,9 @@
+16 June 2017: statmod 1.4.30
+
+- Bug fix to qinvgauss(). In some case the gamma approximation used
+  for small right tail probabilities was taking the initial value
+  outside the domain of convergence.
+
 27 February 2017: statmod 1.4.29
 
 - rinvgauss() now accurately handles large or infinite values for the

@@ -252,7 +252,7 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 #	Quantiles of the inverse Gaussian distribution
 #	using globally convergent Newton iteration.
 #	Gordon Smyth
-#	Created 12 May 2014.  Last revised 18 December 2016.
+#	Created 12 May 2014.  Last revised 16 June 2017.
 #
 #	Replaced an earlier function by Paul Bagshaw of 23 Dec 1998
 {
@@ -344,7 +344,7 @@ qinvgauss  <- function(p, mean=1, shape=NULL, dispersion=1, lower.tail=TRUE, log
 	if(any(small.right)) {
 		alpha <- 1/phi[small.right]
 		q.gam <- qgamma(logp[small.right],shape=alpha,rate=alpha,lower.tail=lower.tail,log.p=TRUE)
-		x[small.right] <- q.gam
+		x[small.right] <- pmax(x[small.right],q.gam)
 	}
 
 	step <- function(x,p,logp,phi) {

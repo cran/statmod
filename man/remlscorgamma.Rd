@@ -45,8 +45,7 @@ Smyth, G. K., and Verbyla, A. P. (1999a). Adjusted likelihood methods for modell
 Smyth, G. K., and Verbyla, A. P. (1999b). Double generalized linear models: approximate REML and diagnostics. In \emph{Statistical Modelling: Proceedings of the 14th International Workshop on Statistical Modelling}, Graz, Austria, July 19-23, 1999, H. Friedl, A. Berghold, G. Kauermann (eds.), Technical University, Graz, Austria, pages 66-80.
 \url{http://www.statsci.org/smyth/pubs/iwsm99-Preprint.pdf}
 
-Smyth, G. K., and Verbyla, A. P. (2001). Leverage adjustments for dispersion modelling in generalized nonlinear models. Unpublished technical report.
-\url{http://www.statsci.org/smyth/pubs/dglm.ps}
+Smyth, GK, and Verbyla, AP (2009). Leverage adjustments for dispersion modelling in generalized nonlinear models. \emph{Australian and New Zealand Journal of Statistics} 51, 433-448.
 }
 \examples{
 data(welding)
