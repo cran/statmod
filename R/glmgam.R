@@ -1,11 +1,11 @@
 #  GLMGAM.R
 
-glmgam.fit <- function(X,y,coef.start=NULL,tol=1e-6,maxit=50,trace=FALSE) {
+glmgam.fit <- function(X,y,coef.start=NULL,tol=1e-6,maxit=50,trace=FALSE)
 #  Fit gamma generalized linear model with identity link
-#  by Levenberg damped Fisher scoring
+#  by Fisher scoring with Levenberg-style damping
 #  Gordon Smyth
-#  12 Mar 2003.  Last revised 3 November 2010.
-
+#  Created 12 Mar 2003.  Last revised 3 November 2010.
+{
 #  check input
 X <- as.matrix(X)
 n <- nrow(X)

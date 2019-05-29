@@ -16,10 +16,14 @@ glmgam.fit(c(1,1),c(0,4))
 glmgam.fit(X=cbind(1,c(1,0.5,0.5,0,0)),y=rchisq(5,df=1))
 
 ### glmnb.fit
+
 y <- rnbinom(5,mu=10,size=10)
 glmnb.fit(X=cbind(1,c(1,0.5,0.5,0,0)),y=y,dispersion=0.1)
 glmnb.fit(X=cbind(1,c(1,0.5,0.5,0,0)),y=y,dispersion=runif(6))
 glmnb.fit(X=cbind(1,c(1,1,0,0,0)),y=c(0,0,6,2,9),dispersion=0.1)
+glmnb.fit(X=cbind(1,c(1,1,0,0,0)),y=c(0,0,0,0,0),dispersion=0.1)
+X <- matrix(rnorm(10),5,2)
+glmnb.fit(X,y=c(0,0,0,0,0),offset=rnorm(5),dispersion=0.05)
 
 ### mixedModel2
 

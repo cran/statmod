@@ -7,7 +7,7 @@ exportPattern("^[^\\.]")
 importFrom("graphics", "abline", "legend", "lines", "plot", "points")
 
 importFrom("stats", "Gamma", "binomial", "chisq.test", "dbinom",
-           "fisher.test", "fitted", "glm", "glm.fit", "lm.fit",
+           "fisher.test", "fitted", "glm", "glm.fit", ".lm.fit", "lm.fit",
            "lm.wfit", "make.link", "median", "model.matrix",
            "model.response", "model.weights", "p.adjust", "pbeta",
            "pbinom", "pchisq", "pgamma", "pnorm", "ppois",

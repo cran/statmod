@@ -1,8 +1,8 @@
 glmnb.fit <- function(X,y,dispersion,weights=NULL,offset=0,coef.start=NULL,start.method="mean",tol=1e-6,maxit=50,trace=FALSE)
 #  Fit negative binomial generalized linear model with log link
-#  by Levenberg damped Fisher scoring
-#  Yunshun Chen and Gordon Smyth
-#  2 November 2010.  Last modified 20 November 2012.
+#  by Fisher scoring with Levenberg-style damped
+#  Gordon Smyth and Yunshun Chen
+#  Created 2 November 2010.  Last modified 29 May 2019.
 {
 #	Check input values for y
 	y <- as.vector(y)
@@ -20,23 +20,51 @@ glmnb.fit <- function(X,y,dispersion,weights=NULL,offset=0,coef.start=NULL,start
 	if(!all(is.finite(X))) stop("All X values must be finite and non-missing")
 	p <- ncol(X)
 	if(p > n) stop("More columns than rows in X")
-
-#	Handle y all zero as special case
-	if(ymax==0) return(list(coefficients=rep(0,p),fitted.values=rep(0,n),deviance=0,iter=0,convergence="converged"))
+	if(is.null(colnames(X))) colnames(X) <- paste0("x",1:p)
 
 #	Check input values for dispersion
 	if(any(dispersion<0)) stop("dispersion values must be non-negative")
-	phi <- rep(dispersion,length.out=n)
+	phi <- rep_len(dispersion,n)
 
 #	Check input values for offset
-	offset <- rep(offset,length=n)
+	if(!all(is.finite(offset))) stop("All offset values must be finite and non-missing")
+	offset <- rep_len(offset,n)
 
 #	Check input values for weights
-	if(is.null(weights)) weights <- rep.int(1,n)
+	if(is.null(weights)) weights <- rep_len(1,n)
 	if(any(weights <= 0)) stop("All weights must be positive")
 
+#	Handle y all zero as special case
+	if(ymax==0) {
+#		Does X include an intercept term?
+		if(colnames(X)[1]=="(Intercept)") {
+			beta <- rep_len(0,p)
+			names(beta) <- colnames(X)
+			beta[1] <- -Inf
+			mu <- rep.int(0,n)
+			names(mu) <- rownames(X)
+			return(list(coefficients=beta,fitted.values=mu,deviance=0,iter=0L,convergence="converged"))
+		}
+#		Does X span the intercept term, at least closely enough to preserve signs?
+		One <- rep_len(1,n)
+		fit <- .lm.fit(X,One)
+		if(max(abs(fit$residuals)) < 1) {
+			beta <- -1e10 * fit$coefficients
+			names(beta) <- colnames(X)
+			mu <- rep_len(0,n)
+			names(mu) <- rownames(X)
+			return(list(coefficients=beta,fitted.values=mu,deviance=0,iter=0L,convergence="converged"))
+		}
+#		If X is far from spanning the intercept term, then
+#		initialize the iteration by trying to cancel out the offsets
+		if(is.null(coef.start)) {
+			fit <- lm.wfit(x=X,y=offset,w=weights)
+			coef.start <- -fit$coefficients
+		}
+	}
+
 #	Starting values
-	delta <- min(ymax,1/6)
+	delta <- 1/6
 	y1 <- pmax(y,delta)
 	if(is.null(coef.start)) {
 		start.method <- match.arg(start.method,c("log(y)","mean"))
@@ -49,7 +77,7 @@ glmnb.fit <- function(X,y,dispersion,weights=NULL,offset=0,coef.start=NULL,start
 			rate <- y/N
 			w <- weights*N/(1+phi*N)
 			beta.mean <- log(sum(w*rate)/sum(w))
-			beta <- qr.coef(qr(X),rep(beta.mean,length=n))
+			beta <- qr.coef(qr(X),rep_len(beta.mean,n))
 			mu <- drop(exp(X %*% beta + offset))
 		}
 	} else {

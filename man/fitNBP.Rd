@@ -34,6 +34,11 @@ The numeric algorithm used is that of alternating iterations (Smyth, 1996) using
 This iteration is monotonically convergent for the dispersion.
 }
 
+\note{
+This function has been made obsolete by the edgeR package on Bioconductor, see
+\url{https://bioconductor.org/packages/edgeR}.
+}
+
 \value{
 List with components
 \item{coefficients}{numeric matrix of rates for each tag (gene) and each group}
@@ -53,6 +58,9 @@ Smyth, G. K. (1996). Partitioned algorithms for maximum likelihood and other non
 
 \seealso{
 \code{\link[statmod]{sage.test}}
+
+The edgeR package on Biconductor provides new and better functions to fit negative-binomial glms to SAGE or RNA-seq data.
+See particularly the \code{glmFit} and \code{mglmOneWay} functions.
 }
 
 \examples{

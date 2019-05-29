@@ -1,3 +1,15 @@
+29 May 2019: statmod 1.4.32
+
+- Bug fix to glmnb.fit() when all the y values are zero.
+
+24 Feb 2017: statmod 1.4.31
+
+- Add Dunn & Smyth (2018) GLM book as a reference for glm.scoretest()
+  and Randomized Quantile Residuals. Rewrite the Details section of
+  the glm.scoretest help page.
+
+- Update minimum version of R to 3.0.0 in DESCRIPTION file.
+
 16 June 2017: statmod 1.4.30
 
 - Bug fix to qinvgauss(). In some case the gamma approximation used

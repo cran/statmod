@@ -3,11 +3,6 @@
 
 \title{Exact Binomial Tests For Comparing Two SAGE Libraries (Obsolete)}
 \description{
-This function is kept here so as not to break code that depends on it,
-but has been replaced by \code{binomTest} in the edgeR Bioconductor package and 
-is no longer updated.
-It may be removed in a later release of this package.
-
 Computes p-values for differential abundance for each tag between two digital libraries,
 conditioning on the total count for each tag.
 The counts in each group as a proportion of the whole are assumed to follow a binomial distribution.
@@ -47,6 +42,13 @@ This function is a later version of the earlier \code{sage.test} function in the
 This function has been made obsolete by \code{binomTest} in the edgeR package.
 }
 
+\note{
+This function is kept in the statmod package so as not to break code that depends on it
+but it has been replaced by \code{binomTest} in the edgeR Bioconductor package and 
+is no longer updated.
+It may be removed in a later release of this package.
+}
+
 \value{
 Numeric vector of p-values.
 }
@@ -64,7 +66,10 @@ http://en.wikipedia.org/wiki/RNA-Seq
 \author{Gordon Smyth}
 
 \seealso{
-\code{binomTest} (edgeR package), \code{\link{binom.test}} (stats package)
+The \code{binomTest} function in the edgeR package on Bioconductor is a newer and better version of this function, see
+\url{https://bioconductor.org/packages/edgeR}.
+
+\code{\link{binom.test}} in the stats package performs univariate binomial tests.
 }
 
 \examples{

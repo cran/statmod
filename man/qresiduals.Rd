@@ -56,6 +56,10 @@ response takes on only a small number of distinct values.
 \references{
 Dunn, K. P., and Smyth, G. K. (1996). Randomized quantile residuals. \emph{Journal of Computational and Graphical Statistics} \bold{5}, 1-10.
 \url{http://www.statsci.org/smyth/pubs/residual.html}
+
+Dunn, PK, and Smyth, GK (2018).
+\emph{Generalized linear models with examples in R}. Springer, New York, NY.
+\url{https://doi.org/10.1007/978-1-4419-0118-7}
 }
 
 \author{Gordon Smyth}
