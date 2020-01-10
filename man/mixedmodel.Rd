@@ -44,7 +44,8 @@ This function fits the model \eqn{y=Xb+Zu+e} where \eqn{b} is a vector of fixed 
 Write \eqn{n} for the length of \eqn{y} and \eqn{q} for the length of \eqn{u}.
 The random effect vector \eqn{u} is assumed to be normal, mean zero, with covariance matrix \eqn{\sigma^2_uI_q} while \eqn{e} is normal, mean zero, with covariance matrix \eqn{\sigma^2I_n}.
 If \eqn{Z} is an indicator matrix, then this model corresponds to a randomized block experiment.
-The model is fitted using an eigenvalue decomposition which transforms the problem into a Gamma generalized linear model.
+The model is fitted using an eigenvalue decomposition that transforms the problem into a Gamma generalized linear model.
+To the knowledge of the author, this is an original and unpublished approach to the problem of fitting mixed models.
 
 Note that the block variance component \code{varcomp[2]} is not constrained to be non-negative.
 It may take negative values corresponding to negative intra-block correlations.
@@ -52,20 +53,20 @@ However the correlation \code{varcomp[2]/sum(varcomp)} must lie between \code{-1
 
 Missing values in the data are not allowed.
 
-This function is equivalent to \code{lme(fixed=formula,random=~1|random)}, except that the block variance component is not constrained to be non-negative, but is faster and more accurate for small to moderate size data sets.
-It is slower than \code{lme} when the number of observations is large.
+This function is in principle equivalent to \code{lme(fixed=formula,random=~1|random)} except that the block variance component is not constrained to be non-negative.
+If the block variance component is non-negative, then this function is faster and more accurate than \code{lme} for small to moderate size data sets but slower than \code{lme} when the number of observations is large.
 
-This function tends to be fast and reliable, compared to competitor functions which fit randomized block models, when then number of observations is small, say no more than 200.
-However it becomes quadratically slow as the number of observations increases because of the need to do two eigenvalue decompositions of order nearly equal to the number of observations.
-So it is a good choice when fitting large numbers of small data sets, but not a good choice for fitting large data sets.
+This function tends to be fast and reliable, compared to competitor functions that fit randomized block models, when then number of observations is small, say no more than 200.
+However it becomes quadratically slow as the number of observations increases because of the need to compute two singular value decompositions of order nearly equal to the number of observations, although this can be limited to only one decomposition if \code{only.varcomp = TRUE}).
+For these reasons, this function is a good choice when fitting large numbers of mixed models to small datasets but is not optimal as currently implemented for fitting mixed models to very large data sets.
 }
 
 \value{
 A list with the components:
-\item{varcomp}{vector of length two containing the residual and block components of variance.}
-\item{se.varcomp}{standard errors for the components of variance.}
-\item{reml.residuals}{standardized residuals in the null space of the design matrix.}
-If \code{fixed.estimates=TRUE} then the components from the diagonalized weighted least squares fit are also returned.
+\item{varcomp}{numeric vector of length two containing the residual and block components of variance.}
+\item{se.varcomp}{standard errors for the variance components (if \code{only.varcomp=FALSE}).}
+\item{coefficients}{numeric vector of fixed coefficients (if \code{only.varcomp=FALSE}).}
+\item{se.coefficients}{standard errors for the fixed coefficients (if \code{only.varcomp=FALSE}).}
 }
 
 \author{Gordon Smyth}

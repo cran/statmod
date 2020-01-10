@@ -1,5 +1,5 @@
 
-R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
+R Under development (unstable) (2019-12-20 r77608) -- "Unsuffered Consequences"
 Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 
@@ -135,10 +135,12 @@ $iter
 $convergence
 [1] "converged"
 
-> glmnb.fit(X=cbind(1,c(1,1,0,0,0)),y=c(0,0,0,0,0),dispersion=0.1)
+> fit <- glmnb.fit(X=cbind(1,c(1,1,0,0,0)),y=c(0,0,0,0,0),dispersion=0.1)
+> fit$coefficients <- zapsmall(fit$coefficients,digits=15)
+> fit
 $coefficients
-           x1            x2 
--1.000000e+10  2.482534e-06 
+    x1     x2 
+-1e+10  0e+00 
 
 $fitted.values
 [1] 0 0 0 0 0
@@ -176,9 +178,7 @@ $convergence
 > y <- rnorm(6)
 > x <- rnorm(6)
 > z <- c(1,1,2,2,3,3)
-> m <- mixedModel2(y~x,random=z)
-> m$reml.residuals <- m$qr <- NULL
-> m
+> mixedModel2(y~x,random=z)
 $varcomp
  Residual     Block 
  2.548669 -0.870409 
@@ -190,29 +190,6 @@ $coefficients
 (Intercept)           x 
   0.1585957   0.5996677 
 
-$residuals
-[1]  0.002963361 -0.874026581  0.871063220 -1.182699945  1.934015605
-[6]  0.501602395
-
-$fitted.values
-[1] -0.2467016  0.0413372  0.1081430  0.8190985  0.1437542  1.0164005
-
-$effects
-(Intercept)           x                                                 
- 0.06245044 -0.87448215  1.19519405 -0.26224188  1.29543726  0.90806520 
-
-$weights
-[1] 1.2378524 1.2378524 1.2378524 0.3923617 0.3923617 0.3923617
-
-$rank
-[1] 2
-
-$assign
-NULL
-
-$df.residual
-[1] 4
-
 $se.coefficients
 [1] 0.3983904 0.6857404
 
@@ -222,9 +199,7 @@ $se.coefficients
 > y <- c(-1,1,-2,2,0.5,1.7,-0.1)
 > X <- matrix(1,7,1)
 > Z <- model.matrix(~0+factor(c(1,1,2,2,3,3,4)))
-> m <- mixedModel2Fit(y,X,Z)
-> m$reml.residuals <- m$qr <- NULL
-> m
+> mixedModel2Fit(y,X,Z)
 $varcomp
  Residual     Block 
  2.923462 -1.098564 
@@ -235,28 +210,6 @@ $se.varcomp
 $coefficients
        x1 
 0.3376358 
-
-$residuals
-[1]  0.4774892 -1.0781457  0.4774892  0.4376358  1.5213203  2.7213203 -1.0000000
-
-$fitted.values
-[1] -0.4774892 -0.4774892 -0.4774892 -0.3376358  0.0000000  0.0000000  0.0000000
-
-$effects
-        x1                                                                   
- 1.0020814 -1.4659700  0.3593523  0.2343331  0.8897582  1.5915892 -0.5848592 
-
-$weights
-[1] 1.3767775 1.3767775 1.3767775 0.5479759 0.3420603 0.3420603 0.3420603
-
-$rank
-[1] 1
-
-$assign
-NULL
-
-$df.residual
-[1] 6
 
 $se.coefficients
 [1] 0.3369346
@@ -408,4 +361,4 @@ Loading required package: MASS
 > 
 > proc.time()
    user  system elapsed 
-   0.14    0.06    0.20 
+   0.23    0.03    0.23 

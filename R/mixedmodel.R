@@ -46,7 +46,7 @@ randomizedBlockFit <- mixedModel2Fit <- function(y,X,Z,w=NULL,only.varcomp=FALSE
 
 #	Gordon Smyth, Walter and Eliza Hall Institute
 #	Matlab version 19 Feb 94.  Converted to R, 28 Jan 2003.
-#	Last revised 20 Oct 2005
+#	Last revised 4 Jan 2020.
 {
 #  Prior weights
 if(!is.null(w)) {
@@ -92,7 +92,7 @@ if(mq > 2 && sum(abs(d)>1e-15)>1 && var(d)>1e-15) {
 	dfitted.values <- dfit$fitted.values
 }
 out <- list(varcomp=dfit$coef)
-out$reml.residuals <- uqy/sqrt(dfitted.values)
+#out$reml.residuals <- uqy/sqrt(dfitted.values)
 if(only.varcomp) return(out)
 
 #  Standard errors for variance components
@@ -105,7 +105,7 @@ d <- rep(0,mx)
 d[1:length(s$d)] <- s$d^2
 v <- drop( cbind(Residual=1,Block=d) %*% varcomp )
 mfit <- lm.wfit(x=crossprod(s$u,X),y=crossprod(s$u,y),w=1/v)
-out <- c(out,mfit)
+out$coefficients <- mfit$coefficients
 out$se.coefficients <- sqrt(diag(chol2inv(mfit$qr$qr)))
 
 out

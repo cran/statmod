@@ -1,8 +1,19 @@
+ 4 Jan 2020: statmod 1.4.33
+
+- The components returned by mixedModel2Fit() relating to fixed
+  coefficients are now documented explicitly. The help page has been
+  corrected to refer to the argument `only.varcomp` instead of
+  `fixed.estimates`. The vector of `reml.residuals` is no longer
+  output.
+
+- The test file has been slightly revised using zapsmall() so ensure
+  that the test output file remains correct for R with ATLAS BLAS.
+
 29 May 2019: statmod 1.4.32
 
 - Bug fix to glmnb.fit() when all the y values are zero.
 
-24 Feb 2017: statmod 1.4.31
+24 Feb 2019: statmod 1.4.31
 
 - Add Dunn & Smyth (2018) GLM book as a reference for glm.scoretest()
   and Randomized Quantile Residuals. Rewrite the Details section of

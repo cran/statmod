@@ -45,10 +45,10 @@ The inverse Gaussian distribution takes values on the positive real line.
 It is somewhat more right skew than the gamma distribution, with variance given by \code{dispersion*mean^3}.
 The distribution has applications in reliability and survival analysis and is one of the response distributions used in generalized linear models.
 
-Giner and Smyth (2016) show that the inverse Gaussian distribution is asympotically equal to an inverse chisquare distribution as the mean becomes large.
+Giner and Smyth (2016) show that the inverse Gaussian distribution converges to an inverse chi-squared distribution as the mean becomes large.
 
 The functions provided here implement numeric algorithms developed by Giner and Smyth (2016) that achieve close to full machine accuracy for all possible parameter values.
-Giner and Smyth (2016) show that the probability calculations provided by these functions are considerably more accurate, and is most cases faster, than previous implementations of inverse Gaussian functions.
+Giner and Smyth (2016) show that the probability calculations provided by these functions are considerably more accurate, and in most cases faster, than previous implementations of inverse Gaussian functions.
 The improvement in accuracy is most noticeable for extreme probability values and for large parameter values.
 
 The shape and dispersion parameters are alternative parametrizations for the variability, with \code{dispersion=1/shape}.
@@ -65,7 +65,9 @@ statmod: Probability calculations for the inverse Gaussian distribution.
 
 \author{Gordon Smyth.
 
-Paul Bagshaw (Centre National d'Etudes des Telecommunications, France) and Trevor Park (Department of Statistics, University of Florida) made suggestions on a much earlier versions of the code.}
+Very early S-Plus versions of these functions, using simpler algorithms, were published 1998 at \url{http://www.statsci.org/s/invgauss.html}.
+Paul Bagshaw (Centre National d'Etudes des Telecommunications, France) contributed the original version of \code{qinvgauss} in December 1998.
+Trevor Park (Department of Statistics, University of Florida) suggested improvements to a version of \code{rinvguass} in 2005.}
 
 \examples{
 q <- rinvgauss(10, mean=1, disp=0.5) # generate vector of 10 random numbers
