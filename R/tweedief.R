@@ -1,11 +1,20 @@
 ##  TWEEDIEF.R
 
-tweedie <- function(var.power=0, link.power=1-var.power) {
+tweedie <- function(var.power=0, link.power=1-var.power)
 #	Tweedie generalized linear model family
 #	Gordon Smyth
-#	22 Oct 2002.  Last modified 2 Sep 2011.
-
+#	22 Oct 2002.  Last modified 10 Jan 2020.
+{
 	lambda <- link.power
+	if(is.character(lambda)) {
+		m <- match(lambda,c("identity","log","inverse"))
+		if(is.na(m)) 
+			stop("link.power should be a number")
+		else {
+			lambda <- c(1,0,-1)[m]
+			message("Setting link.power = ",lambda)
+		}
+	}
 	if(lambda==0) {
 		linkfun <- function(mu) log(mu)
 		linkinv <- function(eta) pmax(.Machine$double.eps, exp(eta))
@@ -18,6 +27,15 @@ tweedie <- function(var.power=0, link.power=1-var.power) {
 		valideta <- function(eta) TRUE
 	}
 	p <- var.power
+	if(is.character(p)) {
+		m <- match(p,c("gaussian","poisson","Gamma","gamma","inverse.gaussian"))
+		if(is.na(m)) 
+			stop("var.power should be a number")
+		else {
+			p <- c(0,1,2,2,3)[m]
+			message("Setting var.power = ",p)
+		}
+	}
 	variance <- function(mu) mu^p
 	if(p == 0)
 		validmu <- function(mu) TRUE

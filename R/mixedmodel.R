@@ -91,7 +91,7 @@ if(mq > 2 && sum(abs(d)>1e-15)>1 && var(d)>1e-15) {
 	varcomp <- dfit$coefficients
 	dfitted.values <- dfit$fitted.values
 }
-out <- list(varcomp=dfit$coef)
+out <- list(varcomp=dfit$coefficients)
 #out$reml.residuals <- uqy/sqrt(dfitted.values)
 if(only.varcomp) return(out)
 

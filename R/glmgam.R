@@ -40,7 +40,7 @@ if(is.null(coef.start)) {
 		if(any(samesign)) {
 			i <- (1:p)[samesign][1]
 			beta <- rep(0,p)
-			beta[i] <- lm.wfit(X[,i,drop=FALSE],y,1/y1^2)$coef
+			beta[i] <- lm.wfit(X[,i,drop=FALSE],y,1/y1^2)$coefficients
 			mu <- X[,i] * beta[i]
 		} else
 			return(list(coefficients=rep(0,p),fitted.values=rep(0,n),deviance=Inf))

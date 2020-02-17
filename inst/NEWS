@@ -1,10 +1,29 @@
+16 Feb 2020: statmod 1.4.34
+
+- Improve the model description provided in the remlscoregamma() help
+  page.
+
+- tweedie() now checks whether `var.power` or `link.power` are
+  character strings instead of numeric. If `var.power` is one of the
+  standard family names ("gaussian", "poisson", "gamma" or
+  "inverse.gaussian") or `link.power` is one of the standard link
+  functions ("identity","log","inverse") then the argument is reset
+  to the corresponding numerical value with a message, otherwise an
+  informative error message is given.
+
+- Cleaning up of internal code to avoid partial matching of function
+  arguments, attributes or list component names. The automatic package
+  tests are now run with the warnPartialMatchArgs,
+  warnPartialMatchAttr and warnPartialMatchDollar options all set to
+  TRUE.
+
  4 Jan 2020: statmod 1.4.33
 
 - The components returned by mixedModel2Fit() relating to fixed
   coefficients are now documented explicitly. The help page has been
   corrected to refer to the argument `only.varcomp` instead of
   `fixed.estimates`. The vector of `reml.residuals` is no longer
-  output.
+  part of the output.
 
 - The test file has been slightly revised using zapsmall() so ensure
   that the test output file remains correct for R with ATLAS BLAS.
