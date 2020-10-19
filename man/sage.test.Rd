@@ -54,20 +54,19 @@ Numeric vector of p-values.
 }
 
 \references{
-\url{http://en.wikipedia.org/wiki/Binomial_test}
+\url{https://en.wikipedia.org/wiki/Binomial_test}
 
-\url{http://en.wikipedia.org/wiki/Fisher's_exact_test}
+\url{https://en.wikipedia.org/wiki/Fisher's_exact_test}
 
-\url{http://en.wikipedia.org/wiki/Serial_analysis_of_gene_expression}
+\url{https://en.wikipedia.org/wiki/Serial_analysis_of_gene_expression}
 
-http://en.wikipedia.org/wiki/RNA-Seq
+\url{https://en.wikipedia.org/wiki/RNA-Seq}
 }
 
 \author{Gordon Smyth}
 
 \seealso{
-The \code{binomTest} function in the edgeR package on Bioconductor is a newer and better version of this function, see
-\url{https://bioconductor.org/packages/edgeR}.
+The \code{binomTest} function in the \href{https://doi.org/doi:10.18129/B9.bioc.edgeR}{edgeR} package on Bioconductor is a newer and better version of this function.
 
 \code{\link{binom.test}} in the stats package performs univariate binomial tests.
 }

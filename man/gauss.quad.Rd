@@ -58,7 +58,7 @@ Stroud, AH, and Secrest, D (1966). \emph{Gaussian Quadrature Formulas}. Prentice
 \author{Gordon Smyth, using Netlib Fortran code \url{http://www.netlib.org/go/gaussq.f}, and including a suggestion from Stephane Laurent}
 
 \seealso{
-\code{\link[statmod:gauss.quad.prob]{gauss.quad.prob}}, \code{\link{integrate}}
+\code{\link{gauss.quad.prob}}, \code{\link{integrate}}
 }
 
 \examples{

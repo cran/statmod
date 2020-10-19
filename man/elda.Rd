@@ -1,8 +1,9 @@
 \name{elda}
 \alias{elda}
 \alias{limdil}
-\alias{limdil.class}
 \alias{eldaOneGroup}
+\alias{limdil.class}
+\alias{limdil-class}
 
 \title{Extreme Limiting Dilution Analysis}
 \description{
@@ -97,7 +98,7 @@ ELDA: Extreme limiting dilution analysis for comparing depleted and enriched pop
 Shackleton, M., Vaillant, F., Simpson, K. J., Stingl, J., Smyth, G. K., Asselin-Labat, M.-L., Wu, L., Lindeman, G. J., and Visvader, J. E. (2006).
 Generation of a functional mammary gland from a single stem cell.
 \emph{Nature} 439, 84-88.
-\url{http://www.nature.com/nature/journal/v439/n7072/abs/nature04372.html}
+\url{https://www.nature.com/articles/nature04372}
 
 Gart, JJ, and Weiss, GH (1967).
 Graphically oriented tests for host variability in dilution experiments.
@@ -107,7 +108,7 @@ Graphically oriented tests for host variability in dilution experiments.
 \seealso{
 \code{\link{plot.limdil}} and \code{\link{print.limdil}} are methods for \code{limdil} class objects.
 
-A webpage interface to this function is available at \url{http://bioinf.wehi.edu.au/software/elda}.
+A web interface to this function is available at \url{http://bioinf.wehi.edu.au/software/elda/}.
 }
 
 \examples{

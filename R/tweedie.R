@@ -1,9 +1,9 @@
-##  TWEEDIEF.R
+##  TWEEDIE.R
 
 tweedie <- function(var.power=0, link.power=1-var.power)
 #	Tweedie generalized linear model family
 #	Gordon Smyth
-#	22 Oct 2002.  Last modified 10 Jan 2020.
+#	22 Oct 2002.  Last modified 25 Aug 2020.
 {
 	lambda <- link.power
 	if(is.character(lambda)) {
@@ -17,8 +17,8 @@ tweedie <- function(var.power=0, link.power=1-var.power)
 	}
 	if(lambda==0) {
 		linkfun <- function(mu) log(mu)
-		linkinv <- function(eta) pmax(.Machine$double.eps, exp(eta))
-		mu.eta <- function(eta) pmax(.Machine$double.eps, exp(eta))
+		linkinv <- function(eta) pmax(exp(eta), .Machine$double.eps)
+		mu.eta <- function(eta) pmax(exp(eta), .Machine$double.eps)
 		valideta <- function(eta) TRUE
 	} else {
 		linkfun <- function(mu) mu^lambda

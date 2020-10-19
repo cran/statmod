@@ -51,10 +51,12 @@ qresiduals(fit)
 qresiduals(fit,dispersion=1)
 
 if(require("MASS")) {
-fit <- glm(Days~Age,family=negative.binomial(2),data=quine)
-print(summary(qresiduals(fit)))
-fit <- glm.nb(Days~Age,link=log,data = quine)
-print(summary(qresiduals(fit)))
+  fit <- glm(Days~Age,family=negative.binomial(2),data=quine)
+  print(summary(qresiduals(fit)))
+  options(warnPartialMatchArgs=FALSE)
+  fit <- glm.nb(Days~Age,link=log,data = quine)
+  options(warnPartialMatchArgs=TRUE)
+  print(summary(qresiduals(fit)))
 }
 
 ### gauss.quad
@@ -94,6 +96,11 @@ qinvgauss(0.5,mean=c(1,2,NA))
 qinvgauss(log(p),mean=1.3,dispersion=0.6,log.p=TRUE)
 qinvgauss(log(p),mean=1.3,dispersion=0.6,lower.tail=FALSE,log.p=TRUE)
 rinvgauss(5,mean=c(1,NA,3,Inf,1e10),dispersion=c(2,3,NA,Inf,4))
+
+### tweedie
+
+tw <- tweedie(var.power=1.25, link.power=0)
+tw$linkinv( matrix(u,5,2,dimnames=list(R=LETTERS[1:5],C=letters[1:2])) )
 
 ### extra tests done only locally
 

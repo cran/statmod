@@ -25,7 +25,7 @@
 \details{
 This is a rewriting and simplification of \code{gauss.quad} in terms of probability distributions.
 The probability interpretation is explained by Smyth (1998).
-For details on the underlying quadrature rules, see \code{\link[statmod:gauss.quad]{gauss.quad}}.
+For details on the underlying quadrature rules, see \code{\link{gauss.quad}}.
 
 The expected value of \code{f(X)} is approximated by \code{sum(w*f(x))} where \code{x} is the vector of nodes and \code{w} is the vector of weights.  The approximation is exact if \code{f(x)} is a polynomial of order no more than \code{2n-1}.
 The possible choices for the distribution of \code{X} are as follows:

@@ -35,8 +35,7 @@ This iteration is monotonically convergent for the dispersion.
 }
 
 \note{
-This function has been made obsolete by the edgeR package on Bioconductor, see
-\url{https://bioconductor.org/packages/edgeR}.
+This function has been made obsolete by the \href{https://doi.org/doi:10.18129/B9.bioc.edgeR}{edgeR} package on Bioconductor.
 }
 
 \value{
@@ -57,7 +56,7 @@ Smyth, G. K. (1996). Partitioned algorithms for maximum likelihood and other non
 }
 
 \seealso{
-\code{\link[statmod]{sage.test}}
+\code{\link{sage.test}}
 
 The edgeR package on Biconductor provides new and better functions to fit negative-binomial glms to SAGE or RNA-seq data.
 See particularly the \code{glmFit} and \code{mglmOneWay} functions.

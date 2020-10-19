@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2020-01-25 r77715) -- "Unsuffered Consequences"
+R version 4.0.2 (2020-06-22) -- "Taking Off Again"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 
@@ -231,21 +231,18 @@ $se.coefficients
  0.68815664  0.33141358  0.07456884  0.39104513 -0.87533184 -0.60985235 
 > 
 > if(require("MASS")) {
-+ fit <- glm(Days~Age,family=negative.binomial(2),data=quine)
-+ print(summary(qresiduals(fit)))
-+ fit <- glm.nb(Days~Age,link=log,data = quine)
-+ print(summary(qresiduals(fit)))
++   fit <- glm(Days~Age,family=negative.binomial(2),data=quine)
++   print(summary(qresiduals(fit)))
++   options(warnPartialMatchArgs=FALSE)
++   fit <- glm.nb(Days~Age,link=log,data = quine)
++   options(warnPartialMatchArgs=TRUE)
++   print(summary(qresiduals(fit)))
 + }
 Loading required package: MASS
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 -2.9227 -0.8494 -0.2115 -0.1294  0.7212  3.0678 
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 -3.14845 -0.50446 -0.02932  0.00518  0.67937  2.47162 
-Warning messages:
-1: In glm.fitter(x = X, y = Y, w = w, start = start, etastart = etastart,  :
-  partial argument match of 'w' to 'weights'
-2: In glm.fitter(x = X, y = Y, w = w, etastart = eta, offset = offset,  :
-  partial argument match of 'w' to 'weights'
 > 
 > ### gauss.quad
 > 
@@ -358,6 +355,18 @@ Warning messages:
 > rinvgauss(5,mean=c(1,NA,3,Inf,1e10),dispersion=c(2,3,NA,Inf,4))
 [1] 0.64715825862            NA            NA 0.00000000000 0.08624417187
 > 
+> ### tweedie
+> 
+> tw <- tweedie(var.power=1.25, link.power=0)
+> tw$linkinv( matrix(u,5,2,dimnames=list(R=LETTERS[1:5],C=letters[1:2])) )
+   C
+R             a           b
+  A 2.451492935 1.223458802
+  B 1.304094152 2.455645563
+  C 1.450812725 2.571978041
+  D 1.773319765 1.936336513
+  E 2.479874093 1.875947835
+> 
 > ### extra tests done only locally
 > 
 > #GKSTest <- Sys.getenv("GKSTest")
@@ -367,4 +376,4 @@ Warning messages:
 > 
 > proc.time()
    user  system elapsed 
-   0.17    0.06    0.21 
+   0.18    0.03    0.23 
