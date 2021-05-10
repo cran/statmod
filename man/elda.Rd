@@ -92,7 +92,7 @@ There are \code{\link[=print.limdil]{print}} and \code{\link[=plot.limdil]{plot}
 Hu, Y, and Smyth, GK (2009).
 ELDA: Extreme limiting dilution analysis for comparing depleted and enriched populations in stem cell and other assays.
 \emph{Journal of Immunological Methods} 347, 70-78.
-\url{http://dx.doi.org/10.1016/j.jim.2009.06.008}
+\doi{10.1016/j.jim.2009.06.008}
 \url{http://www.statsci.org/smyth/pubs/ELDAPreprint.pdf}
 
 Shackleton, M., Vaillant, F., Simpson, K. J., Stingl, J., Smyth, G. K., Asselin-Labat, M.-L., Wu, L., Lindeman, G. J., and Visvader, J. E. (2006).

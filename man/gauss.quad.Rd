@@ -4,7 +4,9 @@
 
 \description{Calculate nodes and weights for Gaussian quadrature.}
 
-\usage{gauss.quad(n,kind="legendre",alpha=0,beta=0)}
+\usage{
+gauss.quad(n, kind = "legendre", alpha = 0, beta = 0)
+}
 
 \arguments{
   \item{n}{number of nodes and weights}

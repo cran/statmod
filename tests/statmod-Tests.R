@@ -100,7 +100,7 @@ rinvgauss(5,mean=c(1,NA,3,Inf,1e10),dispersion=c(2,3,NA,Inf,4))
 ### tweedie
 
 tw <- tweedie(var.power=1.25, link.power=0)
-tw$linkinv( matrix(u,5,2,dimnames=list(R=LETTERS[1:5],C=letters[1:2])) )
+tw$linkinv( matrix(u[1:10],5,2,dimnames=list(R=LETTERS[1:5],C=letters[1:2])) )
 
 ### extra tests done only locally
 

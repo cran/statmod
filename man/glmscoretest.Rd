@@ -57,7 +57,7 @@ The z-statistics can be treated as standard normal under the null hypothesis.
 
 \references{
 Dunn, PK, and Smyth, GK (2018). \emph{Generalized linear models with examples in R}. Springer, New York, NY. 
-\url{https://doi.org/10.1007/978-1-4419-0118-7}
+\doi{10.1007/978-1-4419-0118-7}
 
 Lovison, G (2005). On Rao score and Pearson X^2 statistics in generalized linear models.
 \emph{Statistical Papers}, 46, 555-574.

@@ -43,7 +43,7 @@ The \code{dispersion} parameter is the same as \code{1/theta} for the \code{MASS
 \references{
 Dunn, PK, and Smyth, GK (2018).
 \emph{Generalized linear models with examples in R}. Springer, New York, NY.
-\url{https://doi.org/10.1007/978-1-4419-0118-7}
+\doi{10.1007/978-1-4419-0118-7}
 }
 
 \seealso{

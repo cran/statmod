@@ -76,7 +76,7 @@ The following table summarizes the possible Tweedie response distributions:
 \references{
 Dunn, P. K., and Smyth, G. K, (2018).
 \emph{Generalized linear models with examples in R}. Springer, New York, NY.
-\url{https://doi.org/10.1007/978-1-4419-0118-7}
+\doi{10.1007/978-1-4419-0118-7}
 (Chapter 12 gives an overall discussion of Tweedie GLMs with R code and case studies.)
 
 Hasan, M.M. and Dunn, P.K. (2012).

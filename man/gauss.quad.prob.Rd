@@ -4,7 +4,10 @@
 
 \description{Calculate nodes and weights for Gaussian quadrature in terms of probability distributions.}
 
-\usage{gauss.quad.prob(n,dist="uniform",l=0,u=1,mu=0,sigma=1,alpha=1,beta=1)}
+\usage{
+gauss.quad.prob(n, dist = "uniform", l = 0, u = 1,
+                mu = 0, sigma = 1, alpha = 1, beta = 1)
+}
 
 \arguments{
   \item{n}{number of nodes and weights}
