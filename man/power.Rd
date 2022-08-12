@@ -20,7 +20,11 @@ power.fisher.test(p1, p2, n1, n2, alpha=0.05, nsim=100, alternative="two.sided")
 }
 
 \details{
-Computes the power of Fisher's exact test for testing the null hypothesis that \code{p1} equals \code{p2} against the alternative that they are not equal.
+Estimates the power of Fisher's exact test for testing the null hypothesis that \code{p1} equals \code{p2} against the alternative that they are not equal.
+
+The power is estimated by simulation.
+The function generates \code{nsim} pairs of binomial deviates and calls \code{fisher.test} to obtain \code{nsim} p-values.
+The required power is tnen the proportion of the simulated p-values that are less than \code{alpha}.
 }
 
 \value{

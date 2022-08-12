@@ -57,7 +57,7 @@ In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wile
 Stroud, AH, and Secrest, D (1966). \emph{Gaussian Quadrature Formulas}. Prentice-Hall, Englewood Cliffs, N.J.
 }
 
-\author{Gordon Smyth, using Netlib Fortran code \url{http://www.netlib.org/go/gaussq.f}, and including a suggestion from Stephane Laurent}
+\author{Gordon Smyth, using Netlib Fortran code \url{https://netlib.org/go/gaussq.f}, and including a suggestion from Stephane Laurent}
 
 \seealso{
 \code{\link{gauss.quad.prob}}, \code{\link{integrate}}

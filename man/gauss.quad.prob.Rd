@@ -48,7 +48,7 @@ In: \emph{Encyclopedia of Biostatistics}, P. Armitage and T. Colton (eds.), Wile
 \url{http://www.statsci.org/smyth/pubs/PolyApprox-Preprint.pdf}
 }
 
-\author{Gordon Smyth, using Netlib Fortran code \url{http://www.netlib.org/go/gaussq.f}, and including corrections suggested by Spencer Graves}
+\author{Gordon Smyth, using Netlib Fortran code \url{https://netlib.org/go/gaussq.f}, and including corrections suggested by Spencer Graves}
 
 \seealso{
 \code{\link{gauss.quad}}, \code{\link{integrate}}

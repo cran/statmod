@@ -1,3 +1,18 @@
+12 Aug 2022: statmod 1.4.37
+
+- Fix mathematic equations in remlscor.Rd.
+- Explain simulation method of power.fisher.test() in power.Rd.
+- Update http to https URLs in elda.Rd, gauss.quad.Rd and gauss.quad.prob.Rd.
+- Change url to doi for reference in elda.Rd.
+- Add doi for reference in fitNBP.Rd.
+
+10 May 2021: statmod 1.4.36
+
+- Update tweedie() part of statmod-Tests.R
+- Update reference URLs in elda.Rd, glmgam.Rd, glmnbfit.Rd,
+  glmscoretest.Rd, permp.Rd, qresiduals.Rd, remlscor.Rd, tweedie.Rd
+- Reformat usage lines for gauss.quad and gauss.quad.prob.
+
 25 Aug 2020: statmod 1.4.35
 
 - Fix bug in tweedie(link.power=0) so that the resulting functions

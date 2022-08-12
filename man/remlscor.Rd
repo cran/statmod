@@ -30,16 +30,19 @@ List with the following components:
   \item{iter}{number of iterations used}
 }
 \details{
-Write \eqn{\mu_i=E(y_i)} for the expectation of the \eqn{i}th response and \eqn{s_i=\var(y_i)}.
+Write \eqn{\mu_i=E(y_i)}{mu_i = E(y_i)} and \eqn{\sigma^2_i=\mbox{var}(y_i)}{sigma_i^2 = var(y_i)} for the expectation and variance of the \eqn{i}{i'}th response.
 We assume the heteroscedastic regression model
-\deqn{\mu_i=\bold{x}_i^T\bold{\beta}}
-\deqn{\log(\sigma^2_i)=\bold{z}_i^T\bold{\gamma},}
-where \eqn{\bold{x}_i} and \eqn{\bold{z}_i} are vectors of covariates, and \eqn{\bold{\beta}} and \eqn{\bold{\gamma}} are vectors of regression coefficients affecting the mean and variance respectively.
+\deqn{\mu_i=\bold{x}_i^T\bold{\beta}}{mu_i = x_i^T beta}
+\deqn{\log(\sigma^2_i)=\bold{z}_i^T\bold{\gamma},}{log(sigma_i^2 = z_i^T gamma ,}
+where \eqn{\bold{x}_i}{x_i} and \eqn{\bold{z}_i}{z_i} are vectors of covariates, and \eqn{\bold{\beta}}{beta} and \eqn{\bold{\gamma}}{gamma} are vectors of regression coefficients affecting the mean and variance respectively.
 
 Parameters are estimated by maximizing the REML likelihood using REML scoring as described in Smyth (2002).
 }
 \references{
-Smyth, G. K. (2002). An efficient algorithm for REML in heteroscedastic regression. \emph{Journal of Computational and Graphical Statistics} \bold{11}, 836-847.
+Smyth, G. K. (2002).
+An efficient algorithm for REML in heteroscedastic regression.
+\emph{Journal of Computational and Graphical Statistics} \bold{11}, 836-847.
+\doi{10.1198/106186002871}
 }
 \author{Gordon Smyth}
 \examples{

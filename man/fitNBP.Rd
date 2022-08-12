@@ -52,7 +52,10 @@ Lu, J, Tomfohr, JK, Kepler, TB (2005).
 Identifying differential expression in multiple SAGE libraries: an overdispersed log-linear model approach.
 \emph{BMC Bioinformatics} 6,165.
 
-Smyth, G. K. (1996). Partitioned algorithms for maximum likelihood and other nonlinear estimation. \emph{Statistics and Computing}, 6, 201-216.
+Smyth, G. K. (1996).
+Partitioned algorithms for maximum likelihood and other nonlinear estimation.
+\emph{Statistics and Computing}, 6, 201-216.
+\doi{10.1007/BF00140865}
 }
 
 \seealso{

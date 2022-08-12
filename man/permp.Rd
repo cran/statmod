@@ -37,10 +37,11 @@ vector or array of p-values, of same dimensions as \code{x}
 \author{Belinda Phipson and Gordon Smyth}
 
 \references{
-Phipson B, and Smyth GK (2010).
-Permutation p-values should never be zero: calculating exact p-values when permutations are randomly drawn.
+Phipson B, Smyth GK (2010).
+Permutation P-values should never be zero: calculating exact P-values when permutations are randomly drawn.
 \emph{Statistical Applications in Genetics and Molecular Biology}, Volume 9, Issue 1, Article 39.
-\url{http://www.statsci.org/smyth/pubs/PermPValuesPreprint.pdf}
+\doi{10.2202/1544-6115.1585}.
+See also the Preprint Version \url{http://www.statsci.org/smyth/pubs/PermPValuesPreprint.pdf} with corrections.
 }
 
 \examples{
