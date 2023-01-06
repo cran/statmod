@@ -1,3 +1,14 @@
+28 Dec 2022: statmod 1.5.0
+
+- New function expectedDeviance() to compute expected values and variances of
+  unit deviances for linear exponential families, using C code written by
+  Lizhong Chen. Add Lizhong Chen as package author.
+- Replace NAMESPACE exportPattern() with export().
+- New argument `n0` for compareGrowthCurves() and CompareTwoGrownCurves() to
+  avoid permutation p-values exactly zero.
+- Add link to Phipson & Smyth postprint on arXiv in help references for permp()
+  and compareGrowthCurves().
+
 12 Aug 2022: statmod 1.4.37
 
 - Fix mathematic equations in remlscor.Rd.
@@ -441,12 +452,53 @@
 - edit randomizedBlock.Rd
 
 11 Feb 2004: statmod 1.0.5
+
 - mlreg.fit() and mlreg.fit.zero() removed
 
 10 Feb 2004: statmod 1.0.4
+
 - minor bug fixes to glmgam.fit
 - mlreg.fit and mlreg.fit.zero updated to work in R 1.9.0
 
 6 Jan 2004: statmod 1.0.3
+
 - function fisher.test2() removed
 - bug fix in sage.test() which produced error with zero counts and equal sized libraries
+
+24 Nov 2003: statmod 1.0.2
+
+- Correct documented default value for `tol` for glmgam.fit().
+
+18 Nov 2003: statmod 1.0.1
+
+- New function fisher.test2().
+- New functions mlreg.fit() and mlreg.fit.zero() to fit linear models by
+  maximum likelihood assuming heavy-tailed distributions such as logistic
+  or t.
+- New function sage.test() to test for differential expression between two SAGE
+  libraries.
+
+30 Jun 2003: statmod 0.6
+
+- New function glmgam.fit() for gamma generalized linear model with identity
+  link.
+- New function power.fisher.test().
+
+17 Feb 2003: statmod 0.5
+
+First submitted to CRAN as R package statmod 0.5. Included functions
+Digamma, canonic.digamma, d2cumulant.digamma, unitdeviance.digamma,
+cumulant.digamma, meanval.digamma, varfun.digamma, gauss.quad.prob,
+gauss.quad, compareGrowthCurves, compareTwoGrowthCurves, hommel.test,
+dinvgauss, pinvgauss, qinvgauss, rinvgauss, logmdigamma, matvec, vecmat,
+meanT, mlreg, mlreg.fit, mlreg.fit.zero, qres, qres.binom, qres.pois,
+qres.nbinom, qres.gamma, qres.invgauss, qres.tweedie, randomizedBlock,
+randomizedBlockFit, remlscore, remlscoregamma, tweedie, welding.
+
+Dec 1996 - Dec 2001
+
+Earlier versions of many functions were available as S functions from
+http://www.statsci.org/s/. This included qres.binon, qres.pois, qres.gamma,
+qres.invgauss, qres.nbinom, qres.tweedie, dinvgauss, pinvgaus, qinvgauss,
+rinvgauss, Digamma, cumulant.digamma, meanval.digamma, d2cumulant.digamma,
+canonic.digamma, varfun.digamma, unitdeviance.digamma, matvec, mscale.

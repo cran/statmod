@@ -41,13 +41,25 @@ cumulant.digamma <- function(theta)
 
 meanval.digamma <- function(theta)
 #	Mean value function for the Digamma family
-#	GKS  3 July 98
-	2*( log(-theta) - digamma(-theta) )
+#	Gordon Smyth
+#	Created 3 July 1998. Last modified 24 Dec 2022.
+{
+	2 * logmdigamma(-theta)
+}
 
 d2cumulant.digamma <- function(theta)
 #	2nd derivative of cumulant function for Digamma family
-#	GKS  3 July 98
-	2*( 1/theta + trigamma(-theta) )
+#	Gordon Smyth
+#	Created 3 July 1998. Last modified 24 Dec 2022.
+{
+	out <- 2*( 1/theta + trigamma(-theta) )
+	min.theta <- min(theta)
+	if(min.theta < -1e3) {
+		i <- (theta < -1e3)
+		out[i] <- (1 - 1/3/theta[i]) / theta[i]^2
+	}
+	out
+}
 
 canonic.digamma <- function(mu) {
 #	Canonical mapping for Digamma family

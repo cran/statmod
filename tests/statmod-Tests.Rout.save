@@ -1,6 +1,6 @@
 
-R version 4.1.0 beta (2021-05-06 r80268) -- "Camp Pontanezen"
-Copyright (C) 2021 The R Foundation for Statistical Computing
+R version 4.2.2 (2022-10-31 ucrt) -- "Innocent and Trusting"
+Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -367,6 +367,54 @@ R             a           b
   D 1.773319765 1.936336513
   E 2.479874093 1.875947835
 > 
+> ### expectedDeviance
+> expectedDeviance(c(0,0.4,1),family="binomial",binom.size=2)
+$mean
+[1] 0.000000000 1.361204081 0.000000000
+
+$variance
+[1] 0.000000000 1.802700721 0.000000000
+
+> expectedDeviance(matrix(c(0,NA,1,Inf),2,2),family="gaussian")
+$mean
+     [,1] [,2]
+[1,]    1    1
+[2,]    1    1
+
+$variance
+     [,1] [,2]
+[1,]    2    2
+[2,]    2    2
+
+> expectedDeviance(c(0,1,Inf),family="Gamma",gamma.shape=2)
+$mean
+[1] 1.081451382 1.081451382 1.081451382
+
+$variance
+[1] 2.31894507 2.31894507 2.31894507
+
+> expectedDeviance(c(1,2),family="inverse.gaussian")
+$mean
+[1] 1 1
+
+$variance
+[1] 2 2
+
+> expectedDeviance(c(0,1,2),family="negative.binomial",nbinom.size=2)
+$mean
+[1] 0.000000000 1.057480184 1.120623536
+
+$variance
+[1] 0.0000000000 0.9740485644 1.6273323121
+
+> expectedDeviance(c(0,2,Inf),family="poisson")
+$mean
+[1] 0.000000000 1.139404056 1.000000017
+
+$variance
+[1] 0.000000000 2.232975219 2.000000067
+
+> 
 > ### extra tests done only locally
 > 
 > #GKSTest <- Sys.getenv("GKSTest")
@@ -376,4 +424,4 @@ R             a           b
 > 
 > proc.time()
    user  system elapsed 
-   0.14    0.04    0.17 
+   0.18    0.06    0.20 

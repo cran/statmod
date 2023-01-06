@@ -53,7 +53,7 @@ gauss.quad <- function(n,kind="legendre",alpha=0,beta=0)
 	z <- rep_len(0,n)
 	z[1] <- 1
 	ierr <- 0L
-   out <- .Fortran("gausq2",n,as.double(a),as.double(b),as.double(z),ierr,PACKAGE="statmod")
+	out <- .Fortran("gausq2",n,as.double(a),as.double(b),as.double(z),ierr,PACKAGE="statmod")
 	x <- out[[2]]
 	w <- out[[4]]
 	w <- exp(lnmuzero + 2*log(abs(w)))

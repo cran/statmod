@@ -102,6 +102,14 @@ rinvgauss(5,mean=c(1,NA,3,Inf,1e10),dispersion=c(2,3,NA,Inf,4))
 tw <- tweedie(var.power=1.25, link.power=0)
 tw$linkinv( matrix(u[1:10],5,2,dimnames=list(R=LETTERS[1:5],C=letters[1:2])) )
 
+### expectedDeviance
+expectedDeviance(c(0,0.4,1),family="binomial",binom.size=2)
+expectedDeviance(matrix(c(0,NA,1,Inf),2,2),family="gaussian")
+expectedDeviance(c(0,1,Inf),family="Gamma",gamma.shape=2)
+expectedDeviance(c(1,2),family="inverse.gaussian")
+expectedDeviance(c(0,1,2),family="negative.binomial",nbinom.size=2)
+expectedDeviance(c(0,2,Inf),family="poisson")
+
 ### extra tests done only locally
 
 #GKSTest <- Sys.getenv("GKSTest")

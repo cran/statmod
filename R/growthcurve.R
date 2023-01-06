@@ -19,11 +19,11 @@ meanT <- function(y1,y2) {
 	weighted.mean(t.stat,w=(n1+n2-2)/(n1+n2),na.rm=TRUE)
 }
 
-compareTwoGrowthCurves <- function(group,y,nsim=100,fun=meanT) {
+compareTwoGrowthCurves <- function(group,y,nsim=100,fun=meanT,n0=0.5) {
 #  Permutation test between two groups of growth curves
 #  Columns are time points, rows are individuals
 #  Gordon Smyth
-#  14 Feb 2003
+#  Created 14 Feb 2003. Last modified 20 Dec 2022.
 
 	group <- as.vector(group)
 	g <- unique(group)
@@ -33,16 +33,17 @@ compareTwoGrowthCurves <- function(group,y,nsim=100,fun=meanT) {
 	for (i in 1:nsim) {
 		pgroup <- sample(group)
 		stat <- fun(y[pgroup==g[1],,drop=FALSE], y[pgroup==g[2],,drop=FALSE])
-		if(abs(stat) >= abs(stat.obs)) asbig <- asbig+1
+		if(abs(stat) == abs(stat.obs)) asbig <- asbig+0.5
+		if(abs(stat)  > abs(stat.obs)) asbig <- asbig+1
 	}
-	list(stat=stat.obs, p.value=asbig/nsim) 
+	list(stat=stat.obs, p.value=(asbig+n0)/(nsim+n0))
 }
 
-compareGrowthCurves <- function(group,y,levels=NULL,nsim=100,fun=meanT,times=NULL,verbose=TRUE,adjust="holm") {
+compareGrowthCurves <- function(group,y,levels=NULL,nsim=100,fun=meanT,times=NULL,verbose=TRUE,adjust="holm",n0=0.5) {
 #  All pairwise permutation tests between groups of growth curves
 #  Columns of y are time points, rows are individuals
 #  Gordon Smyth
-#  14 Feb 2003.  Last modified 17 Nov 2003.
+#  Craeted 14 Feb 2003.  Last modified 20 Dec 2022.
 
 	group <- as.character(group)
 	if(is.null(levels)) {
@@ -65,7 +66,7 @@ compareGrowthCurves <- function(group,y,levels=NULL,nsim=100,fun=meanT,times=NUL
 			if(verbose) cat(lev[i],lev[j])
 			pair <- pair+1
 			sel <- group %in% c(lev[i],lev[j])
-			out <- compareTwoGrowthCurves(group[sel],y[sel,,drop=FALSE],nsim=nsim,fun=fun)
+			out <- compareTwoGrowthCurves(group[sel],y[sel,,drop=FALSE],nsim=nsim,fun=fun,n0=n0)
 			if(verbose) cat("\ ",round(out$stat,2),"\n")
 			g1[pair] <- lev[i]
 			g2[pair] <- lev[j]

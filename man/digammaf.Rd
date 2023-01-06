@@ -6,7 +6,7 @@
 \alias{cumulant.digamma}
 \alias{meanval.digamma}
 \alias{varfun.digamma}
-\title{Digamma generalized linear model family}
+\title{Digamma Generalized Linear Model Family}
 \description{
 Produces a Digamma generalized linear model family object. The Digamma distribution is the
 distribution of the unit deviance for a gamma response.
@@ -50,6 +50,7 @@ Then \code{meanval.digamma(-1/phi)} gives the mean of \eqn{d(y,\mu)} and \code{2
 
 \references{
 Smyth, G. K. (1989). Generalized linear models with varying dispersion. \emph{J. R. Statist. Soc. B}, \bold{51}, 47-61.
+\doi{10.1111/j.2517-6161.1989.tb01747.x}
 }
 \examples{
 # Test for log-linear dispersion trend in gamma regression
